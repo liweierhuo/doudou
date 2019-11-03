@@ -1,0 +1,26 @@
+package com.doudou.wx.api.config;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import javax.sql.DataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+/**
+ * @author: liwei
+ * @version: 1.0.0
+ * @email: <a href="mailto:liwei@pingpongx.com">联系作者</a>
+ * @date: 2019-10-12
+ */
+@Configuration
+public class DataSourceConfig {
+
+    @Primary
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid")
+    public DataSource dataSourceOne(){
+        DruidDataSource druidDataSource = new DruidDataSource();
+        return druidDataSource;
+    }
+}

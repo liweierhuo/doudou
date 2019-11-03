@@ -1,0 +1,64 @@
+package com.doudou.wx.api.generator;
+
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.doudou.wx.api.config.DataSourceConfig;
+import org.junit.Test;
+
+/**
+ * <p>
+ * 测试生成代码
+ * </p>
+ *
+ * @author K神
+ * @date 2017/12/18
+ */
+public class GeneratorServiceEntity {
+
+    @Test
+    public void generateCode() {
+        String packageName = "com.doudou.dao";
+        //user -> UserService, 设置成true: user -> IUserService
+        boolean serviceNameStartWithI = false;
+        generateByTables(serviceNameStartWithI, packageName, "uc_user","ta_product","tc_order","tc_order_item");
+    }
+
+    private void generateByTables(boolean serviceNameStartWithI, String packageName, String... tableNames) {
+        GlobalConfig config = new GlobalConfig();
+        String dbUrl = "jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou";
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DBType.MYSQL)
+            .setUrl(dbUrl)
+            .setUsername("root")
+            .setPassword("liwei1993")
+            .setDriverName("com.mysql.jdbc.Driver");
+        StrategyConfig strategyConfig = new StrategyConfig();
+        strategyConfig
+            .setCapitalMode(true)
+            .setEntityLombokModel(true)
+            //.setDbColumnUnderline(true)
+            .setNaming(NamingStrategy.underline_to_camel)
+            .setInclude(tableNames);//修改替换成你需要的表名，多个表名传数组
+        config.setActiveRecord(false)
+            .setAuthor("liwei")
+            .setOutputDir("/Users/liwei/studySpace/doudou/doudou-dao/src/main/java/")
+            .setFileOverride(true);
+        if (!serviceNameStartWithI) {
+            config.setServiceName("%sRepository");
+            config.setServiceImplName("%sRepositoryImpl");
+        }
+        new AutoGenerator().setGlobalConfig(config)
+            .setDataSource(dataSourceConfig)
+            .setStrategy(strategyConfig)
+            .setPackageInfo(
+                new PackageConfig()
+                    .setParent(packageName)
+                    .setController("controller")
+                    .setEntity("entity")
+            ).execute();
+    }
+
+    private void generateByTables(String packageName, String... tableNames) {
+        generateByTables(true, packageName, tableNames);
+    }
+}
+

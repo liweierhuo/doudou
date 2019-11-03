@@ -1,0 +1,19 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: doudou-wx-api
+  datasource:
+    druid:
+      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou
+      password: liwei1993
+      username: root
+
+
+miniprogram:
+  appId: wxee1dd006db2c0d64
+  appSecret: 59a4fec61b9788195fd396d3ed74528a
+  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=APP_ID&secret=APP_SECRET&js_code=JSCODE&grant_type=authorization_code
+
+
