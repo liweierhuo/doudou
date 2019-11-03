@@ -1,6 +1,7 @@
 package com.doudou.wx.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.doudou.core.password.util.AESEncryptUtil;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.wx.RawDataBo;
 import com.doudou.dao.entity.UcUser;
@@ -54,7 +55,8 @@ public class WechatAuthController extends BaseController{
     @PostMapping("login")
     public ApiResponse index(@RequestBody WxLoginVO request) {
         log.info("request : [{}]", request);
-        String requestUrl = wxLoginUrl.replace("APP_ID", appId).replace("APP_SECRET", appSecret).replace("JSCODE", request.getCode());
+        String requestUrl = wxLoginUrl.replace("APP_ID",
+            AESEncryptUtil.decrypt(appId)).replace("APP_SECRET", AESEncryptUtil.decrypt(appSecret)).replace("JSCODE", request.getCode());
         log.info("requestUrl : [{}]",requestUrl);
         String response = HttpRequest.get(requestUrl).body();
         log.info("response : [{}]",response);

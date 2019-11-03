@@ -7,13 +7,12 @@ spring:
   datasource:
     druid:
       url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou
-      password: liwei1993
-      username: root
-
+      password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
+      username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
 
 miniprogram:
-  appId: wxee1dd006db2c0d64
-  appSecret: 59a4fec61b9788195fd396d3ed74528a
+  appId: 9F7SGCSFP33D9ft+1FpbW+YBBeDwCi7paEFWXvCyh1Y=
+  appSecret: WjjaQBtCIz5tMwigXzA9uNiwad6TvllgmTtKjQHeEYqG2ky929gkavdN1FkZRiO8
   loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=APP_ID&secret=APP_SECRET&js_code=JSCODE&grant_type=authorization_code
 
 
