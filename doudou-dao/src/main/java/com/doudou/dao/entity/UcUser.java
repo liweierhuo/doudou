@@ -51,6 +51,8 @@ private static final long serialVersionUID=1L;
      */
     private String openId;
 
+    private String unionId;
+
     /**
      * 最后登录时间
      */

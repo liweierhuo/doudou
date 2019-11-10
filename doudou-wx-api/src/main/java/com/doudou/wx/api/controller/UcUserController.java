@@ -2,12 +2,12 @@ package com.doudou.wx.api.controller;
 
 
 import com.doudou.core.web.ApiResponse;
+import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.UcUser;
 import com.doudou.dao.service.UcUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -21,26 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-10-13
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
+@Slf4j
 public class UcUserController extends BaseController {
 
-    @Autowired
-    private UcUserService ucUserService;
+    private final UcUserService ucUserService;
 
-    @RequestMapping("/get/{userId}")
-    public ApiResponse<UcUser> getUser(@PathVariable Integer userId) {
-        return new ApiResponse<>(ucUserService.queryById(userId));
+    public UcUserController(UcUserService ucUserService) {
+        this.ucUserService = ucUserService;
     }
 
-    @PostMapping("/add")
-    public ApiResponse addUser(@RequestBody UcUser ucUser) {
-        boolean result = ucUserService.addUser(ucUser);
-        if (result) {
-            return ApiResponse.success();
-        } else {
-            return ApiResponse.error(500,"添加失败");
-        }
-
+    @GetMapping
+    public ApiResponse<UcUser> getUser(@SessionId String sessionId) {
+        log.info("sessionId : [{}]",sessionId);
+        return new ApiResponse<>(ucUserService.queryByOpenId(sessionId));
     }
 
 }

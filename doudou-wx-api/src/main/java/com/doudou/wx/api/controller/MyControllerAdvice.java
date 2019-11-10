@@ -1,5 +1,6 @@
 package com.doudou.wx.api.controller;
 
+import com.doudou.core.exception.NoLoginException;
 import com.doudou.core.web.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,6 +25,17 @@ public class MyControllerAdvice {
     @InitBinder
     public void initBinder(WebDataBinder binder) {}
 
+
+    /**
+     * 全局异常捕捉处理
+     * @param ex
+     * @return 错误信息
+     */
+    @ExceptionHandler(value = NoLoginException.class)
+    public ApiResponse errorHandler(NoLoginException ex) {
+        log.error("系统异常 ex:",ex);
+        return ApiResponse.error(501,"您好，请您登录");
+    }
     /**
      * 全局异常捕捉处理
      * @param ex

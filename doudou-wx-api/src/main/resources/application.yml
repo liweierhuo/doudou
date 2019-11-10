@@ -10,9 +10,17 @@ spring:
       password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
       username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
 
+  redis:
+    host: dev-redis1.pingpongx.com
+    port: 6379
+    password:
+    database: 8
+
 miniprogram:
   appId: 9F7SGCSFP33D9ft+1FpbW+YBBeDwCi7paEFWXvCyh1Y=
   appSecret: WjjaQBtCIz5tMwigXzA9uNiwad6TvllgmTtKjQHeEYqG2ky929gkavdN1FkZRiO8
-  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=APP_ID&secret=APP_SECRET&js_code=JSCODE&grant_type=authorization_code
+  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
+  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+  paidUnionIdUrl: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
 
 
