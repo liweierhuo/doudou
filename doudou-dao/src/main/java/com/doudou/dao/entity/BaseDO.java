@@ -14,7 +14,7 @@ import lombok.Data;
  * @date: 2019-11-02
  */
 @Data
-public class BaseDO implements Serializable {
+class BaseDO implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private LocalDateTime created;

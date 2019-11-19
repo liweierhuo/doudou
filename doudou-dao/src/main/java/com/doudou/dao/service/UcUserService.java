@@ -3,7 +3,6 @@ package com.doudou.dao.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.doudou.dao.entity.UcUser;
 import com.doudou.dao.repository.UcUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,8 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UcUserService {
 
-    @Autowired
-    private UcUserRepository ucUserRepository;
+    private final UcUserRepository ucUserRepository;
+
+    public UcUserService(UcUserRepository ucUserRepository) {
+        this.ucUserRepository = ucUserRepository;
+    }
 
     public UcUser queryById(Integer id) {
         return ucUserRepository.getById(id);
