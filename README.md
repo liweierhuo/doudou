@@ -14,5 +14,8 @@
 ```$xslt
 1. spring boot + mybatis-plus
 ```
-* [x] 功能模块划分
+* [x] 功能模块划分 
+	1.web
+	2.mobile
+	3.admin
 
