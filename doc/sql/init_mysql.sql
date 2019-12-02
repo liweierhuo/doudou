@@ -88,6 +88,7 @@ CREATE TABLE `ta_product`
   AUTO_INCREMENT = 100000
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品表';
 
+#用户表
 DROP TABLE IF EXISTS `dd_user`;
 CREATE TABLE `dd_user` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -103,6 +104,8 @@ CREATE TABLE `dd_user` (
   `user_total_integral` int(11) DEFAULT '0' COMMENT '用户总积分'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+#第三方登录表
 DROP TABLE IF EXISTS `dd_third_user`;
 CREATE TABLE `dd_third_user` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -118,6 +121,8 @@ CREATE TABLE `dd_third_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='第三方用户表';
 
+
+#资源表
 DROP TABLE IF EXISTS `dd_resources`;
 CREATE TABLE `dd_resources` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -136,6 +141,8 @@ CREATE TABLE `dd_resources` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据资源表';
 
+
+#用户积分表
 DROP TABLE IF EXISTS `dd_user_integral`;
 CREATE TABLE `dd_user_integral` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -149,6 +156,8 @@ CREATE TABLE `dd_user_integral` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户积分表';
 
+
+#用户兑换积分表
 DROP TABLE IF EXISTS `dd_user_resource`;
 CREATE TABLE `dd_user_resource` (
   `id` varchar(32) NOT NULL COMMENT '主键',
@@ -161,6 +170,7 @@ CREATE TABLE `dd_user_resource` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户兑换资源表';
 
+#用户签到表
 DROP TABLE IF EXISTS `dd_user_sign`;
 CREATE TABLE `dd_user_sign` (
   `id` varchar(32) NOT NULL COMMENT '主键',
