@@ -14,6 +14,7 @@ public class ApiResponse<T> {
     private int code;
     private String message;
     private T data;
+    private PageResult<T> page;
 
     private ApiResponse() {
         this.code = 0;
@@ -28,9 +29,28 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    public ApiResponse(PageResult<T> page) {
+        this.page = page;
+    }
+
+    public PageResult<T> getPage() {
+        return page;
+    }
+
+    public void setPage(PageResult<T> page) {
+        this.page = page;
+    }
+
     public static <T> ApiResponse<T> success() {
         return new ApiResponse<>();
     }
+
+    public static <T> ApiResponse<T> success(PageResult<T> page) {
+        ApiResponse<T> apiResponse = new ApiResponse<>();
+        apiResponse.setPage(page);
+        return apiResponse;
+    }
+
 
     public static <T> ApiResponse<T> error(int code, String message) {
         return new ApiResponse<>(code, message);

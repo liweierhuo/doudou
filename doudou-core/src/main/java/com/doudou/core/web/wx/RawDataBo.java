@@ -1,7 +1,8 @@
 package com.doudou.core.web.wx;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author: liwei
@@ -11,6 +12,9 @@ import lombok.Data;
  */
 @Data
 public class RawDataBo implements Serializable {
+
+    private static final long serialVersionUID = 6000949189012629876L;
+
     private String nickName;
     private Integer gender;
     private String language;

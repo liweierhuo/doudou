@@ -12,9 +12,6 @@ import com.doudou.dao.service.UcUserService;
 import com.doudou.wx.api.exception.WxApiException;
 import com.doudou.wx.api.vo.WxLoginVO;
 import com.github.kevinsawicki.http.HttpRequest;
-import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author: liwei
  * @version: 1.0.0
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date: 2019-10-09
  */
 @RestController
-@RequestMapping("/api/wechat")
+@RequestMapping("/api/wechat/test")
 @Slf4j
 public class WechatAuthController extends BaseController{
 

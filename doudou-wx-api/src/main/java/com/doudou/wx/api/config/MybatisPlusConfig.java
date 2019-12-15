@@ -24,7 +24,12 @@ public class MybatisPlusConfig {
      */
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+
+        //请求页大于最大页面后，跳到首页
+        paginationInterceptor.setOverflow(true);
+
+        return paginationInterceptor;
     }
 
     @Bean
