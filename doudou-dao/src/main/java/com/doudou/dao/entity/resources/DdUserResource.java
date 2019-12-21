@@ -30,5 +30,10 @@ public class DdUserResource extends BaseModelDo {
      */
     private String resId;
 
+    /**
+     * 用户资源类型 0 兑换资源  1 投稿资源
+     */
+    private Integer userResType;
+
 
 }

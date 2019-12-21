@@ -125,7 +125,7 @@ public class MemberController extends BaseController{
         ddUser.setUsername(username.toString());
         //初始密码为123456
         ddUser.setPassword(DigestUtils.md5Hex(MemberConstant.PASSWORD));
-        //初始积分10
+        //初始积分100
         ddUser.setUserTotalIntegral(MemberConstant.INTEGRAL);
         //用户类型默认为普通用户(1)
         ddUser.setUserType(MemberConstant.USER_TYPE);

@@ -61,6 +61,10 @@ public class DdResources extends BaseModelDo {
      * 类型
      */
     private BigDecimal resType;
+    /**
+     * 审核状态 0 拒绝  1 通过
+     */
+    private Integer checkStatus;
 
 
 }

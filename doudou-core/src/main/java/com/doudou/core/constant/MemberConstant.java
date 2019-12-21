@@ -11,7 +11,7 @@ public class MemberConstant {
     //会员默认密码
     public static String PASSWORD = "123456";
     //初始积分
-    public static Integer INTEGRAL = 10;
+    public static Integer INTEGRAL = 100;
     //用户类型，默认为1,普通用户
     public static Integer USER_TYPE = 1;
     //小程序类型
