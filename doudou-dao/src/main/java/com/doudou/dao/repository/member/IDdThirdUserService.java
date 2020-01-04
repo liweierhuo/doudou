@@ -15,4 +15,7 @@ public interface IDdThirdUserService extends IService<DdThirdUser> {
 
     DdThirdUser queryByOpenId(String openId);
 
+    DdThirdUser queryByUnionId(String unionId);
+
+    DdThirdUser getByUnionIdType(String unionId, Integer type);
 }

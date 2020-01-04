@@ -57,7 +57,7 @@ public class ResourceController {
             queryWrapper.or().like("res_auth",searchString);
             IPage<DdResources> iPage = baseMapper.selectPage(page, queryWrapper);
 
-            //fan数据封装
+            //数据封装
             pageResult.buildPageResult(iPage.getCurrent(),iPage.getSize(),
                     iPage.getTotal(),iPage.getRecords());
             return ApiResponse.success(pageResult);

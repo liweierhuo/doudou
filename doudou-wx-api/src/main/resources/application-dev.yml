@@ -30,3 +30,7 @@ miniprogram:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#token过期时间
+login:
+  timeout: 7200

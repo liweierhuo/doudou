@@ -31,4 +31,21 @@ public class DdThirdUserServiceImpl extends
         return thirdUser;
     }
 
+    @Override
+    public DdThirdUser queryByUnionId(String unionId) {
+        QueryWrapper<DdThirdUser> queryWrapper = new QueryWrapper<DdThirdUser>();
+        queryWrapper.eq("union_id",unionId);
+        DdThirdUser thirdUser = thirdUserMapper.selectOne(queryWrapper);
+        return thirdUser;
+    }
+
+    @Override
+    public DdThirdUser getByUnionIdType(String unionId, Integer type) {
+        QueryWrapper<DdThirdUser> queryWrapper = new QueryWrapper<DdThirdUser>();
+        queryWrapper.eq("union_id",unionId);
+        queryWrapper.eq("type",type);
+        DdThirdUser thirdUser = thirdUserMapper.selectOne(queryWrapper);
+        return thirdUser;
+    }
+
 }
