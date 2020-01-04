@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.math.BigDecimal;
-
 /**
  * <p>
  * 数据资源表
@@ -60,7 +58,7 @@ public class DdResources extends BaseModelDo {
     /**
      * 类型
      */
-    private BigDecimal resType;
+    private Integer resType;
     /**
      * 审核状态 0 拒绝  1 通过
      */

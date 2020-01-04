@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("user/login")
 @Slf4j
-public class UserLogin {
+public class UserLoginController {
 
     @Autowired
     private LoginBizService loginBizService;
@@ -35,13 +35,14 @@ public class UserLogin {
         AjaxResponse ajaxResponse = AjaxResponse.success();
 
         try {
-
             UserOutput userOutput = loginBizService.thirdUserLogin(thirdUserVo, request);
             ajaxResponse.setData(userOutput);
         } catch (Exception e) {
             log.error("微信授权登录异常,{}",e);
             e.printStackTrace();
             ajaxResponse.setSuccess(false);
+            ajaxResponse.setDescription("error");
+            ajaxResponse.setErrorCode(500);
         }
 
         return ajaxResponse;

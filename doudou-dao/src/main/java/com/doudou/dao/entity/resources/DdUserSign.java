@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -28,14 +28,14 @@ public class DdUserSign extends BaseModelDo {
     private String userId;
 
     /**
-     * 签到状态
+     * 签到次数
      */
-    private Integer signType;
+    private Integer signNums;
 
     /**
      * 签到时间
      */
-    private LocalDateTime signDate;
+    private Date signDate;
 
 
 }

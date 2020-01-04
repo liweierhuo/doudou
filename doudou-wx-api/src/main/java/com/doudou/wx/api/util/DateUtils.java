@@ -5,6 +5,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -501,5 +503,35 @@ public class DateUtils {
             e.printStackTrace() ;
         }
         return null ;
+    }
+
+    /**
+     * 获取LocalDateTime
+     * @author shenliuhai
+     * @date 2020/1/5 00:02
+     * @param
+     * @return java.time.LocalDateTime
+     */
+    public static LocalDateTime getLocalDateTime() {
+       LocalDateTime now = LocalDateTime.now();
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATETIME_FORMAT);
+       String format = formatter.format(now);
+       return LocalDateTime.parse(format,formatter);
+    }
+
+    /**
+     * 比较是否是同一天
+     * @author shenliuhai
+     * @date 2020/1/5 00:12
+     * @param date
+     * @return boolean
+     */
+    public static boolean isSameDay(Date date) {
+       String now = getDate();
+       String signDate = getDate(date, DATE_FORMAT);
+       if (now.equals(signDate)) {
+          return true;
+       }
+       return false;
     }
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
  **/
 public class AjaxResponse implements Serializable {
 
-    private static final long serialVersionUID = -9039228515094842639L;
+    private static final long serialVersionUID = -7680841986216774441L;
 
     private static final String SUCCESS_DESCRIPTION = "success";
 
@@ -21,6 +21,7 @@ public class AjaxResponse implements Serializable {
     public static final Integer ERROR_CODE = 99999;
 
     public static final String ERROR_DESCRIPTION = "error";
+
 
     /** ajax 交互结果 */
     private boolean success;

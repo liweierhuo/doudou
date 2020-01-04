@@ -11,6 +11,7 @@
         <result column="remark" property="remark"/>
         <result column="user_id" property="userId"/>
         <result column="res_id" property="resId"/>
+        <result column="user_res_type" property="userResType"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -20,7 +21,30 @@
         update_date,
         del_flag,
         remark,
-        user_id, res_id
+        user_id, res_id,user_res_type
     </sql>
+
+    <select id="getList" resultType="java.util.Map">
+        SELECT
+            dr.res_title as title,
+            dr.check_status as checkStatus,
+            dr.res_convert_integralinteger as integral,
+            dr.res_publish AS pulisher,
+            dr.id AS redId,
+            dr.res_summary AS summary,
+            dr.res_upload_num as resUploadNum,
+            dr.res_upload_address as resUploadAddress
+        FROM
+            dd_user_resource dur
+            INNER JOIN dd_resources dr ON dur.res_id = dr.id
+        <where>
+            <if test="userId != null and userId != ''">
+                AND dur.user_id = #{userId}
+            </if>
+            <if test="type != null">
+                AND dur.user_res_type = #{type}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -1,10 +1,14 @@
 package com.doudou.dao.repository.resources.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.resources.DdUserResource;
 import com.doudou.dao.mapper.resources.DdUserResourceMapper;
 import com.doudou.dao.repository.resources.IDdUserResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -18,4 +22,11 @@ import org.springframework.stereotype.Service;
 public class DdUserResourceServiceImpl extends
         ServiceImpl<DdUserResourceMapper, DdUserResource> implements IDdUserResourceService {
 
+    @Autowired
+    private DdUserResourceMapper userResourceMapper;
+
+    @Override
+    public Map<String, Object> getList(Page page,String userId,Integer type) {
+        return userResourceMapper.getList(page,userId,type);
+    }
 }
