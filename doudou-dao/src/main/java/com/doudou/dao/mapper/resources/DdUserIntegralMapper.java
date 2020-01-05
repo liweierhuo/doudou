@@ -1,7 +1,11 @@
 package com.doudou.dao.mapper.resources;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.dao.entity.resources.DdUserIntegral;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.doudou.dao.entity.resources.DdUserIntegral;
  */
 public interface DdUserIntegralMapper extends BaseMapper<DdUserIntegral> {
 
+    List<DdUserIntegral> getList(@Param("page") Page page, @Param("userId") String userId);
 }

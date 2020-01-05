@@ -3,8 +3,8 @@ package com.doudou.wx.api.biz;
 import com.doudou.core.constant.MemberConstant;
 import com.doudou.dao.entity.member.DdUser;
 import com.doudou.dao.entity.resources.DdUserIntegral;
-import com.doudou.dao.repository.member.IDdUserService;
-import com.doudou.dao.repository.resources.IDdUserIntegralService;
+import com.doudou.dao.service.member.IDdUserService;
+import com.doudou.dao.service.resources.IDdUserIntegralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,6 +2,7 @@ package com.doudou.core.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
  * @Author shenliuhai
  * @Date 2020/1/4 16:08
  **/
+@Service
 public class RedisManager extends AbstractRedisTokenManager{
 
     @Autowired

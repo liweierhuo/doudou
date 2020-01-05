@@ -10,7 +10,7 @@
         <result column="del_flag" property="delFlag"/>
         <result column="remark" property="remark"/>
         <result column="user_id" property="userId"/>
-        <result column="sign_type" property="signType"/>
+        <result column="sign_nums" property="signNums"/>
         <result column="sign_date" property="signDate"/>
     </resultMap>
 

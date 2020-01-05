@@ -1,7 +1,10 @@
-package com.doudou.dao.repository.resources;
+package com.doudou.dao.service.resources;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.doudou.dao.entity.resources.DdUserIntegral;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.doudou.dao.entity.resources.DdUserIntegral;
  */
 public interface IDdUserIntegralService extends IService<DdUserIntegral> {
 
+    List<DdUserIntegral> getList(Page page, String userId);
 }

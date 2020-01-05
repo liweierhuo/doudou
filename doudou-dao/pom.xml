@@ -44,7 +44,7 @@
         <directory>src/main/resources</directory>
         <filtering>false</filtering>
         <includes>
-          <include>**/mapper/*.xml</include>
+          <include>**/mapper/**/*.xml</include>
         </includes>
       </resource>
     </resources>

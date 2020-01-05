@@ -10,11 +10,11 @@
         <result column="del_flag" property="delFlag"/>
         <result column="remark" property="remark"/>
         <result column="res_title" property="resTitle"/>
-        <result column="res_auth" property="resAuth"/>
+        <result column="res_auth" property="userId"/>
         <result column="res_publish" property="resPublish"/>
         <result column="res_upload_address" property="resUploadAddress"/>
         <result column="res_upload_num" property="resUploadNum"/>
-        <result column="res_convert_integralinteger" property="resConvertIntegralinteger"/>
+        <result column="res_convert_integral" property="resConvertIntegral"/>
         <result column="res_summary" property="resSummary"/>
         <result column="res_type" property="resType"/>
     </resultMap>
@@ -26,7 +26,31 @@
         update_date,
         del_flag,
         remark,
-        res_title, res_auth, res_publish, res_upload_address, res_upload_num, res_convert_integralinteger, res_summary, res_type
+        res_title,
+        user_id,
+        res_publish,
+        res_upload_address,
+        res_upload_num,
+        res_convert_integral,
+        res_summary,
+        res_type
     </sql>
+
+    <select id="listPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            dd_resources dr
+        <where>
+            <if test="searchString != null and searchString != ''">
+                dr.res_title like concat('%',#{searchString},'%')
+                or
+                dr.res_publish like concat('%',#{searchString},'%')
+                or
+                dr.res_summary like concat('%',#{searchString},'%')
+                and dr.check_status = 1
+            </if>
+        </where>
+    </select>
 
 </mapper>

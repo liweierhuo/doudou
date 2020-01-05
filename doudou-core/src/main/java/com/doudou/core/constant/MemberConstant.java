@@ -17,6 +17,9 @@ public class MemberConstant {
     public static Integer INTEGRAL_TYPE_SIGN = 1;
     //投稿积分
     public static Integer INTEGRAL_TYPE_PUBLISH = 2;
+    //消耗积分
+    public static Integer INTEGRAL_TYPE_CONSUME = 3;
+
     //签到得积分
     public static Integer INTEGRAL_SCORE = 20;
 

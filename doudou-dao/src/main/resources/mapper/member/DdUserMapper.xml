@@ -27,4 +27,14 @@
         username, password, nick_name, logo, user_type, user_total_integral
     </sql>
 
+    <select id="listPage" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            dd_user du
+        <where>
+            du.username like concat('%',#{searchString},'%')
+        </where>
+    </select>
+
 </mapper>

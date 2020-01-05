@@ -1,18 +1,30 @@
 package com.doudou.wx.api.controller.resources;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.doudou.core.web.ApiResponse;
-import com.doudou.core.web.PageResult;
+import com.doudou.core.constant.MemberConstant;
+import com.doudou.core.web.annotation.Authorization;
 import com.doudou.dao.entity.member.DdUser;
 import com.doudou.dao.entity.resources.DdResources;
-import com.doudou.dao.repository.member.IDdUserService;
-import com.doudou.dao.repository.resources.IDdResourcesService;
+import com.doudou.dao.entity.resources.DdUserIntegral;
+import com.doudou.dao.entity.resources.DdUserResource;
+import com.doudou.dao.service.member.IDdUserService;
+import com.doudou.dao.service.resources.IDdResourcesService;
+import com.doudou.dao.service.resources.IDdUserIntegralService;
+import com.doudou.dao.service.resources.IDdUserResourceService;
+import com.doudou.wx.api.biz.CurrentUserBizService;
+import com.doudou.wx.api.vo.AjaxResponse;
+import com.doudou.wx.api.vo.output.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @ClassName ResourceController
@@ -25,75 +37,191 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("resource")
 public class ResourceController {
 
-    private final IDdResourcesService resourcesService;
-    private final IDdUserService userService;
+    @Autowired
+    private IDdResourcesService resourcesService;
+    @Autowired
+    private IDdUserService userService;
+    @Autowired
+    private CurrentUserBizService currentUserBizService;
+    @Autowired
+    private IDdUserResourceService userResourceService;
+    @Autowired
+    private IDdUserIntegralService userIntegralService;
 
-    public ResourceController(IDdResourcesService resourcesService,IDdUserService userService) {
-        this.resourcesService = resourcesService;
-        this.userService = userService;
-    }
 
     /**
      * @author shenliuhai
      * @date 2019/12/15 17:10
      * @param page
      * @param searchString 搜索词
-     * @return com.doudou.core.web.PageResult<com.doudou.dao.entity.resources.DdResources>
+     * @return AjaxResponse
      */
-    @RequestMapping("res/list")
-    public ApiResponse<DdResources> list(Page<DdResources> page, String searchString) {
+    @RequestMapping("/list")
+    public AjaxResponse list(Page page, String searchString) {
 
-        PageResult<DdResources> pageResult = new PageResult<>();
-
-        //设置没有显示10条
-        page.setSize(10);
         try {
+            List<DdResources> resourcesList = resourcesService.listPage(page,searchString);
 
-            BaseMapper<DdResources> baseMapper = resourcesService.getBaseMapper();
-            QueryWrapper<DdResources> queryWrapper = new QueryWrapper<>();
-            //过滤条件
-            queryWrapper.like("res_title",searchString);
-            queryWrapper.or().like("res_publish",searchString);
-            queryWrapper.or().like("res_auth",searchString);
-            IPage<DdResources> iPage = baseMapper.selectPage(page, queryWrapper);
-
-            //数据封装
-            pageResult.buildPageResult(iPage.getCurrent(),iPage.getSize(),
-                    iPage.getTotal(),iPage.getRecords());
-            return ApiResponse.success(pageResult);
+            return AjaxResponse.success(resourcesList,page);
         } catch (Exception e) {
-            log.error("获取资源列表失败",e);
-            return ApiResponse.error();
+            log.error("获取资源列表失败,{}",e);
+            e.printStackTrace();
+            return AjaxResponse.error();
         }
 
     }
 
-    @RequestMapping("user/list")
-    public ApiResponse<DdUser> userList(Page<DdUser> page, String searchString) {
-
-        PageResult<DdUser> pageResult = new PageResult<>();
-
-        //设置没有显示10条
-        page.setSize(10);
-        try {
-
-            BaseMapper<DdUser> baseMapper = userService.getBaseMapper();
-            QueryWrapper<DdUser> queryWrapper = new QueryWrapper<>();
-            //过滤条件
-            queryWrapper.like("username",searchString);
-
-            IPage<DdUser> iPage = baseMapper.selectPage(page, queryWrapper);
-
-            //fan数据封装
-            pageResult.buildPageResult(iPage.getCurrent(),iPage.getSize(),
-                    iPage.getTotal(),iPage.getRecords());
-            return ApiResponse.success(pageResult);
-        } catch (Exception e) {
-            log.error("获取资源列表失败",e);
-            return ApiResponse.error();
+    /**
+     * 资源详情
+     * @author shenliuhai
+     * @date 2020/1/5 18:18
+     * @param redId
+     * @param request
+     * @return com.doudou.wx.api.vo.AjaxResponse
+     */
+    @Authorization
+    @RequestMapping("/details")
+    public AjaxResponse resDetails(String redId, HttpServletRequest request) {
+        if (StringUtils.isEmpty(redId)) {
+            return AjaxResponse.error(1000,"参数为空");
         }
 
+        CurrentUser currentUser = currentUserBizService.getCurrentUser(request);
+
+        String userId = currentUser.getId();
+
+        DdUserResource userResource = userResourceService.getOne(new QueryWrapper<DdUserResource>().
+                eq("user_id", userId).eq("res_id", redId));
+
+        DdResources ddResources = resourcesService.getById(redId);
+        if (userResource != null) {
+            ddResources.setResConvertIntegral(Integer.valueOf(0));
+        }
+        return AjaxResponse.success(ddResources);
     }
 
+
+    /**
+     * 兑换资源
+     * @author shenliuhai
+     * @date 2020/1/5 17:16
+     * @param redId
+     * @return com.doudou.wx.api.vo.AjaxResponse
+     */
+    @Authorization
+    @RequestMapping("/convert")
+    public AjaxResponse convert(String redId, HttpServletRequest request) {
+
+        if (StringUtils.isEmpty(redId)) {
+            return AjaxResponse.error(1000,"参数为空");
+        }
+
+        CurrentUser currentUser = currentUserBizService.getCurrentUser(request);
+
+        try {
+            String userId = currentUser.getId();
+
+            DdUser ddUser = userService.getUserById(userId);
+
+            Integer totalIntegral = ddUser.getUserTotalIntegral();
+
+            DdUserResource userResource = userResourceService.getOne(new QueryWrapper<DdUserResource>().
+                    eq("user_id", userId).eq("res_id", redId));
+
+            DdResources ddResources = resourcesService.getById(redId);
+
+            Integer convertIntegral = ddResources.getResConvertIntegral();
+
+            Integer resUploadNum = ddResources.getResUploadNum();
+
+            if (Integer.valueOf(0).equals(convertIntegral)) {
+                //不需要积分
+                ddResources.setResUploadNum(++resUploadNum);
+                resourcesService.saveOrUpdate(ddResources);
+
+                return AjaxResponse.success(ddResources);
+            } else if (userResource != null) {
+                //已经兑换，不在需要积分
+                ddResources.setResUploadNum(++resUploadNum);
+                resourcesService.saveOrUpdate(ddResources);
+
+                ddResources.setResConvertIntegral(0);
+                return AjaxResponse.success(ddResources);
+            } else if (totalIntegral >= convertIntegral) {
+                //用户减积分
+                int total = totalIntegral - convertIntegral;
+                ddUser.setUserTotalIntegral(total);
+                userService.saveOrUpdate(ddUser);
+
+                //插入一条消费积分记录
+                DdUserIntegral ddUserIntegral = new DdUserIntegral();
+                ddUserIntegral.setUserId(userId);
+                String consumeIntegral = "-"+convertIntegral;
+                ddUserIntegral.setUserIntegral(Integer.valueOf(consumeIntegral));
+                ddUserIntegral.setType(MemberConstant.INTEGRAL_TYPE_CONSUME);
+                userIntegralService.save(ddUserIntegral);
+
+
+                //资源发布者得积分
+                DdUser publisher = userService.getUserById(ddResources.getUserId());
+                Integer publisherTotal = publisher.getUserTotalIntegral() + convertIntegral;
+                publisher.setUserTotalIntegral(publisherTotal);
+                userService.saveOrUpdate(publisher);
+
+                //插入一条获得积分记录
+                DdUserIntegral publisherIntegral = new DdUserIntegral();
+                publisherIntegral.setUserId(ddResources.getUserId());
+                publisherIntegral.setUserIntegral(Integer.valueOf(consumeIntegral));
+                publisherIntegral.setType(MemberConstant.INTEGRAL_TYPE_PUBLISH);
+                userIntegralService.save(publisherIntegral);
+
+                ddResources.setResUploadNum(++resUploadNum);
+                resourcesService.saveOrUpdate(ddResources);
+
+                return AjaxResponse.success(ddResources);
+            } else {
+                return AjaxResponse.error(1000,"抱歉!,您的积分不够!");
+            }
+        } catch (NumberFormatException e) {
+            log.error("兑换资源失败,{}",e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("兑换资源失败,{}",e);
+            e.printStackTrace();
+        }
+
+        return AjaxResponse.error();
+    }
+
+
+    @Authorization
+    @RequestMapping("/saveOrUpdate")
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public AjaxResponse saveOrUpdate(DdResources ddResources, HttpServletRequest request) {
+
+        CurrentUser currentUser = currentUserBizService.getCurrentUser(request);
+        String userId = currentUser.getId();
+
+        try {
+            if (StringUtils.isEmpty(ddResources.getId())) {
+                ddResources.setUserId(userId);
+                resourcesService.save(ddResources);
+
+                DdUserResource userResource = new DdUserResource();
+                userResource.setUserId(userId);
+                userResource.setResId(ddResources.getId());
+                userResource.setUserResType(MemberConstant.RES_TYPE_PUBLISH);
+                userResourceService.save(userResource);
+            } else {
+                resourcesService.updateById(ddResources);
+            }
+            return AjaxResponse.success();
+        } catch (Exception e) {
+            log.error("发布失败,{}",e);
+            e.printStackTrace();
+        }
+        return AjaxResponse.error();
+
+    }
 
 }

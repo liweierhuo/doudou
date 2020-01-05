@@ -24,4 +24,15 @@
         type, user_id, user_integral
     </sql>
 
+    <select id="getList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from
+            dd_user_integral dui
+        <where>
+            <if test="userId != null and userId != ''">
+                dui.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.doudou.core.constant.Constant;
 import com.doudou.core.password.util.AESEncryptUtil;
 import com.doudou.core.redis.RedisManager;
-import com.doudou.dao.repository.member.IDdUserService;
+import com.doudou.dao.service.member.IDdUserService;
 import com.doudou.wx.api.vo.output.CurrentUser;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;

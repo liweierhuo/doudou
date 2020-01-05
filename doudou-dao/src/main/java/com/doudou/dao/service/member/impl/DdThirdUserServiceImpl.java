@@ -1,10 +1,10 @@
-package com.doudou.dao.repository.member.impl;
+package com.doudou.dao.service.member.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.member.DdThirdUser;
 import com.doudou.dao.mapper.member.DdThirdUserMapper;
-import com.doudou.dao.repository.member.IDdThirdUserService;
+import com.doudou.dao.service.member.IDdThirdUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

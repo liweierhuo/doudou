@@ -1,10 +1,10 @@
-package com.doudou.dao.repository.resources.impl;
+package com.doudou.dao.service.resources.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.resources.DdUserResource;
 import com.doudou.dao.mapper.resources.DdUserResourceMapper;
-import com.doudou.dao.repository.resources.IDdUserResourceService;
+import com.doudou.dao.service.resources.IDdUserResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

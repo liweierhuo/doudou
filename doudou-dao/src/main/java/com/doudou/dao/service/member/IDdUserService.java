@@ -1,7 +1,10 @@
-package com.doudou.dao.repository.member;
+package com.doudou.dao.service.member;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.doudou.dao.entity.member.DdUser;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,4 +19,5 @@ public interface IDdUserService extends IService<DdUser> {
 
     DdUser getUserById(String userId);
 
+    List<DdUser> listPage(Page page, String searchString);
 }

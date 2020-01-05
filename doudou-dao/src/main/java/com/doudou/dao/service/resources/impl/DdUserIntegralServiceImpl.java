@@ -1,10 +1,14 @@
-package com.doudou.dao.repository.resources.impl;
+package com.doudou.dao.service.resources.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.resources.DdUserIntegral;
 import com.doudou.dao.mapper.resources.DdUserIntegralMapper;
-import com.doudou.dao.repository.resources.IDdUserIntegralService;
+import com.doudou.dao.service.resources.IDdUserIntegralService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,4 +22,11 @@ import org.springframework.stereotype.Service;
 public class DdUserIntegralServiceImpl extends
         ServiceImpl<DdUserIntegralMapper, DdUserIntegral> implements IDdUserIntegralService {
 
+    @Autowired
+    private DdUserIntegralMapper userIntegralMapper;
+
+    @Override
+    public List<DdUserIntegral> getList(Page page, String userId) {
+        return userIntegralMapper.getList(page,userId);
+    }
 }

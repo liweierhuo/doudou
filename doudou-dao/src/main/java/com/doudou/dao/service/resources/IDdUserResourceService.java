@@ -1,4 +1,4 @@
-package com.doudou.dao.repository.resources;
+package com.doudou.dao.service.resources;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;

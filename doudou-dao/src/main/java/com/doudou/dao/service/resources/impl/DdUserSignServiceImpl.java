@@ -1,9 +1,9 @@
-package com.doudou.dao.repository.resources.impl;
+package com.doudou.dao.service.resources.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.resources.DdUserSign;
 import com.doudou.dao.mapper.resources.DdUserSignMapper;
-import com.doudou.dao.repository.resources.IDdUserSignService;
+import com.doudou.dao.service.resources.IDdUserSignService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -26,9 +26,9 @@ public class DdResources extends BaseModelDo {
     private String resTitle;
 
     /**
-     * 作者
+     * 发布者Id
      */
-    private String resAuth;
+    private String userId;
 
     /**
      * 发布者
@@ -48,7 +48,7 @@ public class DdResources extends BaseModelDo {
     /**
      * 兑换积分
      */
-    private Integer resConvertIntegralinteger;
+    private Integer resConvertIntegral;
 
     /**
      * 简介
