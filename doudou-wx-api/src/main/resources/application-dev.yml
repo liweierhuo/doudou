@@ -13,8 +13,8 @@ spring:
   ## 阿里云服务器已经安装了redis
   redis:
     host: 47.104.239.91
-    port: 6379
-    password:
+    port: 6389
+    password: liwei@2020
     database: 1
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

@@ -157,7 +157,7 @@ public class LoginBizService {
         //随机生成username
         StringBuilder username = new StringBuilder();
         int random2 = new Random().nextInt(10000000);
-        username.append(String.format("duoduo_%",random2));
+        username.append(String.format("duoduo_%d",random2));
         ddUser.setUsername(username.toString());
         //初始密码为123456
         ddUser.setPassword(DigestUtils.md5Hex(MemberConstant.PASSWORD));
