@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 9081
   servlet:
     context-path: /duoduo
 spring:
@@ -7,15 +7,15 @@ spring:
     name: generator-auto
   datasource:
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/doudou?characterEncoding=utf-8&serverTimezone=GMT%2B8
-      password: Qc+lVOUSHDmrG3CWleTKQ05KnUce/7QFrsowits2sLUzO2idxdn4r3UXWaYmRNxSlX4H0gMMN89hLCt6WGyejg==
+      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou?characterEncoding=utf-8&serverTimezone=GMT%2B8
+      password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
       username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
-
+  ## 阿里云服务器已经安装了redis
   redis:
-    host: 127.0.0.1
+    host: 47.104.239.91
     port: 6379
     password:
-    database: 8
+    database: 1
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

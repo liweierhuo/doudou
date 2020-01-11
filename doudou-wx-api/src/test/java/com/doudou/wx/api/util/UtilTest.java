@@ -17,8 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @date: 2019-11-03
  */
 @Slf4j
-@SpringBootTest
-@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
 public class UtilTest {
 
     @Test
@@ -27,7 +27,7 @@ public class UtilTest {
         log.info("appId : [{}]",AESEncryptUtil.encrypt("wxee1dd006db2c0d64"));
         log.info("appSecret : [{}]",AESEncryptUtil.encrypt("59a4fec61b9788195fd396d3ed74528a"));
         log.info("root:{}", ConfigTools.encrypt("root"));
-        log.info("localhostPass:{}",ConfigTools.encrypt("1234"));
+        log.info("localhostPass:{}",ConfigTools.encrypt("liwei1993"));
     }
 
     @Test
