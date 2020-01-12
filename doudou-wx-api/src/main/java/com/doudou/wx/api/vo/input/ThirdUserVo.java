@@ -19,5 +19,9 @@ public class ThirdUserVo {
     private String unionId;
     private String nickName;
     private String logo;
-    private Integer type; //openId 类型(1: 小程序授权 2:app微信授权，3：qq，4：微博，5:微信公众号授权)
+
+    /**
+     * openId 类型(1: 小程序授权 2:app微信授权，3：qq，4：微博，5:微信公众号授权)
+     */
+    private Integer type;
 }
