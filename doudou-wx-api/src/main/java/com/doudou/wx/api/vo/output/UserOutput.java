@@ -28,4 +28,10 @@ public class UserOutput {
      */
     private Integer userTotalIntegral;
 
+    private Integer registeredDays;
+
+    private Integer resourceTotal;
+
+
+
 }

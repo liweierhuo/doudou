@@ -1,7 +1,12 @@
 package com.doudou.wx.api.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.doudou.core.constant.WxApiConstant;
+import com.doudou.wx.api.exception.WxApiException;
+import com.github.kevinsawicki.http.HttpRequest;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -13,7 +18,7 @@ import java.util.Arrays;
 /**
  * @author ljh
  */
-
+@Slf4j
 public class WeChatUtils {
 
     public static JSONObject getUserInfo(String encryptedData, String sessionKey, String iv) {
@@ -71,6 +76,17 @@ public class WeChatUtils {
 
         return null;
 
+    }
+
+    public static JSONObject requestToWx(String requestUrl) {
+        log.info("requestUrl : [{}]",requestUrl);
+        String response = HttpRequest.get(requestUrl).body();
+        log.info("response : [{}]",response);
+        JSONObject jsonObject = JSONObject.parseObject(response);
+        if (StringUtils.isNotBlank(jsonObject.getString(WxApiConstant.WX_ERROR_CODE))) {
+            throw new WxApiException(jsonObject.getString(WxApiConstant.WX_ERROR_MSG));
+        }
+        return jsonObject;
     }
 
 

@@ -19,3 +19,6 @@
 	2.mobile
 	3.admin
 
+### 用例图
+
+![image-20191207153158555](/Users/liwei/Library/Application Support/typora-user-images/image-20191207153158555.png)

@@ -13,9 +13,8 @@ import com.doudou.dao.entity.member.DdUser;
 import com.doudou.dao.service.member.IDdThirdUserService;
 import com.doudou.dao.service.member.IDdUserService;
 import com.doudou.wx.api.controller.BaseController;
-import com.doudou.wx.api.exception.WxApiException;
+import com.doudou.wx.api.util.WeChatUtils;
 import com.doudou.wx.api.vo.WxLoginVO;
-import com.github.kevinsawicki.http.HttpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -71,7 +70,7 @@ public class MemberController extends BaseController{
         //初始化URL
         String requestUrl = String.format(wxLoginUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret),request.getCode());
         //发起请求
-        JSONObject jsonObject = requestToWx(requestUrl);
+        JSONObject jsonObject = WeChatUtils.requestToWx(requestUrl);
         //获取返回的数据
         String openId = jsonObject.getString(WxApiConstant.WX_OPEN_ID);
         String unionId = jsonObject.getString(WxApiConstant.WX_UNION_ID);
@@ -121,7 +120,7 @@ public class MemberController extends BaseController{
         //随机生成username
         StringBuilder username = new StringBuilder();
         int random2 = new Random().nextInt(10000000);
-        username.append(String.format("duoduo_%",random2));
+        username.append(String.format("duoduo_%d",random2));
         ddUser.setUsername(username.toString());
         //初始密码为123456
         ddUser.setPassword(DigestUtils.md5Hex(MemberConstant.PASSWORD));
@@ -137,20 +136,10 @@ public class MemberController extends BaseController{
         return DigestUtils.md5Hex(String.join(";",openId,sessionKey));
     }
 
-    private JSONObject requestToWx(String requestUrl) {
-        log.info("requestUrl : [{}]",requestUrl);
-        String response = HttpRequest.get(requestUrl).body();
-        log.info("response : [{}]",response);
-        JSONObject jsonObject = JSONObject.parseObject(response);
-        if (StringUtils.isNotBlank(jsonObject.getString(WxApiConstant.WX_ERROR_CODE))) {
-            throw new WxApiException(jsonObject.getString(WxApiConstant.WX_ERROR_MSG));
-        }
-        return jsonObject;
-    }
 
     private String getAccessToken(String openId) {
         String requestUrl = String.format(accessTokenUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret));
-        JSONObject jsonObject = requestToWx(requestUrl);
+        JSONObject jsonObject = WeChatUtils.requestToWx(requestUrl);
         String accessToken = jsonObject.getString("access_token");
         Long expiresTimes = jsonObject.getLong("expires_in");
         RedisUtils.put(RedisConstant.getAccessTokenRedisKey(openId),accessToken,expiresTimes,TimeUnit.SECONDS);
@@ -168,4 +157,5 @@ public class MemberController extends BaseController{
         }
         return newToken;
     }
+
 }

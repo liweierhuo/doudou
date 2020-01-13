@@ -31,9 +31,7 @@ public class UserLoginController {
         if (StringUtils.isEmpty(thirdUserVo.getOpenId())) {
             return AjaxResponse.error(10000,"openId为空");
         }
-
         AjaxResponse ajaxResponse = AjaxResponse.success();
-
         try {
             UserOutput userOutput = loginBizService.thirdUserLogin(thirdUserVo, request);
             ajaxResponse.setData(userOutput);
@@ -44,7 +42,6 @@ public class UserLoginController {
             ajaxResponse.setDescription("error");
             ajaxResponse.setErrorCode(500);
         }
-
         return ajaxResponse;
     }
 
