@@ -19,12 +19,10 @@ import java.util.List;
  * @since 2019-12-15
  */
 @Service
-public class DdUserServiceImpl extends
-        ServiceImpl<DdUserMapper, DdUser> implements IDdUserService {
+public class DdUserServiceImpl extends ServiceImpl<DdUserMapper, DdUser> implements IDdUserService {
 
     @Autowired
     private DdUserMapper userMapper;
-
 
     @Override
     public DdUser getUserById(String userId) {

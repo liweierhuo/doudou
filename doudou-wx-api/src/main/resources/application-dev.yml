@@ -4,7 +4,7 @@ server:
     context-path: /duoduo
 spring:
   application:
-    name: generator-auto
+    name: duoduo
   datasource:
     druid:
       url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou?characterEncoding=utf-8&serverTimezone=GMT%2B8
