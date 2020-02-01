@@ -10,15 +10,11 @@ import javax.validation.constraints.NotNull;
  */
 public final class RedisConstant {
 
-    private static final String REDIS_BASE_KEY = "pingping:miniprogram";
+    public static final String REDIS_BASE_KEY = "global:doudou";
 
     private static final String ACCESS_TOKEN_KEY = "access-token";
 
-    public static final String UNIQUE_ID_KEY = "unique-id";
-
-    public static final int REDIS_MAX = 99999;
-
-    public static final String SESSION_ID_KEY = "session-id";
+    private static final String SESSION_ID_KEY = "session-id";
 
     public static String getAccessTokenRedisKey(@NotNull String openId) {
         return String.join(":",REDIS_BASE_KEY,ACCESS_TOKEN_KEY,openId);

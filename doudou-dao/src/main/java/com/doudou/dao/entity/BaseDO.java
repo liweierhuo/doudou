@@ -15,6 +15,9 @@ import lombok.Data;
  */
 @Data
 class BaseDO implements Serializable {
+
+    private static final long serialVersionUID = 5820295301868902533L;
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private LocalDateTime created;

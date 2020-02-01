@@ -1,0 +1,34 @@
+server:
+  port: 9081
+  servlet:
+    context-path: /duoduo
+spring:
+  application:
+    name: duoduo
+  datasource:
+    druid:
+      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou_new?characterEncoding=utf-8&serverTimezone=GMT%2B8
+      password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
+      username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
+  ## 阿里云服务器已经安装了redis
+  redis:
+    host: 47.104.239.91
+    port: 6389
+    password: liwei@2020
+    database: 1
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+miniprogram:
+  appId: 9F7SGCSFP33D9ft+1FpbW+YBBeDwCi7paEFWXvCyh1Y=
+  appSecret: WjjaQBtCIz5tMwigXzA9uNiwad6TvllgmTtKjQHeEYqG2ky929gkavdN1FkZRiO8
+  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
+  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+  paidUnionIdUrl: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*.xml

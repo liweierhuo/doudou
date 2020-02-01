@@ -41,8 +41,8 @@ public class MyControllerAdvice {
      * @param ex
      * @return 错误信息
      */
-    @ExceptionHandler(value = Exception.class)
-    public ApiResponse errorHandler(Exception ex) {
+    @ExceptionHandler(value = Throwable.class)
+    public ApiResponse errorHandler(Throwable ex) {
         log.error("系统异常 ex:",ex);
         return ApiResponse.error(500,"系统繁忙，请稍后再试");
     }

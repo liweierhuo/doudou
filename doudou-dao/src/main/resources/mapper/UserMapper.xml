@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doudou.dao.mapper.UserMapper">
+
+	<resultMap id="BaseResultMap" type="com.doudou.dao.entity.User">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="icon" property="icon" />
+		<result column="email" property="email" />
+		<result column="phoneNo" property="phoneno" />
+		<result column="client_id" property="clientId" />
+		<result column="openId" property="openid" />
+		<result column="unionId" property="unionid" />
+		<result column="nick_name" property="nickName" />
+		<result column="remark" property="remark" />
+		<result column="login_time" property="loginTime" />
+		<result column="created" property="created" />
+		<result column="modified" property="modified" />
+		<result column="flag" property="flag" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, username, icon, email, phoneNo AS phoneno, client_id AS clientId, openId AS openid, unionId AS unionid, nick_name AS nickName, remark, login_time AS loginTime, created, modified, flag
+    </sql>
+</mapper>

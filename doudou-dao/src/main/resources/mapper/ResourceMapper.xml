@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doudou.dao.mapper.ResourceMapper">
+
+	<resultMap id="BaseResultMap" type="com.doudou.dao.entity.DataResource">
+		<id column="id" property="id" />
+		<result column="resource_id" property="resourceId" />
+		<result column="client_id" property="clientId" />
+		<result column="title" property="title" />
+		<result column="subtitle" property="subtitle" />
+		<result column="source" property="source" />
+		<result column="price" property="price" />
+		<result column="url" property="url" />
+		<result column="image_url" property="imageUrl" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="res_summary" property="resSummary" />
+		<result column="res_type" property="resType" />
+		<result column="download_num" property="downloadNum" />
+		<result column="view_num" property="viewNum" />
+		<result column="created" property="created" />
+		<result column="modified" property="modified" />
+		<result column="flag" property="flag" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, resource_id AS resourceId, client_id AS clientId, title, subtitle, source, price, url, image_url AS imageUrl, remark, status, res_summary AS resSummary, res_type AS resType, download_num AS downloadNum, view_num AS viewNum, created, modified, flag
+    </sql>
+</mapper>

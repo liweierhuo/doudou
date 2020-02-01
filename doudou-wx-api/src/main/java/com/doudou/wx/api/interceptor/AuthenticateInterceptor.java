@@ -3,7 +3,7 @@ package com.doudou.wx.api.interceptor;
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
 import com.doudou.core.exception.NoLoginException;
-import com.doudou.core.util.RedisUtils;
+import com.doudou.core.util.RedisUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class AuthenticateInterceptor extends HandlerInterceptorAdapter {
             throw new NoLoginException(WxApiConstant.NO_LOGIN_MESSAGE);
         }
         // 未登录, 抛出异常
-        String openId = RedisUtils.get(RedisConstant.getSessionIdKey(token));
+        String openId = RedisUtil.get(RedisConstant.getSessionIdKey(token));
         if (StringUtils.isEmpty(openId)) {
             log.error("token is expired ,please to login");
             throw new NoLoginException(WxApiConstant.NO_LOGIN_MESSAGE);

@@ -20,8 +20,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthenticateInterceptor())
-            .addPathPatterns("/**")
-            .excludePathPatterns("/api/wechat/login");
+            .excludePathPatterns("/api/wechat/login", "/api/resource/list")
+            .addPathPatterns("/api/**");
     }
 
     @Override

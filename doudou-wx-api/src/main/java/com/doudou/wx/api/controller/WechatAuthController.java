@@ -4,16 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
 import com.doudou.core.password.util.AESEncryptUtil;
-import com.doudou.core.util.RedisUtils;
+import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.wx.RawDataBo;
-import com.doudou.dao.entity.UcUser;
-import com.doudou.dao.service.UcUserService;
+import com.doudou.dao.entity.User;
+import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.exception.WxApiException;
 import com.doudou.wx.api.vo.WxLoginVO;
 import com.github.kevinsawicki.http.HttpRequest;
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -50,11 +50,11 @@ public class WechatAuthController extends BaseController{
     @Value("${miniprogram.paidUnionIdUrl}")
     private String paidUnionIdUrl;
 
-    private final UcUserService ucUserService;
+    @Resource
+    private RedisUtil redisUtil;
 
-    public WechatAuthController(UcUserService ucUserService) {
-        this.ucUserService = ucUserService;
-    }
+    @Resource
+    private IUserService ucUserService;
 
     @PostMapping("login")
     public ApiResponse index(@RequestBody WxLoginVO request) {
@@ -69,26 +69,28 @@ public class WechatAuthController extends BaseController{
            return ApiResponse.error();
         }
         String userToken = getUserToken(openId,sessionKey);
-        RedisUtils.put(RedisConstant.getSessionIdKey(userToken),openId,7200L,TimeUnit.SECONDS);
-        UcUser userInfo = ucUserService.queryByOpenId(openId);
+        RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),openId,7200L);
+        User userInfo = ucUserService.queryByOpenId(openId);
         if (userInfo != null) {
             if (StringUtils.isEmpty(userInfo.getUnionId())) {
                 userInfo.setUnionId(unionId);
             }
-            if (StringUtils.isEmpty(userInfo.getUcAccount())) {
-                userInfo.setUcAccount(RedisUtils.genericUniqueId("W"));
+            if (StringUtils.isEmpty(userInfo.getClientId())) {
+                userInfo.setClientId(redisUtil.genericUniqueId("W"));
             }
             userInfo.setLoginTime(LocalDateTime.now());
-            return ucUserService.update(userInfo) ? new ApiResponse<>(userToken): ApiResponse.error();
+            ucUserService.updateUserByOpenId(userInfo,openId);
+            return new ApiResponse<>(userToken);
         }
-        UcUser ucUser = new UcUser();
+        User ucUser = new User();
         ucUser.setIcon(rawDataBo.getAvatarUrl());
         ucUser.setNickName(rawDataBo.getNickName());
-        ucUser.setUcAccount(RedisUtils.genericUniqueId("W"));
+        ucUser.setClientId(redisUtil.genericUniqueId("W"));
         ucUser.setUsername(rawDataBo.getNickName());
         ucUser.setOpenId(openId);
         ucUser.setUnionId(unionId);
-        boolean result = ucUserService.addUser(ucUser);
+        ucUser.setLoginTime(LocalDateTime.now());
+        boolean result = ucUserService.save(ucUser);
         return result ? new ApiResponse<>(userToken) : ApiResponse.error();
     }
 
@@ -112,12 +114,12 @@ public class WechatAuthController extends BaseController{
         JSONObject jsonObject = requestToWx(requestUrl);
         String accessToken = jsonObject.getString("access_token");
         Long expiresTimes = jsonObject.getLong("expires_in");
-        RedisUtils.put(RedisConstant.getAccessTokenRedisKey(openId),accessToken,expiresTimes,TimeUnit.SECONDS);
+        RedisUtil.setex(RedisConstant.getAccessTokenRedisKey(openId),accessToken,expiresTimes);
         return accessToken;
     }
 
     private String getToken(String openId) {
-        String accessToken = RedisUtils.get(RedisConstant.getAccessTokenRedisKey(openId));
+        String accessToken = RedisUtil.get(RedisConstant.getAccessTokenRedisKey(openId));
         if (StringUtils.isNotBlank(accessToken)) {
             return accessToken;
         }

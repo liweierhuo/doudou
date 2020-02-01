@@ -2,7 +2,7 @@ package com.doudou.wx.api.interceptor;
 
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
-import com.doudou.core.util.RedisUtils;
+import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.annotation.SessionId;
 import java.lang.annotation.Annotation;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class ArgumentResolver implements HandlerMethodArgumentResolver {
         // 逐一处理
         for (Annotation annotation : annotations) {
             if (annotation instanceof SessionId) {
-                return RedisUtils.get(RedisConstant.getSessionIdKey(webRequest.getHeader(WxApiConstant.CLIENT_SESSION_ID_KEY)));
+                return RedisUtil.get(RedisConstant.getSessionIdKey(webRequest.getHeader(WxApiConstant.CLIENT_SESSION_ID_KEY)));
             }
         }
         return null;

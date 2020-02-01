@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.doudou.dao.mapper.IntegralDetailMapper">
+
+	<resultMap id="BaseResultMap" type="com.doudou.dao.entity.IntegralDetail">
+		<id column="id" property="id" />
+		<result column="remark" property="remark" />
+		<result column="client_id" property="clientId" />
+		<result column="user_integral_id" property="userIntegralId" />
+		<result column="type" property="type" />
+		<result column="user_integral" property="userIntegral" />
+		<result column="created" property="created" />
+		<result column="modified" property="modified" />
+		<result column="flag" property="flag" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, remark, client_id AS clientId, user_integral_id AS userIntegralId, type, user_integral AS userIntegral, created, modified, flag
+    </sql>
+</mapper>
