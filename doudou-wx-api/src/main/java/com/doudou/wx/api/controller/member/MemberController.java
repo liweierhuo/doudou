@@ -76,7 +76,6 @@ public class MemberController extends BaseController{
         String unionId = jsonObject.getString(WxApiConstant.WX_UNION_ID);
         String sessionKey = jsonObject.getString(WxApiConstant.WX_SESSION_KEY);
         RawDataBo rawDataBo = JSONObject.parseObject(request.getRawData(), RawDataBo.class);
-
         if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(sessionKey)) {
            return ApiResponse.error();
         }
