@@ -95,4 +95,15 @@ public class DataResource extends BaseDO {
     @TableField(value = "view_num")
     private Integer viewNum;
 
+    /**
+     * 库存总量
+     */
+    @TableField(value = "total_num")
+    private Integer totalNum;
+    /**
+     * 剩余数量
+     */
+    @TableField(value = "remaining_num")
+    private Integer remainingNum;
+
 }

@@ -1,5 +1,6 @@
 package com.doudou.dao.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.mapper.ResourceMapper;
@@ -16,5 +17,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResource> implements IResourceService {
-	
+
+    @Override
+    public DataResource getResource(String resourceId) {
+        return getOne(new QueryWrapper<DataResource>().eq("resource_id",resourceId));
+    }
 }

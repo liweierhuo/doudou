@@ -8,10 +8,10 @@ create table uc_user
     `username`   varchar(64)         DEFAULT NULL,
     `icon`       varchar(512)        DEFAULT NULL COMMENT '头像',
     `email`      varchar(64)         DEFAULT NULL COMMENT '邮箱',
-    `phone_no`    varchar(16)         DEFAULT NULL COMMENT '手机号',
+    `phone_no`   varchar(16)         DEFAULT NULL COMMENT '手机号',
     `client_id`  varchar(64)         DEFAULT NULL COMMENT '用户唯一编号',
-    `open_id`     varchar(64)         DEFAULT NULL COMMENT '微信openId',
-    `union_id`    varchar(64)         DEFAULT NULL COMMENT '微信unionId',
+    `open_id`    varchar(64)         DEFAULT NULL COMMENT '微信openId',
+    `union_id`   varchar(64)         DEFAULT NULL COMMENT '微信unionId',
     `nick_name`  varchar(128)        DEFAULT NULL COMMENT '昵称',
     `remark`     varchar(512)        DEFAULT NULL COMMENT '备注信息',
     `login_time` datetime            DEFAULT NULL COMMENT '最后登录时间',
@@ -38,7 +38,9 @@ create table dd_resource
     `res_summary`  text                  DEFAULT NULL COMMENT '简介',
     `res_type`     int(8)                DEFAULT NULL COMMENT '类型',
     `download_num` int(11)               DEFAULT NULL default 0 COMMENT '下载次数',
-    `view_num`     int(11)               DEFAULT NULL default 0 COMMENT '浏览次数次数',
+    `view_num`     int(11)               DEFAULT NULL default 0 COMMENT '浏览次数',
+    `total_num`     int(11)               DEFAULT NULL default 0 COMMENT '资源总数',
+    `remaining_num`     int(11)               DEFAULT NULL default 0 COMMENT '剩余数量',
     `created`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`         tinyint(4)   NOT NULL DEFAULT '1',
@@ -85,6 +87,7 @@ DROP TABLE IF EXISTS `dd_order`;
 CREATE TABLE `dd_order`
 (
     `id`          varchar(32) NOT NULL COMMENT '主键',
+    `order_id`   varchar(128)          DEFAULT NULL COMMENT '订单编号',
     `remark`      varchar(255)         DEFAULT NULL COMMENT '备注',
     `client_id`   varchar(32)          DEFAULT NULL COMMENT '用户ID',
     `resource_id` varchar(32)          DEFAULT NULL COMMENT '资源ID',
@@ -94,6 +97,7 @@ CREATE TABLE `dd_order`
     `modified`    timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`        tinyint(4)  NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`),
+    unique key (`order_id`),
     KEY `index_user_id` (`client_id`),
     KEY `index_res_id` (`resource_id`)
 ) ENGINE = InnoDB
@@ -132,6 +136,22 @@ CREATE TABLE `dd_ad`
     `created`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`        tinyint(4)   NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='广告表';
+
+#用户签到表
+DROP TABLE IF EXISTS `uc_user_sign_in`;
+CREATE TABLE `uc_user_sign_in`
+(
+    `id`           varchar(32)  NOT NULL COMMENT '主键',
+    `tx_id`        varchar(128) not null default '' comment '签到表流水Id',
+    `client_id`    varchar(64)  not null default '' comment '用户标示',
+    `sign_in_date` timestamp    not null comment '签到日期',
+    `remark`       varchar(255)          DEFAULT NULL COMMENT '备注',
+    `created`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`         tinyint(4)   NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='用户签到表';

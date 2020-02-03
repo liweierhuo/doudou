@@ -12,5 +12,13 @@ import com.doudou.dao.entity.Order;
  * @since 2020-01-31
  */
 public interface IOrderService extends IService<Order> {
+
+    /**
+     * 获取订单
+     * @param clientId
+     * @param resourceId
+     * @return
+     */
+    Order getOrder(String clientId,String resourceId);
 	
 }

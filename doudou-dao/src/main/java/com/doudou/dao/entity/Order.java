@@ -23,6 +23,12 @@ public class Order extends BaseDO {
     private String remark;
 
     /**
+     * 订单编号
+     */
+    @TableField(value = "order_id")
+    private String orderId;
+
+    /**
      * 用户ID
      */
     @TableField(value = "client_id")

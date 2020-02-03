@@ -13,5 +13,6 @@ import lombok.Data;
 public class ExchangeResourceVO implements Serializable {
 
     private String resourceId;
+    private Integer integral;
 
 }

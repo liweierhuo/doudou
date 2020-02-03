@@ -12,5 +12,12 @@ import com.doudou.dao.entity.DataResource;
  * @since 2020-01-31
  */
 public interface IResourceService extends IService<DataResource> {
+
+    /**
+     * 根据resourceId获取资源
+     * @param resourceId
+     * @return
+     */
+    DataResource getResource(String resourceId);
 	
 }

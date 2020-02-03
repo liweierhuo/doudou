@@ -1,6 +1,5 @@
 package com.doudou.dao.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.doudou.dao.entity.Integral;
 
