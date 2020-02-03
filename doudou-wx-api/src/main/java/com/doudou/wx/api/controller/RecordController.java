@@ -15,6 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/record")
 public class RecordController extends BaseController{
 
-
-	
 }

@@ -2,7 +2,6 @@ package com.doudou.dao.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.doudou.dao.entity.User;
-import javax.jws.soap.SOAPBinding.Use;
 
 /**
  * <p>

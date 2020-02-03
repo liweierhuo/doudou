@@ -16,5 +16,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> implements IRecordService {
-	
+
+    @Override
+    public boolean saveRecord(Record record) {
+        return save(record);
+    }
 }

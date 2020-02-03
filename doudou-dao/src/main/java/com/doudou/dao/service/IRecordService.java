@@ -12,5 +12,12 @@ import com.doudou.dao.entity.Record;
  * @since 2020-01-31
  */
 public interface IRecordService extends IService<Record> {
+
+    /**
+     * 增加记录
+     * @param record
+     * @return
+     */
+    boolean saveRecord(Record record);
 	
 }
