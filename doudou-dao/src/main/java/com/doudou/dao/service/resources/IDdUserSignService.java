@@ -13,4 +13,5 @@ import com.doudou.dao.entity.resources.DdUserSign;
  */
 public interface IDdUserSignService extends IService<DdUserSign> {
 
+    DdUserSign getByUserId(String userId);
 }

@@ -6,9 +6,6 @@ import com.doudou.core.password.util.AESEncryptUtil;
 import com.doudou.core.util.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author: liwei
@@ -28,6 +25,12 @@ public class UtilTest {
         log.info("appSecret : [{}]",AESEncryptUtil.encrypt("59a4fec61b9788195fd396d3ed74528a"));
         log.info("root:{}", ConfigTools.encrypt("root"));
         log.info("localhostPass:{}",ConfigTools.encrypt("liwei1993"));
+    }
+
+    @Test
+    public void myAppId() {
+        log.info("appId:[{}]",AESEncryptUtil.encrypt("wxe61986cb458e6a8c"));
+        log.info("appSecret:[{}]",AESEncryptUtil.encrypt("eefab42e09b1b0739dcd3ccc10b85d33"));
     }
 
     @Test

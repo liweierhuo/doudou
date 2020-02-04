@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.doudou.core.constant.MemberConstant;
 import com.doudou.core.password.util.AESEncryptUtil;
 import com.doudou.core.redis.RedisManager;
+import com.doudou.core.web.wx.RawDataBo;
 import com.doudou.dao.entity.member.DdThirdUser;
 import com.doudou.dao.entity.member.DdUser;
 import com.doudou.dao.service.member.IDdThirdUserService;
 import com.doudou.dao.service.member.IDdUserService;
+import com.doudou.wx.api.util.DateUtils;
 import com.doudou.wx.api.vo.input.ThirdUserVo;
 import com.doudou.wx.api.vo.output.CurrentUser;
 import com.doudou.wx.api.vo.output.UserOutput;
@@ -119,6 +121,8 @@ public class LoginBizService {
         userOutput.setUsername(ddUser.getNickName());
         userOutput.setUserTotalIntegral(ddUser.getUserTotalIntegral());
 
+        Long registDays = DateUtils.pastDays(ddUser.getCreateDate());
+        userOutput.setRegisteredDays(Integer.valueOf(registDays.toString()));
 
         //获取旧的没有过期的token
         String oldToken = redis.getToken(ddUser.getId());
@@ -187,4 +191,47 @@ public class LoginBizService {
         return thirdUser;
     }
 
+    public UserOutput getLoginUser(String openId, String unionId, RawDataBo rawDataBo) {
+       DdUser ddUser = userService.getUserByOpenId(openId);
+       if (ddUser == null) {
+           ddUser = creatUser2(openId,unionId,rawDataBo);
+       }
+
+        UserOutput userOutput = getLoginMember(ddUser, openId);
+
+       return userOutput;
+
+    }
+
+    private DdUser creatUser2(String openId, String unionId, RawDataBo rawDataBo) {
+        DdUser ddUser = new DdUser();
+        ddUser.setNickName(rawDataBo.getNickName());
+        ddUser.setLogo(rawDataBo.getAvatarUrl());
+        //随机生成username
+        StringBuilder username = new StringBuilder();
+        int random2 = new Random().nextInt(10000000);
+        username.append(String.format("duoduo_%d",random2));
+        ddUser.setUsername(username.toString());
+        //初始密码为123456
+        ddUser.setPassword(DigestUtils.md5Hex(MemberConstant.PASSWORD));
+        //初始积分100
+        ddUser.setUserTotalIntegral(MemberConstant.INTEGRAL);
+        //用户类型默认为普通用户(1)
+        ddUser.setUserType(MemberConstant.USER_TYPE);
+
+        ddUser.setOpenId(openId);
+        ddUser.setUnionId(unionId);
+
+        ddUser.setGender(rawDataBo.getGender());
+        ddUser.setLanguage(rawDataBo.getLanguage());
+        ddUser.setCountry(rawDataBo.getCountry());
+        ddUser.setProvince(rawDataBo.getProvince());
+        ddUser.setCity(rawDataBo.getCity());
+
+
+        //创建用户
+        userService.save(ddUser);
+
+        return ddUser;
+    }
 }

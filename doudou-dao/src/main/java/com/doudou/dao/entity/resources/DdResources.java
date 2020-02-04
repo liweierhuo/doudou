@@ -60,9 +60,13 @@ public class DdResources extends BaseModelDo {
      */
     private Integer resType;
     /**
-     * 审核状态 0 拒绝  1 通过
+     * 审核状态 0 拒绝  1 通过  2 未审核
      */
     private Integer checkStatus;
 
+    /**
+     * 详细内容
+     */
+    private String resContent;
 
 }

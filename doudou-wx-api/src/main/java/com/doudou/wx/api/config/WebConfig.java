@@ -2,6 +2,7 @@ package com.doudou.wx.api.config;
 
 import com.doudou.wx.api.interceptor.ArgumentResolver;
 import com.doudou.wx.api.interceptor.AuthenticateInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,11 +19,16 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Bean
+    public AuthenticateInterceptor authenticateInterceptor() {
+        return new AuthenticateInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthenticateInterceptor())
+        registry.addInterceptor(authenticateInterceptor())
             .addPathPatterns("/**")
-            .excludePathPatterns("/user/login/wxLogin");
+            .excludePathPatterns("/api/wechat/login");
     }
 
     @Override

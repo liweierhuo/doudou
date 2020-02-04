@@ -10,7 +10,7 @@
         <result column="del_flag" property="delFlag"/>
         <result column="remark" property="remark"/>
         <result column="res_title" property="resTitle"/>
-        <result column="res_auth" property="userId"/>
+        <result column="user_id" property="userId"/>
         <result column="res_publish" property="resPublish"/>
         <result column="res_upload_address" property="resUploadAddress"/>
         <result column="res_upload_num" property="resUploadNum"/>
@@ -42,13 +42,13 @@
         from
             dd_resources dr
         <where>
+            and dr.check_status = 1
             <if test="searchString != null and searchString != ''">
                 dr.res_title like concat('%',#{searchString},'%')
                 or
                 dr.res_publish like concat('%',#{searchString},'%')
                 or
                 dr.res_summary like concat('%',#{searchString},'%')
-                and dr.check_status = 1
             </if>
         </where>
     </select>

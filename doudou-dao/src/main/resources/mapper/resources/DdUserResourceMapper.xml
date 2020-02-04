@@ -28,7 +28,7 @@
         SELECT
             dr.res_title as title,
             dr.check_status as checkStatus,
-            dr.res_convert_integralinteger as integral,
+            dr.res_convert_integral as integral,
             dr.res_publish AS pulisher,
             dr.id AS redId,
             dr.res_summary AS summary,

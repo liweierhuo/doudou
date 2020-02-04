@@ -6,18 +6,19 @@ import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
 import com.doudou.core.password.util.AESEncryptUtil;
 import com.doudou.core.util.RedisUtils;
-import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.wx.RawDataBo;
-import com.doudou.dao.entity.member.DdThirdUser;
 import com.doudou.dao.entity.member.DdUser;
-import com.doudou.dao.service.member.IDdThirdUserService;
 import com.doudou.dao.service.member.IDdUserService;
+import com.doudou.wx.api.biz.LoginBizService;
 import com.doudou.wx.api.controller.BaseController;
 import com.doudou.wx.api.util.WeChatUtils;
+import com.doudou.wx.api.vo.AjaxResponse;
 import com.doudou.wx.api.vo.WxLoginVO;
+import com.doudou.wx.api.vo.output.UserOutput;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,18 +55,14 @@ public class MemberController extends BaseController{
     @Value("${miniprogram.paidUnionIdUrl}")
     private String paidUnionIdUrl;
 
-    private final IDdUserService ddUserService;
+    @Autowired
+    private IDdUserService ddUserService;
 
-    private final IDdThirdUserService thirdUserService;
-
-    public MemberController(IDdUserService ddUserService,
-                            IDdThirdUserService thirdUserService) {
-        this.ddUserService = ddUserService;
-        this.thirdUserService = thirdUserService;
-    }
+    @Autowired
+    private LoginBizService loginBizService;
 
     @PostMapping("login")
-    public ApiResponse index(@RequestBody WxLoginVO request) {
+    public AjaxResponse index(@RequestBody WxLoginVO request) {
         log.info("request : [{}]", request);
         //初始化URL
         String requestUrl = String.format(wxLoginUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret),request.getCode());
@@ -77,38 +74,13 @@ public class MemberController extends BaseController{
         String sessionKey = jsonObject.getString(WxApiConstant.WX_SESSION_KEY);
         RawDataBo rawDataBo = JSONObject.parseObject(request.getRawData(), RawDataBo.class);
         if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(sessionKey)) {
-           return ApiResponse.error();
-        }
-        //加密获取token
-        String userToken = getUserToken(openId,sessionKey);
-        //保存在redis中
-        RedisUtils.put(RedisConstant.getSessionIdKey(userToken),openId,7200L,TimeUnit.SECONDS);
-
-        DdThirdUser ddThirdUser = thirdUserService.queryByOpenId(openId);
-        //有授权关系
-        if (ddThirdUser != null) {
-            String userId = ddThirdUser.getUserId();
-            //数据库没有用户
-            if (StringUtils.isEmpty(userId)) {
-                String id = creatUser(rawDataBo);
-                return id != null ? new ApiResponse<>(userToken): ApiResponse.error();
-            }
-            DdUser user = ddUserService.getUserById(userId);
-            user.setLogo(rawDataBo.getAvatarUrl());
-            user.setNickName(rawDataBo.getNickName());
-
-            return ddUserService.updateById(user) ? new ApiResponse<>(userToken): ApiResponse.error();
+           return AjaxResponse.error();
         }
 
-        String userId = creatUser(rawDataBo);
-        //没有授权
-        DdThirdUser thirdUser = new DdThirdUser();
-        thirdUser.setOpenId(openId);
-        thirdUser.setUnionId(unionId);
-        thirdUser.setUserId(userId);
-        thirdUser.setType(MemberConstant.XCX_TYPE);
-        boolean result = thirdUserService.save(thirdUser);
-        return result ? new ApiResponse<>(userToken) : ApiResponse.error();
+        log.info("开始登陆...数据..{},{}",openId,rawDataBo);
+        UserOutput userOutput = loginBizService.getLoginUser(openId,unionId,rawDataBo);
+
+        return AjaxResponse.success(userOutput);
     }
 
     private String creatUser(RawDataBo rawDataBo) {

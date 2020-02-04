@@ -20,4 +20,6 @@ public interface IDdUserService extends IService<DdUser> {
     DdUser getUserById(String userId);
 
     List<DdUser> listPage(Page page, String searchString);
+
+    DdUser getUserByOpenId(String openId);
 }

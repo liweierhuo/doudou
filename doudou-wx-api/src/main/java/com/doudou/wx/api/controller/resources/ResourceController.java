@@ -2,6 +2,7 @@ package com.doudou.wx.api.controller.resources;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.doudou.core.constant.Constant;
 import com.doudou.core.constant.MemberConstant;
 import com.doudou.core.web.annotation.Authorization;
 import com.doudou.dao.entity.member.DdUser;
@@ -17,9 +18,12 @@ import com.doudou.wx.api.vo.AjaxResponse;
 import com.doudou.wx.api.vo.output.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -97,6 +101,14 @@ public class ResourceController {
         if (userResource != null) {
             ddResources.setResConvertIntegral(Integer.valueOf(0));
         }
+
+        if (StringUtils.isNotEmpty(ddResources.getResContent())) {
+            //富文本转化
+            String content = StringEscapeUtils.unescapeHtml4(ddResources.getResContent());
+
+            ddResources.setResContent(content);
+        }
+
         return AjaxResponse.success(ddResources);
     }
 
@@ -110,6 +122,7 @@ public class ResourceController {
      */
     @Authorization
     @RequestMapping("/convert")
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public AjaxResponse convert(String redId, HttpServletRequest request) {
 
         if (StringUtils.isEmpty(redId)) {
@@ -130,9 +143,17 @@ public class ResourceController {
 
             DdResources ddResources = resourcesService.getById(redId);
 
-            Integer convertIntegral = ddResources.getResConvertIntegral();
+            Integer convertIntegral = ddResources.getResConvertIntegral() == null ?
+                                            0 : ddResources.getResConvertIntegral() ;
 
-            Integer resUploadNum = ddResources.getResUploadNum();
+            Integer resUploadNum = ddResources.getResUploadNum() == null ?
+                                            0 : ddResources.getResUploadNum();
+
+            if (StringUtils.isNotEmpty(ddResources.getResContent())) {
+                String content = StringEscapeUtils.unescapeHtml4(ddResources.getResContent());
+                ddResources.setResContent(content);
+            }
+
 
             if (Integer.valueOf(0).equals(convertIntegral)) {
                 //不需要积分
@@ -145,7 +166,6 @@ public class ResourceController {
                 ddResources.setResUploadNum(++resUploadNum);
                 resourcesService.saveOrUpdate(ddResources);
 
-                ddResources.setResConvertIntegral(0);
                 return AjaxResponse.success(ddResources);
             } else if (totalIntegral >= convertIntegral) {
                 //用户减积分
@@ -161,6 +181,12 @@ public class ResourceController {
                 ddUserIntegral.setType(MemberConstant.INTEGRAL_TYPE_CONSUME);
                 userIntegralService.save(ddUserIntegral);
 
+                //插入一条兑换资源记录
+                DdUserResource convertResource = new DdUserResource();
+                convertResource.setUserId(userId);
+                convertResource.setUserResType(MemberConstant.RES_TYPE_CONVERT);
+                convertResource.setResId(redId);
+                userResourceService.save(convertResource);
 
                 //资源发布者得积分
                 DdUser publisher = userService.getUserById(ddResources.getUserId());
@@ -171,7 +197,8 @@ public class ResourceController {
                 //插入一条获得积分记录
                 DdUserIntegral publisherIntegral = new DdUserIntegral();
                 publisherIntegral.setUserId(ddResources.getUserId());
-                publisherIntegral.setUserIntegral(Integer.valueOf(consumeIntegral));
+                String produceIntegral = "+" + convertIntegral;
+                publisherIntegral.setUserIntegral(Integer.valueOf(produceIntegral));
                 publisherIntegral.setType(MemberConstant.INTEGRAL_TYPE_PUBLISH);
                 userIntegralService.save(publisherIntegral);
 
@@ -182,12 +209,9 @@ public class ResourceController {
             } else {
                 return AjaxResponse.error(1000,"抱歉!,您的积分不够!");
             }
-        } catch (NumberFormatException e) {
+        }catch (Exception e) {
             log.error("兑换资源失败,{}",e);
-            e.printStackTrace();
-        } catch (Exception e) {
-            log.error("兑换资源失败,{}",e);
-            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
         return AjaxResponse.error();
@@ -195,7 +219,7 @@ public class ResourceController {
 
 
     @Authorization
-    @RequestMapping("/saveOrUpdate")
+    @PostMapping("/saveOrUpdate")
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public AjaxResponse saveOrUpdate(DdResources ddResources, HttpServletRequest request) {
 
@@ -205,6 +229,14 @@ public class ResourceController {
         try {
             if (StringUtils.isEmpty(ddResources.getId())) {
                 ddResources.setUserId(userId);
+                if (StringUtils.isNotEmpty(ddResources.getResContent())) {
+                    String content = StringEscapeUtils.escapeHtml4(ddResources.getResContent());
+                    ddResources.setResContent(content);
+                }
+                //默认为未审核
+                ddResources.setCheckStatus(Constant.CHECK_STATUS_AWAIT);
+                //兑换资源类型
+                ddResources.setResType(Constant.RES_TYPE_CONVERT);
                 resourcesService.save(ddResources);
 
                 DdUserResource userResource = new DdUserResource();
@@ -218,9 +250,9 @@ public class ResourceController {
             return AjaxResponse.success();
         } catch (Exception e) {
             log.error("发布失败,{}",e);
-            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return AjaxResponse.error();
         }
-        return AjaxResponse.error();
 
     }
 

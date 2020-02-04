@@ -19,6 +19,9 @@ import com.doudou.wx.api.vo.AjaxResponse;
 import com.doudou.wx.api.vo.output.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -91,11 +94,8 @@ public class UserController {
 
         CurrentUser currentUser = currentUserBizService.getCurrentUser(request);
 
-        Map<String,Object> data = null;
         try {
             String userId = currentUser.getId();
-
-            data = new HashMap<>();
 
             Map<String,Object> resList = new HashMap<>();
 
@@ -107,9 +107,7 @@ public class UserController {
                 resList = userResourceService.getList(page,userId, type);
             }
 
-            data.put("resList",resList);
-            data.put("page",page);
-            return AjaxResponse.success(data);
+            return AjaxResponse.success(resList,page);
         } catch (Exception e) {
             log.error("获取用户资源列表失败,{}",e);
             e.printStackTrace();
@@ -132,13 +130,23 @@ public class UserController {
             //总积分
             Integer userTotalIntegral = userById.getUserTotalIntegral();
 
-            //资源数
-            int count = userResourceService.count(new QueryWrapper<DdUserResource>().eq("user_id", userId));
+            //兑换资源数
+            int convertCount = userResourceService.count(
+                    new QueryWrapper<DdUserResource>()
+                            .eq("user_id", userId)
+                            .eq("user_res_type",MemberConstant.RES_TYPE_CONVERT));
+
+            //发布资源数
+            int publishCount = userResourceService.count(
+                    new QueryWrapper<DdUserResource>()
+                            .eq("user_id", userId)
+                            .eq("user_res_type",MemberConstant.RES_TYPE_PUBLISH));
 
             Map<String, Object> data = new HashMap<>();
             data.put("registerDays",days);
             data.put("totalIntegral",userTotalIntegral);
-            data.put("resNums",count);
+            data.put("convertCount",convertCount);
+            data.put("publishCount",publishCount);
 
             return AjaxResponse.success(data);
         } catch (Exception e) {
@@ -158,37 +166,45 @@ public class UserController {
      */
     @Authorization
     @RequestMapping("/sign")
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public AjaxResponse sign(HttpServletRequest request) {
         CurrentUser currentUser = currentUserBizService.getCurrentUser(request);
         String userId = currentUser.getId();
-        DdUserSign userSign = signService.getById(userId);
-        //获取当前时间
-        String date = DateUtils.getDate(DateUtils.DATETIME_FORMAT);
-        Date now = DateUtils.parseDate(date);
-        if (userSign == null) {
-            userSign.setSignNums(1);
-            userSign.setSignDate(now);
-            signService.saveOrUpdate(userSign);
+        try {
+            DdUserSign userSign = signService.getByUserId(userId);
+            //获取当前时间
+            String date = DateUtils.getDate(DateUtils.DATETIME_FORMAT);
+            Date now = DateUtils.parseDate(date);
+            if (userSign == null) {
+                userSign = new DdUserSign();
+                userSign.setSignNums(1);
+                userSign.setSignDate(now);
+                signService.saveOrUpdate(userSign);
 
-            //添加积分
-            userIntegralBizService.addIntegral(userId);
+                //添加积分
+                userIntegralBizService.addIntegral(userId);
 
-            return AjaxResponse.success("签到成功");
-        }
-        Date signDate =  userSign.getSignDate();
-        Integer signNums = userSign.getSignNums();
-        boolean sameDay = org.apache.commons.lang3.time.DateUtils.isSameDay(new Date(), signDate);
+                return AjaxResponse.success("签到成功");
+            }
+            Date signDate =  userSign.getSignDate();
+            Integer signNums = userSign.getSignNums();
+            boolean sameDay = org.apache.commons.lang3.time.DateUtils.isSameDay(new Date(), signDate);
 
-        if (sameDay) {
-            return AjaxResponse.error(1000,"今天已经签到了");
-        } else {
+            if (sameDay) {
+                return AjaxResponse.error(1000,"今天已经签到了");
+            } else {
 
-            userSign.setSignNums(++signNums);
-            userSign.setSignDate(now);
-            signService.saveOrUpdate(userSign);
+                userSign.setSignNums(++signNums);
+                userSign.setSignDate(now);
+                signService.saveOrUpdate(userSign);
 
-            userIntegralBizService.addIntegral(userId);
-            return AjaxResponse.success("签到成功");
+                userIntegralBizService.addIntegral(userId);
+                return AjaxResponse.success("签到成功");
+            }
+        } catch (Exception e) {
+            log.info("签到失败{}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return AjaxResponse.error(500,"签到失败");
         }
     }
 

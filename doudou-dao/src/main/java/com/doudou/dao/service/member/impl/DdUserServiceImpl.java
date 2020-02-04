@@ -1,5 +1,6 @@
 package com.doudou.dao.service.member.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.member.DdUser;
@@ -33,6 +34,12 @@ public class DdUserServiceImpl extends ServiceImpl<DdUserMapper, DdUser> impleme
     @Override
     public List<DdUser> listPage(Page page, String searchString) {
         return userMapper.listPage(page,searchString);
+    }
+
+    @Override
+    public DdUser getUserByOpenId(String openId) {
+        DdUser ddUser = userMapper.selectOne(new QueryWrapper<DdUser>().eq("open_id", openId));
+        return ddUser;
     }
 
 

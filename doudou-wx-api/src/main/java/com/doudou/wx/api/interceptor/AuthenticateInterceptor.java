@@ -59,8 +59,7 @@ public class AuthenticateInterceptor extends HandlerInterceptorAdapter {
         //从header中得到token
         String token = request.getHeader(Constant.HTTP_HEADER_NAME);
 
-        if (token != null && token.startsWith(httpHeaderPrefix) && token.length() > 0) {
-            token = token.substring(httpHeaderPrefix.length());
+        if (token != null && token.length() > 0) {
             //验证token
             String key = redis.getKey(token);
             if (key != null) {

@@ -19,10 +19,12 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  main:
+    allow-bean-definition-overriding: true
 
 miniprogram:
-  appId: 9F7SGCSFP33D9ft+1FpbW+YBBeDwCi7paEFWXvCyh1Y=
-  appSecret: WjjaQBtCIz5tMwigXzA9uNiwad6TvllgmTtKjQHeEYqG2ky929gkavdN1FkZRiO8
+  appId: jiIFBgY2Ukqw5CPBnFTLwqXKxnbWxA50hJFcP0WGjKE=
+  appSecret: nEYea5GAkbQKCQJejmE8DZxN/zBA2foYklwpQl9berKG2ky929gkavdN1FkZRiO8
   loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
   accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
   paidUnionIdUrl: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
