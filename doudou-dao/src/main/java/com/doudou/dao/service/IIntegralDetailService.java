@@ -3,6 +3,7 @@ package com.doudou.dao.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.doudou.dao.entity.Integral;
 import com.doudou.dao.entity.IntegralDetail;
+import java.util.List;
 
 /**
  * <p>
@@ -24,11 +25,10 @@ public interface IIntegralDetailService extends IService<IntegralDetail> {
 
     /**
      * 获取积分明细
-     * @param integralId
-     * @param type 类型
+     * @param clientId
      * @return
      */
-    IntegralDetail getIntegralDetailByIntegralId(Integer integralId,String type);
+    List<IntegralDetail> getIntegralDetailByClientId(String clientId);
 
     /**
      * 更新积分明细

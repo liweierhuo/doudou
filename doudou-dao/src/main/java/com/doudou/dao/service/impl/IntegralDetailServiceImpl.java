@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.IntegralDetail;
 import com.doudou.dao.mapper.IntegralDetailMapper;
 import com.doudou.dao.service.IIntegralDetailService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -27,10 +28,9 @@ public class IntegralDetailServiceImpl extends ServiceImpl<IntegralDetailMapper,
     }
 
     @Override
-    public IntegralDetail getIntegralDetailByIntegralId(Integer integralId,String type) {
-        return getOne(new QueryWrapper<IntegralDetail>()
-            .eq("userIntegralId",integralId)
-            .eq("type",type));
+    public List<IntegralDetail> getIntegralDetailByClientId(String clientId) {
+        return list(new QueryWrapper<IntegralDetail>()
+            .eq("clientId",clientId));
     }
 
     @Override
