@@ -1,6 +1,7 @@
 package com.doudou.wx.api.controller;
 
 import com.doudou.core.constant.ErrorMsgEnum;
+import com.doudou.core.constant.IntegralTypeEnum;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.User;
@@ -45,7 +46,7 @@ public class UserController extends BaseController {
             return ApiResponse.error(ErrorMsgEnum.REPEAT_SIGN_IN.getCode(), ErrorMsgEnum.REPEAT_SIGN_IN.getErrorMsg());
         }
         //领取积分
-        integralService.signInGetIntegral(userInfo.getClientId(), signInIntegral);
+        integralService.saveIntegral(userInfo.getClientId(), signInIntegral, IntegralTypeEnum.SIGN_IN);
         return ApiResponse.success();
     }
 

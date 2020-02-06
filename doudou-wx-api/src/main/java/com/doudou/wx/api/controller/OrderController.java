@@ -6,10 +6,10 @@ import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.Integral;
 import com.doudou.dao.entity.Order;
 import com.doudou.dao.entity.User;
-import com.doudou.dao.service.IIntegralService;
 import com.doudou.dao.service.IOrderService;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
+import com.doudou.wx.api.service.IntegralService;
 import com.doudou.wx.api.vo.ExchangeResourceVO;
 import javax.annotation.Resource;
 import org.springframework.util.Assert;
@@ -35,7 +35,7 @@ public class OrderController extends BaseController {
     @Resource
     private IUserService userService;
     @Resource
-    private IIntegralService iIntegralService;
+    private IntegralService integralService;
     @Resource
     private IOrderService orderService;
 
@@ -50,12 +50,13 @@ public class OrderController extends BaseController {
         Assert.notNull(dataResource,"资源不存在");
         Assert.isTrue(dataResource.getRemainingNum() > 0,"资源库存不足");
         Assert.isTrue(exchangeResourceVO.getIntegral().equals(dataResource.getPrice()),"传入的积分与所需积分不一致");
-        Integral integral = iIntegralService.getIntegralByClientId(userInfo.getClientId());
+        Integral integral = integralService.getIntegralByClientId(userInfo.getClientId());
         Assert.isTrue(integral.getUserIntegral() >= dataResource.getPrice(),"您的积分不足");
         Order orderInfo = orderService.getOrder(userInfo.getClientId(), dataResource.getResourceId());
         Assert.isTrue( orderInfo == null,"您已经兑换过该资源");
+        //process()
         //扣减积分
-
+        integralService.expendIntegral(userInfo.getClientId(),dataResource.getPrice());
         //扣件资源剩余数量
         //插入订单
         return ApiResponse.success();
