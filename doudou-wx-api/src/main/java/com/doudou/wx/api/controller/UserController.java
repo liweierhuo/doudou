@@ -7,10 +7,11 @@ import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IUserService;
 import com.doudou.dao.service.IUserSignInService;
-import com.doudou.wx.api.service.IntegralService;
+import com.doudou.wx.api.service.WebIntegralService;
 import javax.annotation.Resource;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,14 +33,15 @@ public class UserController extends BaseController {
     @Resource
     private IUserService userService;
     @Resource
-    private IntegralService integralService;
+    private WebIntegralService integralService;
 
     @Value("${signIn.integral:10}")
     private int signInIntegral;
 
     @PostMapping("/signIn")
-    public ApiResponse signInGetIntegral(@SessionId String sessionId) {
-        User userInfo = userService.queryByOpenId(sessionId);
+    public ApiResponse signInGetIntegral(@SessionId String clientId) {
+        User userInfo = userService.queryByClientId(clientId);
+        Assert.notNull(userInfo,"用户信息不存在");
         int count = userSignInService
             .countSignIn(userInfo.getClientId(), DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).minusSeconds(1).toDate());
         if (count > 0) {

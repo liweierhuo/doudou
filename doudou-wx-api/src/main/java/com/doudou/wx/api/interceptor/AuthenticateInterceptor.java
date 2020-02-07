@@ -27,8 +27,8 @@ public class AuthenticateInterceptor extends HandlerInterceptorAdapter {
             throw new NoLoginException(WxApiConstant.NO_LOGIN_MESSAGE);
         }
         // 未登录, 抛出异常
-        String openId = RedisUtil.get(RedisConstant.getSessionIdKey(token));
-        if (StringUtils.isEmpty(openId)) {
+        String sessionId = RedisUtil.get(RedisConstant.getSessionIdKey(token));
+        if (StringUtils.isEmpty(sessionId)) {
             log.error("token is expired ,please to login");
             throw new NoLoginException(WxApiConstant.NO_LOGIN_MESSAGE);
         }

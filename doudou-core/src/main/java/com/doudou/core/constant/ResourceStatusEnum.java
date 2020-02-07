@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 积分类型枚举
+ * 资源类型
  * @author: liwei
  * @version: 1.0.0
  * @email: <a href="mailto:liwei@pingpongx.com">联系作者</a>
@@ -12,17 +12,15 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum IntegralTypeEnum {
+public enum ResourceStatusEnum {
     /**
-     * 积分类型
+     * 资源类型
      */
-    SIGN_IN(1,"签到"),
-    PUBLISH_RESOURCE(2,"发布资源"),
-    EARN(2,"赚取"),
-    RECHARGE(4,"充值"),
+    PENDING("待审核"),
+    NORMAL("正常"),
+    REJECT("拒绝"),
+    TAKE_OFF("下架"),
     ;
-
-    private int sortNum;
     private String desc;
 
 }

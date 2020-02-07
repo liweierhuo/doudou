@@ -7,7 +7,7 @@ import lombok.Data;
  * @author liwei
  */
 @Data
-public class PageRequestVO<T> {
+public class PageRequestVO {
 
     /**
      * 页码
@@ -17,12 +17,6 @@ public class PageRequestVO<T> {
      * 每页记录数
      */
     private Integer pageSize;
-
-    /**
-     * 查询参数
-     */
-    private T queryParam;
-
     /**
      * 设置pageSize的值，最大不超过100
      *

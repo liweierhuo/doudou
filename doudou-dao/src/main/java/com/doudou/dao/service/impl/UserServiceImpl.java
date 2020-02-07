@@ -21,12 +21,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User queryByOpenId(String openId) {
-        return this.baseMapper.selectOne(new QueryWrapper<User>().eq("open_id",openId));
+        return this.getOne(new QueryWrapper<User>().eq("open_id",openId));
+    }
+
+    @Override
+    public User queryByClientId(String clientId) {
+        return getOne(new QueryWrapper<User>().eq("client_id",clientId));
     }
 
     @Override
     public void updateUserByOpenId(User user, String openId) {
-        int result = this.baseMapper.update(user, new QueryWrapper<User>().eq("open_id", openId));
-        Assert.isTrue(result > 0,"更新数据失败");
+        boolean result = update(user, new QueryWrapper<User>().eq("open_id", openId));
+        Assert.isTrue(result,"更新数据失败");
     }
 }

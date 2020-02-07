@@ -3,6 +3,7 @@ package com.doudou.wx.api.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.doudou.core.constant.ResourceStatusEnum;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.PageRequestVO;
@@ -39,17 +40,19 @@ public class ResourceController extends BaseController{
     @Resource
     private RedisUtil redisUtil;
     @GetMapping("/list")
-    public ApiResponse getPageResource(PageRequestVO<ResourceVO> pageRequestVO) {
+    public ApiResponse getPageResource(PageRequestVO pageRequestVO,ResourceVO resourceVO) {
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
         IPage<DataResource> result = resourceService.page(pageQuery);
         return new ApiResponse<>(result);
     }
 
     @PostMapping("/add")
-    public ApiResponse addResource(@SessionId String sessionId, @RequestBody ResourceVO resourceVO) {
-        User userInfo = userService.queryByOpenId(sessionId);
+    public ApiResponse addResource(@SessionId String clientId, @RequestBody ResourceVO resourceVO) {
+        User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"用户不存在");
-        resourceVO.setClientId(userInfo.getClientId());
+        checkParam(resourceVO);
+        resourceVO.setClientId(clientId);
+        resourceVO.setStatus(ResourceStatusEnum.PENDING.name());
         resourceVO.setResourceId(redisUtil.genericUniqueId("R"));
         boolean result = resourceService.save(resourceVO);
         if (!result){
@@ -59,10 +62,15 @@ public class ResourceController extends BaseController{
     }
 
     @GetMapping("/user")
-    public ApiResponse userResource(PageRequestVO<ResourceVO> pageRequestVO, @SessionId String sessionId) {
+    public ApiResponse userResource(PageRequestVO pageRequestVO,ResourceVO resourceVO, @SessionId String sessionId) {
         User userInfo = userService.queryByOpenId(sessionId);
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        IPage<DataResource> result = resourceService.page(pageQuery,new QueryWrapper<DataResource>().eq("clientId",userInfo.getClientId()));
+        IPage<DataResource> result = resourceService.page(pageQuery,new QueryWrapper<DataResource>().eq("client_id",userInfo.getClientId()));
         return new ApiResponse<>(result);
+    }
+
+    private void checkParam(ResourceVO resourceVO) {
+        Assert.notNull(resourceVO,"request is required");
+        Assert.hasText(resourceVO.getTitle(),"title is required");
     }
 }

@@ -13,7 +13,6 @@ import com.doudou.dao.service.IRecordService;
 import com.doudou.dao.service.IUserSignInService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +27,8 @@ import org.springframework.util.Assert;
  * @email: <a href="mailto:liwei@pingpongx.com">联系作者</a>
  * @date: 2020-02-03
  */
-@Service
-public class IntegralService {
+@Service("webIntegralService")
+public class WebIntegralService {
     @Resource
     private IIntegralService integralService;
     @Resource
@@ -49,7 +48,7 @@ public class IntegralService {
      */
     @Transactional(rollbackFor = Throwable.class)
     public void saveIntegral(String clientId,Integer userIntegral,IntegralTypeEnum integralTypeEnum){
-        Assert.isTrue(userSignInService.save(buildUserSignIn(clientId)), "保存数据失败");
+        businessProcess(clientId,integralTypeEnum);
         //保存用户积分
         Integral integral = integralService.getIntegralByClientId(clientId);
         if (integral != null) {
@@ -129,6 +128,18 @@ public class IntegralService {
 
     public Integral getIntegralByClientId(String clientId) {
         return integralService.getIntegralByClientId(clientId);
+    }
+
+    private void businessProcess(String clientId,IntegralTypeEnum integralTypeEnum) {
+        switch (integralTypeEnum) {
+            case SIGN_IN:
+                Assert.isTrue(userSignInService.save(buildUserSignIn(clientId)), "保存数据失败");
+                break;
+            case EARN:
+                break;
+            default:
+
+        }
     }
 
     private UserSignIn buildUserSignIn(String clientId) {

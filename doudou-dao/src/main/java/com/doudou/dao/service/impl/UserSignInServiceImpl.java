@@ -22,7 +22,7 @@ public class UserSignInServiceImpl extends ServiceImpl<UserSignInMapper, UserSig
     @Override
     public int countSignIn(String clientId, Date startTime,Date endTime) {
         return count(new QueryWrapper<UserSignIn>()
-            .eq("clientId", clientId)
-            .between("signInDate", startTime, endTime));
+            .eq("client_id", clientId)
+            .between("sign_in_date", startTime, endTime));
     }
 }

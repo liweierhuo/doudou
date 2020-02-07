@@ -21,7 +21,7 @@ public class IntegralServiceImpl extends ServiceImpl<IntegralMapper, Integral> i
 
     @Override
     public Integral getIntegralByClientId(String clientId) {
-        return getOne(new QueryWrapper<Integral>().eq("clientId", clientId));
+        return getOne(new QueryWrapper<Integral>().eq("client_id", clientId));
     }
 
     @Override
@@ -31,6 +31,6 @@ public class IntegralServiceImpl extends ServiceImpl<IntegralMapper, Integral> i
         Integral updateIntegral = new Integral();
         updateIntegral.setRemark(integral.getRemark());
         updateIntegral.setUserIntegral(integral.getUserIntegral());
-        return update(updateIntegral,new QueryWrapper<Integral>().eq("clientId", integral.getClientId()));
+        return update(updateIntegral,new QueryWrapper<Integral>().eq("client_id", integral.getClientId()));
     }
 }

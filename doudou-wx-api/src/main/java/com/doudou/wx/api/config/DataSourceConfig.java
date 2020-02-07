@@ -20,7 +20,6 @@ public class DataSourceConfig {
     @Bean
     @ConfigurationProperties("spring.datasource.druid")
     public DataSource dataSourceOne(){
-        SecurityDateSource druidDataSource = new SecurityDateSource();
-        return druidDataSource;
+        return new SecurityDateSource();
     }
 }

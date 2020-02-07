@@ -31,4 +31,17 @@ miniprogram:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath*:mapper/**/*.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.doudou.dao.entity
+  global-config:
+    #自定义SQL注入器
+    #sql-injector: com.baomidou.springboot.xxx
+    db-config:
+      #全局默认主键类型 AUTO:"数据库ID自增", NONE:"该类型为未设置主键类型(将跟随全局)", INPUT:"用户输入ID",
+      # ID_WORKER:"全局唯一ID (idWorker)", UUID:"全局唯一ID (UUID)", ID_WORKER_STR:"字符串全局唯一ID (idWorker 的字符串表示)"
+      id-type: AUTO
+      #逻辑已删除值,(逻辑删除下有效)
+      logic-delete-value: 0
+      #逻辑未删除值,(逻辑删除下有效)
+      logic-not-delete-value: 1

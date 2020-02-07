@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public enum IntegralOperateTypeEnum {
     /**
-     * 错误码枚举
+     * 积分操作类型
      */
     SIGN_IN("签到"),
     PUBLISH_RESOURCE("发布资源"),

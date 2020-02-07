@@ -19,5 +19,12 @@ public interface IResourceService extends IService<DataResource> {
      * @return
      */
     DataResource getResource(String resourceId);
+
+    /**
+     * 更新资源信息
+     * @param resourceId
+     * @param remainingNum
+     */
+    void updateResourceRemainingNum(String resourceId,Integer remainingNum);
 	
 }

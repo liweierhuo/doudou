@@ -69,7 +69,6 @@ public class WechatAuthController extends BaseController{
            return ApiResponse.error();
         }
         String userToken = getUserToken(openId,sessionKey);
-        RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),openId,7200L);
         User userInfo = ucUserService.queryByOpenId(openId);
         if (userInfo != null) {
             if (StringUtils.isEmpty(userInfo.getUnionId())) {
@@ -80,6 +79,7 @@ public class WechatAuthController extends BaseController{
             }
             userInfo.setLoginTime(LocalDateTime.now());
             ucUserService.updateUserByOpenId(userInfo,openId);
+            RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),userInfo.getClientId(),7200L);
             return new ApiResponse<>(userToken);
         }
         User ucUser = new User();
@@ -91,6 +91,7 @@ public class WechatAuthController extends BaseController{
         ucUser.setUnionId(unionId);
         ucUser.setLoginTime(LocalDateTime.now());
         boolean result = ucUserService.save(ucUser);
+        RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),ucUser.getClientId(),7200L);
         return result ? new ApiResponse<>(userToken) : ApiResponse.error();
     }
 

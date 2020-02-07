@@ -67,7 +67,7 @@ public class DataResource extends BaseDO {
     private String remark;
 
     /**
-     * 状态，待审核，审核中，正常，审核不通过，下架
+     * 状态，待审核，正常，审核不通过，下架
      */
     private String status;
 
@@ -81,7 +81,7 @@ public class DataResource extends BaseDO {
      * 类型
      */
     @TableField(value = "res_type")
-    private Integer resType;
+    private String resType;
 
     /**
      * 下载次数

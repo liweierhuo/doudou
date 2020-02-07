@@ -36,7 +36,7 @@ create table dd_resource
     `remark`       varchar(512)          DEFAULT NULL COMMENT '备注信息',
     `status`       varchar(64)           DEFAULT NULL COMMENT '状态，待审核，审核中，正常，审核不通过，下架',
     `res_summary`  text                  DEFAULT NULL COMMENT '简介',
-    `res_type`     int(8)                DEFAULT NULL COMMENT '类型',
+    `res_type`     varchar(64)               DEFAULT NULL COMMENT '类型',
     `download_num` int(11)               DEFAULT NULL default 0 COMMENT '下载次数',
     `view_num`     int(11)               DEFAULT NULL default 0 COMMENT '浏览次数',
     `total_num`     int(11)               DEFAULT NULL default 0 COMMENT '资源总数',
@@ -51,7 +51,7 @@ create table dd_resource
 DROP TABLE IF EXISTS `user_integral`;
 CREATE TABLE `user_integral`
 (
-    `id`            int(11)    NOT NULL COMMENT '主键',
+    `id`            int(11)    NOT NULL auto_increment COMMENT '主键',
     `remark`        varchar(255)        DEFAULT NULL COMMENT '备注',
     `client_id`     varchar(32)         DEFAULT NULL COMMENT '用户ID',
     `user_integral` int(11)             DEFAULT '0' COMMENT '用户积分',
@@ -67,7 +67,7 @@ CREATE TABLE `user_integral`
 DROP TABLE IF EXISTS `user_integral_detail`;
 CREATE TABLE `user_integral_detail`
 (
-    `id`               varchar(32) NOT NULL COMMENT '主键',
+    `id`               int(11) NOT NULL auto_increment COMMENT '主键',
     `remark`           varchar(255)         DEFAULT NULL COMMENT '备注',
     `client_id`        varchar(32)          DEFAULT NULL COMMENT '用户ID',
     `user_integral_id` int(11)              DEFAULT NULL COMMENT '用户积分表Id',
@@ -86,7 +86,7 @@ CREATE TABLE `user_integral_detail`
 DROP TABLE IF EXISTS `dd_order`;
 CREATE TABLE `dd_order`
 (
-    `id`          varchar(32) NOT NULL COMMENT '主键',
+    `id`          int(11) NOT NULL auto_increment COMMENT '主键',
     `order_id`   varchar(128)          DEFAULT NULL COMMENT '订单编号',
     `remark`      varchar(255)         DEFAULT NULL COMMENT '备注',
     `client_id`   varchar(32)          DEFAULT NULL COMMENT '用户ID',
@@ -107,7 +107,7 @@ CREATE TABLE `dd_order`
 DROP TABLE IF EXISTS `integral_record`;
 CREATE TABLE `integral_record`
 (
-    `id`        varchar(32) NOT NULL COMMENT '主键',
+    `id`        int(11) NOT NULL auto_increment COMMENT '主键',
     `remark`    varchar(255)         DEFAULT NULL COMMENT '备注',
     `client_id` varchar(32)          DEFAULT NULL COMMENT '用户ID',
     `type`      varchar(32)          DEFAULT NULL COMMENT '操作类型，1：签到；2：资源上传；3：资源被下载；4：充值；5：下载资源；',
@@ -125,7 +125,7 @@ CREATE TABLE `integral_record`
 DROP TABLE IF EXISTS `dd_ad`;
 CREATE TABLE `dd_ad`
 (
-    `id`          varchar(32)  NOT NULL COMMENT '主键',
+    `id`          int(11)  NOT NULL auto_increment COMMENT '主键',
     `ad_id`       varchar(128) not null default '' comment '广告唯一标示',
     `title`       varchar(128) not null default '' comment '广告标题',
     `description` varchar(512) not null default '' comment '广告描述',
@@ -144,7 +144,7 @@ CREATE TABLE `dd_ad`
 DROP TABLE IF EXISTS `uc_user_sign_in`;
 CREATE TABLE `uc_user_sign_in`
 (
-    `id`           varchar(32)  NOT NULL COMMENT '主键',
+    `id`           int(11)  NOT NULL auto_increment COMMENT '主键',
     `tx_id`        varchar(128) not null default '' comment '签到表流水Id',
     `client_id`    varchar(64)  not null default '' comment '用户标示',
     `sign_in_date` timestamp    not null comment '签到日期',

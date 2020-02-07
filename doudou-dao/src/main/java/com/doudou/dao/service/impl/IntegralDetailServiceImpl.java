@@ -23,14 +23,14 @@ public class IntegralDetailServiceImpl extends ServiceImpl<IntegralDetailMapper,
     @Override
     public IntegralDetail getIntegralDetailByClientId(String clientId, String type) {
         return getOne(new QueryWrapper<IntegralDetail>()
-            .eq("clientId",clientId)
+            .eq("client_id",clientId)
             .eq("type",type));
     }
 
     @Override
     public List<IntegralDetail> getIntegralDetailByClientId(String clientId) {
         return list(new QueryWrapper<IntegralDetail>()
-            .eq("clientId",clientId));
+            .eq("client_id",clientId));
     }
 
     @Override
@@ -43,8 +43,8 @@ public class IntegralDetailServiceImpl extends ServiceImpl<IntegralDetailMapper,
         updateIntegralDetail.setRemark(integralDetail.getRemark());
         updateIntegralDetail.setUserIntegral(integralDetail.getUserIntegral());
         return update(updateIntegralDetail,new QueryWrapper<IntegralDetail>()
-            .eq("clientId",integralDetail.getClientId())
+            .eq("client_id",integralDetail.getClientId())
             .eq("type",integralDetail.getType())
-            .eq("userIntegralId",integralDetail.getUserIntegralId()));
+            .eq("user_integral_id",integralDetail.getUserIntegralId()));
     }
 }

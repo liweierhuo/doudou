@@ -20,6 +20,13 @@ public interface IUserService extends IService<User> {
      */
     User queryByOpenId(String openId);
 
+    /**
+     * 根据clientId查询
+     * @param clientId
+     * @return
+     */
+    User queryByClientId(String clientId);
+
 
     /**
      * 更新用户信息
