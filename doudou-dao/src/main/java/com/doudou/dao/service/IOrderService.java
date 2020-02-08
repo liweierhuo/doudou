@@ -1,7 +1,10 @@
 package com.doudou.dao.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.Order;
+import java.util.List;
 
 /**
  * <p>
@@ -20,5 +23,28 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     Order getOrder(String clientId,String resourceId);
+
+    /**
+     * 获取用户资源数量
+     * @param clientId
+     * @return
+     */
+    int countUserResource(String clientId);
+
+    /**
+     * 分页查询
+     * @param clientId
+     * @param pageQuery
+     * @return
+     */
+    List<DataResource> pageUserResource(String clientId, Page pageQuery);
+
+    /**
+     * 查询
+     * @param clientId
+     * @param pageQuery
+     * @return
+     */
+    List<DataResource> pageUserOrderResource(String clientId, Page pageQuery);
 	
 }

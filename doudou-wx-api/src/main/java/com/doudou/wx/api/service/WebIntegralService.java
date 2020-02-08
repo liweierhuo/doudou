@@ -88,7 +88,7 @@ public class WebIntegralService {
         Assert.notNull(integral,"积分不能为空");
         Integral userIntegral = integralService.getIntegralByClientId(clientId);
         Assert.notNull(userIntegral,"您的积分不足");
-        Assert.isTrue(userIntegral.getUserIntegral().compareTo(integral) > 0 ,"您的积分不足");
+        Assert.isTrue(userIntegral.getUserIntegral().compareTo(integral) >= 0 ,"您的积分不足");
         //扣总积分
         userIntegral.setUserIntegral(userIntegral.getUserIntegral() - integral);
         Assert.isTrue(integralService.updateIntegral(userIntegral),"更新数据失败");

@@ -2,7 +2,7 @@ package com.doudou.dao.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.Ad;
-import com.doudou.dao.mapper.AdMapper;
+import com.doudou.dao.mapper.AdsMapper;
 import com.doudou.dao.service.IAdService;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-01-31
  */
 @Service
-public class AdServiceImpl extends ServiceImpl<AdMapper, Ad> implements IAdService {
+public class AdServiceImpl extends ServiceImpl<AdsMapper, Ad> implements IAdService {
 	
 }

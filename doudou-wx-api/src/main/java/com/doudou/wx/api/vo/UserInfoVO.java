@@ -1,6 +1,7 @@
 package com.doudou.wx.api.vo;
 
-import com.doudou.dao.entity.DataResource;
+import com.doudou.dao.entity.User;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,8 +13,11 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ResourceVO extends DataResource {
+@Builder
+public class UserInfoVO extends User {
 
-    private String keywords;
+    private Integer userIntegral;
+    private Long registeredDays;
+    private Integer resourceNum;
 
 }

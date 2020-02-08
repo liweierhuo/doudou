@@ -11,6 +11,6 @@ import com.doudou.dao.entity.Ad;
  * @author liwei
  * @since 2020-01-31
  */
-public interface AdMapper extends BaseMapper<Ad> {
+public interface AdsMapper extends BaseMapper<Ad> {
 
 }

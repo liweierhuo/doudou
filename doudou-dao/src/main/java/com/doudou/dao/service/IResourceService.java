@@ -1,7 +1,10 @@
 package com.doudou.dao.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.doudou.dao.entity.DataResource;
+import com.doudou.dao.entity.Order;
+import java.util.List;
 
 /**
  * <p>
@@ -26,5 +29,27 @@ public interface IResourceService extends IService<DataResource> {
      * @param remainingNum
      */
     void updateResourceRemainingNum(String resourceId,Integer remainingNum);
+
+    /**
+     * resource的数量
+     * @param clientId
+     * @return
+     */
+    int countResourceNum(String clientId);
+
+    /**
+     * 查询分页
+     * @param clientId
+     * @param pageQuery
+     * @return
+     */
+    IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery);
+
+    /**
+     * 根据resourceIdList查询
+     * @param resourceIdList
+     * @return
+     */
+    List<DataResource> getResourceByResourceIdList(List<String> resourceIdList);
 	
 }

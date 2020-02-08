@@ -1,11 +1,13 @@
 package com.doudou.wx.api.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.Order;
 import com.doudou.dao.service.IOrderService;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.wx.api.vo.ExchangeResourceVO;
+import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,14 @@ public class WebOrderService {
         resourceService.updateResourceRemainingNum(exchangeResourceVO.getResourceId(),dataResource.getRemainingNum() - 1);
         //插入订单
         orderService.save(buildOrder(clientId,exchangeResourceVO));
+    }
+
+    public int countUserResourceNum(String clientId) {
+        return orderService.countUserResource(clientId);
+    }
+
+    public List<DataResource> pageUserResource(String clientId, Page pageQuery) {
+        return orderService.pageUserResource(clientId,pageQuery);
     }
 
     private Order buildOrder(String clientId,ExchangeResourceVO exchangeResourceVO) {

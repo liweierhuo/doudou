@@ -1,5 +1,6 @@
 package com.doudou.wx.api.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,8 +15,10 @@ import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.vo.ResourceVO;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +42,11 @@ public class ResourceController extends BaseController{
     private IUserService userService;
     @Resource
     private RedisUtil redisUtil;
+
     @GetMapping("/list")
     public ApiResponse getPageResource(PageRequestVO pageRequestVO,ResourceVO resourceVO) {
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        IPage<DataResource> result = resourceService.page(pageQuery);
+        IPage<DataResource> result = resourceService.page(pageQuery,buildResourceWrapper(resourceVO));
         return new ApiResponse<>(result);
     }
 
@@ -61,12 +65,33 @@ public class ResourceController extends BaseController{
         return ApiResponse.success();
     }
 
-    @GetMapping("/user")
-    public ApiResponse userResource(PageRequestVO pageRequestVO,ResourceVO resourceVO, @SessionId String sessionId) {
-        User userInfo = userService.queryByOpenId(sessionId);
+    @GetMapping("/{resourceId}")
+    public ApiResponse getResourceById(@PathVariable String resourceId) {
+        Assert.hasText(resourceId,"resourceId 不能为空");
+        DataResource dataResource = resourceService.getResource(resourceId);
+        Assert.notNull(dataResource,"资源不能为空");
+        return new ApiResponse<>(dataResource);
+    }
+
+    @GetMapping("/publish")
+    public ApiResponse getPublishUserResourceList(@SessionId String clientId, PageRequestVO pageRequestVO) {
+        User userInfo = userService.queryByClientId(clientId);
+        Assert.notNull(userInfo,"user info is null");
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        IPage<DataResource> result = resourceService.page(pageQuery,new QueryWrapper<DataResource>().eq("client_id",userInfo.getClientId()));
-        return new ApiResponse<>(result);
+        IPage<DataResource> pageResult = resourceService.pageResource(clientId, pageQuery);
+        return new ApiResponse<>(pageResult);
+    }
+
+    private Wrapper<DataResource> buildResourceWrapper(ResourceVO resourceVO) {
+        Assert.notNull(resourceVO,"request is required");
+        QueryWrapper<DataResource> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(resourceVO.getKeywords())) {
+            wrapper.eq("title",resourceVO.getKeywords())
+                .or()
+                .eq("subtitle",resourceVO.getKeywords())
+                .orderByDesc("id");
+        }
+        return wrapper;
     }
 
     private void checkParam(ResourceVO resourceVO) {

@@ -1,7 +1,9 @@
 package com.doudou.wx.api.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.constant.ResourceStatusEnum;
 import com.doudou.core.web.ApiResponse;
+import com.doudou.core.web.PageRequestVO;
 import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.Integral;
@@ -15,6 +17,7 @@ import com.doudou.wx.api.service.WebOrderService;
 import com.doudou.wx.api.vo.ExchangeResourceVO;
 import javax.annotation.Resource;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,7 +67,11 @@ public class OrderController extends BaseController {
         return ApiResponse.success();
     }
 
-
-
-
+    @GetMapping("/resource")
+    public ApiResponse getExchangeResource(@SessionId String clientId, PageRequestVO pageRequestVO) {
+        Assert.notNull(userService.queryByClientId(clientId),"用户信息为空");
+        Page<DataResource> page = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
+        page.setRecords(orderService.pageUserOrderResource(clientId,page));
+        return new ApiResponse<>(page);
+    }
 }

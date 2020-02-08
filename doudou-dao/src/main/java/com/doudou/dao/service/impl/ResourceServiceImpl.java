@@ -1,10 +1,12 @@
 package com.doudou.dao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.mapper.ResourceMapper;
 import com.doudou.dao.service.IResourceService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -39,5 +41,21 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
             .eq("resource_id", dataResource.getResourceId())
             .eq("remaining_num", dataResource.getRemainingNum()));
         Assert.isTrue(updateResult,"更新失败");
+    }
+
+    @Override
+    public int countResourceNum(String clientId) {
+        Assert.hasText(clientId,"clientId is required");
+        return count(new QueryWrapper<DataResource>().eq("client_id",clientId));
+    }
+
+    @Override
+    public IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery) {
+        return page(pageQuery,new QueryWrapper<DataResource>().eq("client_id",clientId));
+    }
+
+    @Override
+    public List<DataResource> getResourceByResourceIdList(List<String> resourceIdList) {
+        return list(new QueryWrapper<DataResource>().in("resource_id", resourceIdList));
     }
 }
