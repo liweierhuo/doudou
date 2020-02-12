@@ -6,9 +6,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.mapper.ResourceMapper;
 import com.doudou.dao.service.IResourceService;
-import java.util.List;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * <p>
@@ -37,6 +38,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
         DataResource dataResource = getResource(resourceId);
         DataResource updateBean = new DataResource();
         updateBean.setRemainingNum(remainingNum);
+        updateBean.setDownloadNum((dataResource.getDownloadNum() == null ? 0 : dataResource.getDownloadNum()) + 1);
         boolean updateResult = update(updateBean, new QueryWrapper<DataResource>()
             .eq("resource_id", dataResource.getResourceId())
             .eq("remaining_num", dataResource.getRemainingNum()));
@@ -44,18 +46,47 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
     }
 
     @Override
-    public int countResourceNum(String clientId) {
-        Assert.hasText(clientId,"clientId is required");
-        return count(new QueryWrapper<DataResource>().eq("client_id",clientId));
+    public void updateResource(DataResource dataResource) {
+        Assert.notNull(dataResource,"更新对象不能为空");
+        Assert.hasText(dataResource.getResourceId(),"resourceId is required");
+        DataResource updateBean = new DataResource();
+        if (!StringUtils.isEmpty(dataResource.getTitle())) {
+            updateBean.setTitle(dataResource.getTitle());
+        }
+        if (!StringUtils.isEmpty(dataResource.getTitle())) {
+            updateBean.setTitle(dataResource.getTitle());
+        }
+        if (!StringUtils.isEmpty(dataResource.getSubtitle())) {
+            updateBean.setSubtitle(dataResource.getSubtitle());
+        }
+        if (!StringUtils.isEmpty(dataResource.getSource())) {
+            updateBean.setSource(dataResource.getSource());
+        }
+        if (dataResource.getDownloadNum() != null) {
+            updateBean.setDownloadNum(dataResource.getDownloadNum());
+        }
+        if (!StringUtils.isEmpty(dataResource.getImageUrl())) {
+            updateBean.setImageUrl(dataResource.getImageUrl());
+        }
+        if (dataResource.getPrice() != null) {
+            updateBean.setPrice(dataResource.getPrice());
+        }
+        if (dataResource.getViewNum() != null) {
+            updateBean.setViewNum(dataResource.getViewNum());
+        }
+        if (!StringUtils.isEmpty(dataResource.getResSummary())) {
+            updateBean.setResSummary(dataResource.getResSummary());
+        }
+        if (!StringUtils.isEmpty(dataResource.getStatus())) {
+            updateBean.setStatus(dataResource.getStatus());
+        }
+        updateBean.setModified(LocalDateTime.now());
+        boolean updateResult = update(updateBean, new QueryWrapper<DataResource>().eq("resource_id", dataResource.getResourceId()));
+        Assert.isTrue(updateResult,"更新失败");
     }
 
     @Override
     public IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery) {
         return page(pageQuery,new QueryWrapper<DataResource>().eq("client_id",clientId));
-    }
-
-    @Override
-    public List<DataResource> getResourceByResourceIdList(List<String> resourceIdList) {
-        return list(new QueryWrapper<DataResource>().in("resource_id", resourceIdList));
     }
 }

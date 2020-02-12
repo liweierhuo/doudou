@@ -14,8 +14,13 @@ import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.vo.ResourceVO;
+import java.time.format.DateTimeFormatter;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/resource")
+@Slf4j
 public class ResourceController extends BaseController{
 
     @Resource
@@ -42,6 +48,8 @@ public class ResourceController extends BaseController{
     private IUserService userService;
     @Resource
     private RedisUtil redisUtil;
+    @Resource
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @GetMapping("/list")
     public ApiResponse getPageResource(PageRequestVO pageRequestVO,ResourceVO resourceVO) {
@@ -65,12 +73,27 @@ public class ResourceController extends BaseController{
         return ApiResponse.success();
     }
 
-    @GetMapping("/{resourceId}")
+    @GetMapping("/detail/{resourceId}")
     public ApiResponse getResourceById(@PathVariable String resourceId) {
         Assert.hasText(resourceId,"resourceId 不能为空");
         DataResource dataResource = resourceService.getResource(resourceId);
         Assert.notNull(dataResource,"资源不能为空");
-        return new ApiResponse<>(dataResource);
+        ResourceVO resourceVO = new ResourceVO();
+        BeanUtils.copyProperties(dataResource,resourceVO);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        resourceVO.setPublishDate(dataResource.getCreated().format(dateTimeFormatter));
+        User userInfo = userService.queryByClientId(dataResource.getClientId());
+        Assert.notNull(userInfo,"用户不存在");
+        resourceVO.setPublisher(userInfo.getNickName());
+        //更新查看次数
+        threadPoolTaskExecutor.execute(() -> {
+            log.info("异步更新资源[{}]浏览次数",dataResource.getResourceId());
+            DataResource updateBean = new DataResource();
+            updateBean.setResourceId(dataResource.getResourceId());
+            updateBean.setViewNum((dataResource.getViewNum() == null ? 0 : dataResource.getViewNum()) + 1);
+            resourceService.updateResource(updateBean);
+        });
+        return new ApiResponse<>(resourceVO);
     }
 
     @GetMapping("/publish")
@@ -86,9 +109,9 @@ public class ResourceController extends BaseController{
         Assert.notNull(resourceVO,"request is required");
         QueryWrapper<DataResource> wrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(resourceVO.getKeywords())) {
-            wrapper.eq("title",resourceVO.getKeywords())
+            wrapper.like("title",resourceVO.getKeywords())
                 .or()
-                .eq("subtitle",resourceVO.getKeywords())
+                .like("subtitle",resourceVO.getKeywords())
                 .orderByDesc("id");
         }
         return wrapper;

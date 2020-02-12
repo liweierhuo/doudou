@@ -31,11 +31,10 @@ public interface IResourceService extends IService<DataResource> {
     void updateResourceRemainingNum(String resourceId,Integer remainingNum);
 
     /**
-     * resource的数量
-     * @param clientId
-     * @return
+     * 更新资源信息
+     * @param dataResource
      */
-    int countResourceNum(String clientId);
+    void updateResource(DataResource dataResource);
 
     /**
      * 查询分页
@@ -44,12 +43,5 @@ public interface IResourceService extends IService<DataResource> {
      * @return
      */
     IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery);
-
-    /**
-     * 根据resourceIdList查询
-     * @param resourceIdList
-     * @return
-     */
-    List<DataResource> getResourceByResourceIdList(List<String> resourceIdList);
 	
 }

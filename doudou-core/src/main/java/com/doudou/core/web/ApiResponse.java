@@ -1,5 +1,6 @@
 package com.doudou.core.web;
 
+import com.doudou.core.constant.ErrorMsgEnum;
 import lombok.Data;
 
 /**
@@ -34,6 +35,10 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> error(int code, String message) {
         return new ApiResponse<>(code, message);
+    }
+
+    public static <T> ApiResponse<T> error(ErrorMsgEnum errorMsgEnum) {
+        return new ApiResponse<>(errorMsgEnum.getCode(), errorMsgEnum.getErrorMsg());
     }
 
     public static <T> ApiResponse<T> error() {

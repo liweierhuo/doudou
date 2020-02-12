@@ -18,6 +18,7 @@ import com.doudou.wx.api.vo.ExchangeResourceVO;
 import javax.annotation.Resource;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +59,7 @@ public class OrderController extends BaseController {
         Assert.isTrue(ResourceStatusEnum.NORMAL.name().equalsIgnoreCase(dataResource.getStatus()),"资源状态异常");
         Assert.isTrue(dataResource.getRemainingNum() > 0,"资源库存不足");
         Assert.isTrue(exchangeResourceVO.getIntegral().equals(dataResource.getPrice()),"传入的积分与所需积分不一致");
+        Assert.isTrue(!dataResource.getClientId().equalsIgnoreCase(clientId),"自己发布的资源不能兑换");
         Integral integral = integralService.getIntegralByClientId(userInfo.getClientId());
         Assert.isTrue(integral.getUserIntegral() >= dataResource.getPrice(),"您的积分不足");
         Order orderInfo = orderService.getOrder(userInfo.getClientId(), dataResource.getResourceId());
@@ -73,5 +75,19 @@ public class OrderController extends BaseController {
         Page<DataResource> page = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
         page.setRecords(orderService.pageUserOrderResource(clientId,page));
         return new ApiResponse<>(page);
+    }
+
+    @GetMapping("/resource/{resourceId}")
+    public ApiResponse checkUserResource(@SessionId String clientId, @PathVariable String resourceId) {
+        Assert.notNull(userService.queryByClientId(clientId),"用户信息为空");
+        boolean flag = false;
+        if (orderService.getOrder(clientId,resourceId) != null) {
+            flag = true;
+        }
+        DataResource dataResource = resourceService.getResource(resourceId);
+        if (dataResource.getClientId().equalsIgnoreCase(clientId)) {
+            flag = true;
+        }
+        return new ApiResponse<>(flag);
     }
 }

@@ -19,7 +19,7 @@ import org.apache.ibatis.annotations.Select;
 public interface OrderMapper extends BaseMapper<Order> {
 
     /**
-     * 查询用户资源列表
+     * 查询用户全部资源列表
      * @param page
      * @param clientId
      * @return
@@ -43,7 +43,7 @@ public interface OrderMapper extends BaseMapper<Order> {
 
 
     /**
-     * 查询用户兑换的资源列表
+     * 查询用户资源总数
      * @param clientId
      * @return
      */

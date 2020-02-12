@@ -45,3 +45,9 @@ mybatis-plus:
       logic-delete-value: 0
       #逻辑未删除值,(逻辑删除下有效)
       logic-not-delete-value: 1
+
+
+local:
+  file:
+    path: image
+    dir: /Users/liwei/studySpace/doudou/doudou-wx-api/src/main/resources/file

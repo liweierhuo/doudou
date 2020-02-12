@@ -16,4 +16,8 @@ public class ResourceVO extends DataResource {
 
     private String keywords;
 
+    private String publishDate;
+
+    private String publisher;
+
 }

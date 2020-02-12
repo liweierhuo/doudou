@@ -1,0 +1,120 @@
+2020-02-08 20:25:39.905  INFO 58577 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 58577 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 20:25:39.907  INFO 58577 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 20:25:42.306  INFO 58577 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 20:25:42.319  INFO 58577 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 20:25:42.453  INFO 58577 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69ms. Found 0 repository interfaces.
+2020-02-08 20:25:43.738  INFO 58577 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9266cf18] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 20:25:45.115  INFO 58577 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-0} closing ...
+2020-02-08 20:25:45.132  INFO 58577 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-02-08 20:52:15.986  INFO 60135 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 60135 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 20:52:15.992  INFO 60135 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 20:52:17.895  INFO 60135 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 20:52:17.899  INFO 60135 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 20:52:17.988  INFO 60135 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55ms. Found 0 repository interfaces.
+2020-02-08 20:52:19.051  INFO 60135 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$d3d80b92] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 20:52:21.208  INFO 60135 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-0} closing ...
+2020-02-08 20:52:21.230  INFO 60135 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-02-08 20:57:00.177  INFO 60455 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 60455 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 20:57:00.181  INFO 60455 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 20:57:03.733  INFO 60455 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 20:57:03.752  INFO 60455 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 20:57:03.917  INFO 60455 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61ms. Found 0 repository interfaces.
+2020-02-08 20:57:06.686  INFO 60455 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2c76cbb9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 20:57:09.446  INFO 60455 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-0} closing ...
+2020-02-08 20:57:09.474  INFO 60455 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-02-08 21:09:39.868  INFO 61367 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 61367 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 21:09:39.870  INFO 61367 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 21:09:43.030  INFO 61367 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 21:09:43.041  INFO 61367 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 21:09:43.144  INFO 61367 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 67ms. Found 0 repository interfaces.
+2020-02-08 21:09:44.776  INFO 61367 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$bc423277] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 21:09:51.613  INFO 61367 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:09:53.726  INFO 61367 --- [main] c.d.w.a.c.ResourceControllerTest         : Started ResourceControllerTest in 16.657 seconds (JVM running for 20.029)
+2020-02-08 21:09:54.465  INFO 61367 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-02-08 21:09:54.466  INFO 61367 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-02-08 21:09:54.517  INFO 61367 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 51 ms
+2020-02-08 21:10:03.294  INFO 61367 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-02-08 21:10:27.371  INFO 61367 --- [Thread-3] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:10:27.481  INFO 61367 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-02-08 21:10:27.503  INFO 61367 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-02-08 21:12:27.035  INFO 61493 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 61493 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 21:12:27.038  INFO 61493 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 21:12:29.286  INFO 61493 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 21:12:29.293  INFO 61493 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 21:12:29.432  INFO 61493 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 68ms. Found 0 repository interfaces.
+2020-02-08 21:12:30.709  INFO 61493 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$db613e36] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 21:12:35.423  INFO 61493 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:12:36.984  INFO 61493 --- [main] c.d.w.a.c.ResourceControllerTest         : Started ResourceControllerTest in 12.379 seconds (JVM running for 15.465)
+2020-02-08 21:12:37.538  INFO 61493 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-02-08 21:12:37.538  INFO 61493 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-02-08 21:12:37.583  INFO 61493 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 44 ms
+2020-02-08 21:12:42.698  INFO 61493 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-02-08 21:13:00.904  INFO 61493 --- [Thread-3] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:13:01.075  INFO 61493 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-02-08 21:13:01.090  INFO 61493 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-02-08 21:16:38.201  INFO 61715 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 61715 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 21:16:38.203  INFO 61715 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 21:16:40.556  INFO 61715 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 21:16:40.562  INFO 61715 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 21:16:40.650  INFO 61715 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50ms. Found 0 repository interfaces.
+2020-02-08 21:16:41.686  INFO 61715 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$7645af0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 21:16:48.081  INFO 61715 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:16:52.457  INFO 61715 --- [main] c.d.w.a.c.ResourceControllerTest         : Started ResourceControllerTest in 16.678 seconds (JVM running for 21.877)
+2020-02-08 21:16:53.613  INFO 61715 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-02-08 21:16:53.614  INFO 61715 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-02-08 21:16:53.721  INFO 61715 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 106 ms
+2020-02-08 21:16:59.609  INFO 61715 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-02-08 21:17:08.928  INFO 61715 --- [Thread-3] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:17:09.089  INFO 61715 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-02-08 21:17:09.105  INFO 61715 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-02-08 21:18:37.714  INFO 61832 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 61832 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 21:18:37.722  INFO 61832 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 21:18:40.672  INFO 61832 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 21:18:40.677  INFO 61832 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 21:18:40.752  INFO 61832 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 43ms. Found 0 repository interfaces.
+2020-02-08 21:18:42.115  INFO 61832 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$17d75636] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 21:18:47.131  INFO 61832 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:18:48.732  INFO 61832 --- [main] c.d.w.a.c.ResourceControllerTest         : Started ResourceControllerTest in 13.734 seconds (JVM running for 19.902)
+2020-02-08 21:18:49.134  INFO 61832 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-02-08 21:18:49.134  INFO 61832 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-02-08 21:18:49.166  INFO 61832 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 32 ms
+2020-02-08 21:18:52.888  INFO 61832 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-02-08 21:18:55.180  INFO 61832 --- [Thread-3] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:18:55.295  INFO 61832 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-02-08 21:18:55.308  INFO 61832 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-02-08 21:21:29.595  INFO 61996 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 61996 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 21:21:29.597  INFO 61996 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 21:21:32.555  INFO 61996 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 21:21:32.564  INFO 61996 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 21:21:32.663  INFO 61996 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59ms. Found 0 repository interfaces.
+2020-02-08 21:21:34.074  INFO 61996 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e06e4f1d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 21:21:40.431  INFO 61996 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:21:42.169  INFO 61996 --- [main] c.d.w.a.c.ResourceControllerTest         : Started ResourceControllerTest in 15.536 seconds (JVM running for 20.436)
+2020-02-08 21:21:42.762  INFO 61996 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-02-08 21:21:42.762  INFO 61996 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-02-08 21:21:42.788  INFO 61996 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 26 ms
+2020-02-08 21:21:44.060  INFO 61996 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-02-08 21:21:47.164  INFO 61996 --- [Thread-3] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:21:47.309  INFO 61996 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-02-08 21:21:47.327  INFO 61996 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-02-08 21:25:34.309  INFO 62217 --- [main] c.d.w.a.c.ResourceControllerTest         : Starting ResourceControllerTest on liweideMacBook-Pro.local with PID 62217 (started by liwei in /Users/liwei/studySpace/doudou/doudou-wx-api)
+2020-02-08 21:25:34.340  INFO 62217 --- [main] c.d.w.a.c.ResourceControllerTest         : The following profiles are active: dev
+2020-02-08 21:25:37.097  INFO 62217 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-02-08 21:25:37.113  INFO 62217 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-02-08 21:25:37.214  INFO 62217 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 64ms. Found 0 repository interfaces.
+2020-02-08 21:25:39.402  INFO 62217 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$ba1471f0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-02-08 21:25:46.442  INFO 62217 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:25:49.317  INFO 62217 --- [main] c.d.w.a.c.ResourceControllerTest         : Started ResourceControllerTest in 17.362 seconds (JVM running for 21.566)
+2020-02-08 21:25:49.973  INFO 62217 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2020-02-08 21:25:49.973  INFO 62217 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2020-02-08 21:25:50.005  INFO 62217 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 31 ms
+2020-02-08 21:25:51.561  INFO 62217 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-02-08 21:25:55.151  INFO 62217 --- [Thread-3] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-02-08 21:25:55.267  INFO 62217 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-02-08 21:25:55.280  INFO 62217 --- [Thread-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed

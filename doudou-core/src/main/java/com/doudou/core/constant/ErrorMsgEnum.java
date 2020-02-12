@@ -18,6 +18,7 @@ public enum ErrorMsgEnum {
      */
     INTERNAL_SYSTEM_ERROR(500,"系统繁忙，请稍后操作"),
     REPEAT_SIGN_IN(501001,"您已经签到了，请明天再来"),
+    ALREADY_OWN_THE_RESOURCE(501002,"已经拥有该资源"),
     ;
 
     private int code;
