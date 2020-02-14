@@ -15,11 +15,12 @@ public enum IntegralOperateTypeEnum {
     /**
      * 积分操作类型
      */
-    SIGN_IN("签到"),
-    PUBLISH_RESOURCE("发布资源"),
-    EARN("赚取"),
-    RECHARGE("充值"),
-    EXCHANGE_RESOURCES("兑换资源")
+    SIGN_IN("签到","+"),
+    PUBLISH_RESOURCE("发布资源","+"),
+    EARN("赚取","+"),
+    RECHARGE("充值","+"),
+    EXCHANGE_RESOURCES("兑换资源","-")
     ;
     private String desc;
+    private String inOrOut;
 }

@@ -80,7 +80,7 @@ public class ResourceController extends BaseController{
         Assert.notNull(dataResource,"资源不能为空");
         ResourceVO resourceVO = new ResourceVO();
         BeanUtils.copyProperties(dataResource,resourceVO);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         resourceVO.setPublishDate(dataResource.getCreated().format(dateTimeFormatter));
         User userInfo = userService.queryByClientId(dataResource.getClientId());
         Assert.notNull(userInfo,"用户不存在");
