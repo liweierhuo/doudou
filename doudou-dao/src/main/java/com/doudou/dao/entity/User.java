@@ -67,6 +67,37 @@ public class User extends BaseDO {
     private String nickName;
 
     /**
+     * 性别
+     */
+    private Integer gender;
+
+    /**
+     * 国家
+     */
+    private String country;
+
+    /**
+     * 省份
+     */
+    private String province;
+
+    /**
+     * 城市
+     */
+    private String city;
+
+    /**
+     * 背景图片
+     */
+    @TableField(value = "background_image_url")
+    private String backgroundImageUrl;
+
+    /**
+     * 签名
+     */
+    private String signature;
+
+    /**
      * 备注信息
      */
     private String remark;

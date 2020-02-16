@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,15 +36,16 @@ public class GlobalController extends BaseController {
     }
 
     @PostMapping("/api/common/upload")
-    public ApiResponse upload(MultipartFile file) {
-        String filePath = saveToLocalServer(file);
+    public ApiResponse upload(MultipartFile file,@RequestParam("type") String type) {
+        log.info("type:"+type);
+        String filePath = saveToLocalServer(file,type);
         log.info(filePath);
         return new ApiResponse<>(filePath);
     }
 
-    private String saveToLocalServer(final MultipartFile file) {
+    private String saveToLocalServer(final MultipartFile file,final String type) {
         String fileName = file.getOriginalFilename();
-        String filePath = webConfig.getLocalFileServerDir() + File.separator + fileName;
+        String filePath = webConfig.getLocalFileServerDir() + File.separator + type + File.separator+ fileName;
         // 3. 写入流到本地文件中
         try {
             FileUtils.writeByteArrayToFile(new File(filePath), file.getBytes());

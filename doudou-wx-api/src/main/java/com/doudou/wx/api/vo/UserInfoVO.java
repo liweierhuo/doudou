@@ -20,4 +20,7 @@ public class UserInfoVO extends User {
     private Long registeredDays;
     private Integer resourceNum;
 
+    private String phoneNo;
+    private String backgroundImageUrl;
+
 }

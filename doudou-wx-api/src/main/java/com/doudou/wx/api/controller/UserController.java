@@ -9,7 +9,6 @@ import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.Integral;
 import com.doudou.dao.entity.User;
-import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.dao.service.IUserSignInService;
 import com.doudou.wx.api.service.WebIntegralService;
@@ -18,12 +17,14 @@ import com.doudou.wx.api.vo.UserInfoVO;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,8 +48,6 @@ public class UserController extends BaseController {
     private WebIntegralService integralService;
     @Resource
     private WebOrderService webOrderService;
-    @Resource
-    private IResourceService resourceService;
 
     @Value("${signIn.integral:10}")
     private int signInIntegral;
@@ -80,6 +79,28 @@ public class UserController extends BaseController {
         userInfoVO.setRegisteredDays(days);
         userInfoVO.setResourceNum(webOrderService.countUserResourceNum(clientId));
         return new ApiResponse<>(userInfoVO);
+    }
+
+    @PostMapping("/update")
+    public ApiResponse updateUser(@SessionId String clientId,@RequestBody UserInfoVO userInfoVO) {
+        Assert.notNull(userInfoVO,"request is required");
+        User userInfo = userService.queryByClientId(clientId);
+        Assert.notNull(userInfo,"用户信息不存在");
+        User updateBean = new User();
+        if (StringUtils.isNotBlank(userInfoVO.getBackgroundImageUrl())) {
+            updateBean.setBackgroundImageUrl(userInfoVO.getBackgroundImageUrl());
+        }
+        if (StringUtils.isNotBlank(userInfoVO.getPhoneNo())) {
+            updateBean.setPhoneNo(userInfoVO.getPhoneNo());
+        }
+        if (StringUtils.isNotBlank(userInfoVO.getEmail())) {
+            updateBean.setEmail(userInfoVO.getEmail());
+        }
+        if (StringUtils.isNotBlank(userInfoVO.getSignature())) {
+            updateBean.setSignature(userInfoVO.getSignature());
+        }
+        userService.updateUserByClientId(updateBean,clientId);
+        return ApiResponse.success();
     }
 
     @GetMapping("resource")

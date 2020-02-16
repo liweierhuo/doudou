@@ -77,22 +77,43 @@ public class WechatAuthController extends BaseController{
             if (StringUtils.isEmpty(userInfo.getClientId())) {
                 userInfo.setClientId(redisUtil.genericUniqueId("W"));
             }
+            if (rawDataBo.getGender() != null) {
+                userInfo.setGender(rawDataBo.getGender());
+            }
+            if (StringUtils.isNotBlank(rawDataBo.getCountry())) {
+                userInfo.setCountry(rawDataBo.getCountry());
+            }
+            if (StringUtils.isNotBlank(rawDataBo.getProvince())) {
+                userInfo.setProvince(rawDataBo.getProvince());
+            }
+            if (StringUtils.isNotBlank(rawDataBo.getCity())) {
+                userInfo.setCity(rawDataBo.getCity());
+            }
             userInfo.setLoginTime(LocalDateTime.now());
             ucUserService.updateUserByOpenId(userInfo,openId);
             RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),userInfo.getClientId(),7200L);
             return new ApiResponse<>(userToken);
         }
-        User ucUser = new User();
-        ucUser.setIcon(rawDataBo.getAvatarUrl());
-        ucUser.setNickName(rawDataBo.getNickName());
+        User ucUser = buildUserBean(rawDataBo);
         ucUser.setClientId(redisUtil.genericUniqueId("W"));
-        ucUser.setUsername(rawDataBo.getNickName());
         ucUser.setOpenId(openId);
         ucUser.setUnionId(unionId);
-        ucUser.setLoginTime(LocalDateTime.now());
         boolean result = ucUserService.save(ucUser);
         RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),ucUser.getClientId(),7200L);
         return result ? new ApiResponse<>(userToken) : ApiResponse.error();
+    }
+
+    private User buildUserBean(RawDataBo rawDataBo) {
+        User ucUser = new User();
+        ucUser.setIcon(rawDataBo.getAvatarUrl());
+        ucUser.setNickName(rawDataBo.getNickName());
+        ucUser.setUsername(rawDataBo.getNickName());
+        ucUser.setLoginTime(LocalDateTime.now());
+        ucUser.setGender(rawDataBo.getGender());
+        ucUser.setCountry(rawDataBo.getCountry());
+        ucUser.setProvince(rawDataBo.getProvince());
+        ucUser.setCity(rawDataBo.getCity());
+        return ucUser;
     }
 
     private String getUserToken(@NotNull String openId, @NotNull String sessionKey) {

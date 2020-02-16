@@ -15,6 +15,8 @@ import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.vo.ResourceVO;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -101,8 +103,22 @@ public class ResourceController extends BaseController{
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"user info is null");
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        IPage<DataResource> pageResult = resourceService.pageResource(clientId, pageQuery);
+        pageQuery = resourceService.pageResource(clientId, pageQuery);
+        IPage<ResourceVO> pageResult = new Page<>(pageQuery.getCurrent(),pageQuery.getSize());
+        pageResult.setTotal(pageQuery.getTotal());
+        pageResult.setPages(pageQuery.getPages());
+        pageResult.setRecords(buildResourceList(pageQuery.getRecords()));
         return new ApiResponse<>(pageResult);
+    }
+
+    private List<ResourceVO> buildResourceList(List<DataResource> records) {
+        return records.stream().map(dataResource -> {
+            ResourceVO resourceVO = new ResourceVO();
+            BeanUtils.copyProperties(dataResource,resourceVO);
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            resourceVO.setPublishDate(dataResource.getCreated().format(dateTimeFormatter));
+            return resourceVO;
+        }).collect(Collectors.toList());
     }
 
     private Wrapper<DataResource> buildResourceWrapper(ResourceVO resourceVO) {

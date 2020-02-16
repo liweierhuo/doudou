@@ -34,4 +34,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         boolean result = update(user, new QueryWrapper<User>().eq("open_id", openId));
         Assert.isTrue(result,"更新数据失败");
     }
+
+    @Override
+    public void updateUserByClientId(User user, String clientId) {
+        boolean result = update(user, new QueryWrapper<User>().eq("client_id", clientId));
+        Assert.isTrue(result,"更新数据失败");
+    }
 }

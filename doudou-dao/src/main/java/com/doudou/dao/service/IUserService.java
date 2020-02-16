@@ -35,5 +35,13 @@ public interface IUserService extends IService<User> {
      * @return
      */
     void updateUserByOpenId(User user,String openId);
+
+    /**
+     * 更新用户信息
+     * @param clientId
+     * @param user
+     * @return
+     */
+    void updateUserByClientId(User user,String clientId);
 	
 }
