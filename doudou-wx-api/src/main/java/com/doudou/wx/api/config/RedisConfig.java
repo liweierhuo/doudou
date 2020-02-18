@@ -1,5 +1,6 @@
 package com.doudou.wx.api.config;
 
+import com.doudou.core.password.util.AESEncryptUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,7 @@ public class RedisConfig {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(redisHost);
         redisStandaloneConfiguration.setDatabase(database);
-        redisStandaloneConfiguration.setPassword(password);
+        redisStandaloneConfiguration.setPassword(AESEncryptUtil.decrypt(password));
         redisStandaloneConfiguration.setPort(port);
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }

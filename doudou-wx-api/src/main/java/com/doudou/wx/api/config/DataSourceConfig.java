@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author: liwei
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Primary;
  * @date: 2019-10-12
  */
 @Configuration
+@EnableTransactionManagement
 public class DataSourceConfig {
 
     @Primary

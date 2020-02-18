@@ -74,4 +74,7 @@ public class AESEncryptUtil {
         return new SecretKeySpec(key.getBytes(), KEY_ALGORITHM);
     }
 
+    public static void main(String[] args) {
+        System.out.println(encrypt("liwei@2020"));
+    }
 }

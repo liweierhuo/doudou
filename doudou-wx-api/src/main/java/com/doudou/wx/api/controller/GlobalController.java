@@ -35,6 +35,11 @@ public class GlobalController extends BaseController {
         return ApiResponse.error();
     }
 
+    @GetMapping("/heart.jsp")
+    public int heart() {
+        return 1;
+    }
+
     @PostMapping("/api/common/upload")
     public ApiResponse upload(MultipartFile file,@RequestParam("type") String type) {
         log.info("type:"+type);

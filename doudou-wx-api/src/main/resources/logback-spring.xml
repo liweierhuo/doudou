@@ -87,7 +87,7 @@
   </appender>
 
   <logger name="com.doudou.dao.mapper" level="DEBUG" />
-
+  <logger name="org.springframework.web.*" level="DEBUG" />
   <!-- 日志输出级别 -->
   <root level="INFO">
     <appender-ref ref="CONSOLE" />

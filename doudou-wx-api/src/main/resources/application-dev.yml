@@ -1,7 +1,4 @@
-server:
-  port: 9081
-  servlet:
-    context-path: /duoduo
+
 spring:
   application:
     name: duoduo
@@ -14,7 +11,7 @@ spring:
   redis:
     host: 47.104.239.91
     port: 6389
-    password: liwei@2020
+    password: x9OCmhqQ2YXtaJ6ZId4DJw==
     database: 1
 
   jackson:
