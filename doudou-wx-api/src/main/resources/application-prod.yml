@@ -1,21 +1,19 @@
-server:
-  port: 9081
-  servlet:
-    context-path: /duoduo
+
 spring:
   application:
     name: duoduo
   datasource:
     druid:
-      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou?characterEncoding=utf-8&serverTimezone=GMT%2B8
+      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou_prod?characterEncoding=utf-8&serverTimezone=GMT%2B8
       password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
       username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
   ## 阿里云服务器已经安装了redis
   redis:
-    host: 47.104.239.91
+    host: 172.31.183.76
     port: 6389
-    password: liwei@2020
+    password: x9OCmhqQ2YXtaJ6ZId4DJw==
     database: 1
+
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -30,4 +28,23 @@ miniprogram:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath*:mapper/**/*.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.doudou.dao.entity
+  global-config:
+    #自定义SQL注入器
+    #sql-injector: com.baomidou.springboot.xxx
+    db-config:
+      #全局默认主键类型 AUTO:"数据库ID自增", NONE:"该类型为未设置主键类型(将跟随全局)", INPUT:"用户输入ID",
+      # ID_WORKER:"全局唯一ID (idWorker)", UUID:"全局唯一ID (UUID)", ID_WORKER_STR:"字符串全局唯一ID (idWorker 的字符串表示)"
+      id-type: AUTO
+      #逻辑已删除值,(逻辑删除下有效)
+      logic-delete-value: 0
+      #逻辑未删除值,(逻辑删除下有效)
+      logic-not-delete-value: 1
+
+
+local:
+  file:
+    path: image
+    dir: /home/data/doudou/file
