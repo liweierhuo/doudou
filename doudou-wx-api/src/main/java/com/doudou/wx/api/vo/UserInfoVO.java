@@ -21,6 +21,6 @@ public class UserInfoVO extends User {
     private Integer resourceNum;
 
     private String phoneNo;
-    private String backgroundImageUrl;
+    private String backImageUrl;
 
 }

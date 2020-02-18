@@ -87,8 +87,8 @@ public class UserController extends BaseController {
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"用户信息不存在");
         User updateBean = new User();
-        if (StringUtils.isNotBlank(userInfoVO.getBackgroundImageUrl())) {
-            updateBean.setBackgroundImageUrl(userInfoVO.getBackgroundImageUrl());
+        if (StringUtils.isNotBlank(userInfoVO.getBackImageUrl())) {
+            updateBean.setBackgroundImageUrl(userInfoVO.getBackImageUrl());
         }
         if (StringUtils.isNotBlank(userInfoVO.getPhoneNo())) {
             updateBean.setPhoneNo(userInfoVO.getPhoneNo());
