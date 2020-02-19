@@ -3,6 +3,7 @@ package com.doudou.wx.api.vo;
 import com.doudou.dao.entity.DataResource;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author: liwei
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@NoArgsConstructor
 public class ResourceVO extends DataResource {
 
     private String keywords;

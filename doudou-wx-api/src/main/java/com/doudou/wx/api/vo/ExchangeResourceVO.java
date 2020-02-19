@@ -2,6 +2,7 @@ package com.doudou.wx.api.vo;
 
 import java.io.Serializable;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author: liwei
@@ -10,6 +11,7 @@ import lombok.Data;
  * @date: 2020-02-03
  */
 @Data
+@NoArgsConstructor
 public class ExchangeResourceVO implements Serializable {
 
     private String resourceId;

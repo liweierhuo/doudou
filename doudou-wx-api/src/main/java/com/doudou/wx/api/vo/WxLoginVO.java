@@ -1,6 +1,8 @@
 package com.doudou.wx.api.vo;
 
+import java.io.Serializable;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author: liwei
@@ -9,7 +11,8 @@ import lombok.Data;
  * @date: 2019-11-02
  */
 @Data
-public class WxLoginVO {
+@NoArgsConstructor
+public class WxLoginVO implements Serializable {
 
     private String code;
 

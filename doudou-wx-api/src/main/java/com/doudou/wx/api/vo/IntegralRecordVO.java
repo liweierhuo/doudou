@@ -2,6 +2,7 @@ package com.doudou.wx.api.vo;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author: liwei
@@ -11,7 +12,8 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class IntegralRecordVO {
+@NoArgsConstructor
+public class IntegralRecordVO implements Serializable {
     private String type;
     private String typeDesc;
     private String integral;

@@ -4,6 +4,7 @@ import com.doudou.dao.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author: liwei
@@ -14,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
+@NoArgsConstructor
 public class UserInfoVO extends User {
 
     private Integer userIntegral;
