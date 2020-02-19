@@ -23,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,6 +69,11 @@ public class UserController extends BaseController {
 
     @GetMapping("/info")
     public ApiResponse getUserInfo(@SessionId String clientId) {
+        return getUserInfoByClientId(clientId);
+    }
+
+    @GetMapping("/data/{clientId}")
+    public ApiResponse getUserInfoByClientId(@PathVariable("clientId") String clientId) {
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"用户信息不存在");
         UserInfoVO userInfoVO = UserInfoVO.builder().build();

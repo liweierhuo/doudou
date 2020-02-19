@@ -42,10 +42,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthenticateInterceptor())
-            .excludePathPatterns("/api/wechat/login",
+            .excludePathPatterns(
+                "/api/wechat/login",
                 "/api/ad/list",
                 "/api/resource/list",
                 "/api/resource/detail/**",
+                "/api/resource/**/publish",
+                "/api/user/data/**",
                 "/api/common/upload")
             .addPathPatterns("/api/**");
     }

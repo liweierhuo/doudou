@@ -1,6 +1,7 @@
 package com.doudou.wx.api.vo;
 
 import com.doudou.dao.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class UserInfoVO extends User {
 

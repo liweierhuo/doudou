@@ -1,5 +1,7 @@
 package com.doudou.wx.api.vo;
 
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class IntegralRecordVO implements Serializable {
     private String type;
     private String typeDesc;

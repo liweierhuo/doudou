@@ -22,4 +22,6 @@ public class ResourceVO extends DataResource {
 
     private String publisher;
 
+    private String publisherIcon;
+
 }

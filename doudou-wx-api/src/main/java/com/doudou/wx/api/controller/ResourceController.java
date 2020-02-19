@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.constant.ResourceStatusEnum;
+import com.doudou.core.constant.ResourceTypeEnum;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.PageRequestVO;
@@ -67,6 +68,7 @@ public class ResourceController extends BaseController{
         checkParam(resourceVO);
         resourceVO.setClientId(clientId);
         resourceVO.setStatus(ResourceStatusEnum.PENDING.name());
+        resourceVO.setResType(ResourceTypeEnum.ONLINE.name());
         resourceVO.setResourceId(redisUtil.genericUniqueId("R"));
         boolean result = resourceService.save(resourceVO);
         if (!result){
@@ -87,6 +89,7 @@ public class ResourceController extends BaseController{
         User userInfo = userService.queryByClientId(dataResource.getClientId());
         Assert.notNull(userInfo,"用户不存在");
         resourceVO.setPublisher(userInfo.getNickName());
+        resourceVO.setPublisherIcon(userInfo.getIcon());
         //更新查看次数
         threadPoolTaskExecutor.execute(() -> {
             log.info("异步更新资源[{}]浏览次数",dataResource.getResourceId());
@@ -100,6 +103,11 @@ public class ResourceController extends BaseController{
 
     @GetMapping("/publish")
     public ApiResponse getPublishUserResourceList(@SessionId String clientId, PageRequestVO pageRequestVO) {
+        return getUserPublishList(clientId,pageRequestVO);
+    }
+
+    @GetMapping("/{clientId}/publish")
+    public ApiResponse getUserPublishList(@PathVariable("clientId") String clientId, PageRequestVO pageRequestVO) {
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"user info is null");
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
