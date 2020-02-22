@@ -8,13 +8,17 @@ spring:
   datasource:
     druid:
       url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou?characterEncoding=utf-8&serverTimezone=GMT%2B8
-      password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
-      username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
+      username: EC(bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==)
+      password: EC(ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==)
+      filter:
+        encrypt:
+          enabled: true
+          public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKHGwq7q2RmwuRgKxBypQHw0mYu4BQZ3eMsTrdK8E6igRcxsobUC7uT0SoxIjl1WveWniCASejoQtn/BY6hVKWsCAwEAAQ==
   ## 阿里云服务器已经安装了redis
   redis:
     host: 47.104.239.91
     port: 6389
-    password: liwei@2020
+    password: ENC(d2TAJ5KAGuWizyT44Q6/TfJjUkoH+a6YQaCukJt9uvQ=)
     database: 1
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -22,12 +26,13 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-miniprogram:
-  appId: jiIFBgY2Ukqw5CPBnFTLwqXKxnbWxA50hJFcP0WGjKE=
-  appSecret: nEYea5GAkbQKCQJejmE8DZxN/zBA2foYklwpQl9berKG2ky929gkavdN1FkZRiO8
-  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
-  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
-  paidUnionIdUrl: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
+wechat:
+  wxa:
+    app-id: ENC(LfWpZa/xvKC6s7RCSw4ltPEek+EGJq2H9oV5cDogT/T0KqVQtUKnmQ==)
+    app-secret: ENC(VGtOzcpTLCmxWhY4BimLp0dCXdTTyrU2Cpzl6HPWwcQD1svAknzscklRgfDW+zYNSVv8BfMHmzI=)
+    login-url: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
+    access-token-url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+    paid-union-id-url: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
 
 mybatis-plus:
   configuration:
