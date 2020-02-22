@@ -1,0 +1,62 @@
+{
+  "groups": [
+    {
+      "name": "spring.datasource.druid.filter.encrypt",
+      "type": "com.doudou.core.password.DruidEncryptFilter",
+      "sourceType": "com.doudou.wx.api.config.DataSourceConfig",
+      "sourceMethod": "druidEncryptFilter()"
+    },
+    {
+      "name": "wechat.wxa",
+      "type": "com.doudou.wx.api.WeChatConfigProperties",
+      "sourceType": "com.doudou.wx.api.WeChatConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.datasource.druid.filter.encrypt.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.doudou.core.password.DruidEncryptFilter"
+    },
+    {
+      "name": "spring.datasource.druid.filter.encrypt.private-key",
+      "type": "java.lang.String",
+      "sourceType": "com.doudou.core.password.DruidEncryptFilter"
+    },
+    {
+      "name": "spring.datasource.druid.filter.encrypt.public-key",
+      "type": "java.lang.String",
+      "sourceType": "com.doudou.core.password.DruidEncryptFilter"
+    },
+    {
+      "name": "wechat.wxa.access-token-url",
+      "type": "java.lang.String",
+      "description": "AccessToken URL",
+      "sourceType": "com.doudou.wx.api.WeChatConfigProperties"
+    },
+    {
+      "name": "wechat.wxa.app-id",
+      "type": "java.lang.String",
+      "description": "APP ID",
+      "sourceType": "com.doudou.wx.api.WeChatConfigProperties"
+    },
+    {
+      "name": "wechat.wxa.app-secret",
+      "type": "java.lang.String",
+      "description": "APP Secret",
+      "sourceType": "com.doudou.wx.api.WeChatConfigProperties"
+    },
+    {
+      "name": "wechat.wxa.login-url",
+      "type": "java.lang.String",
+      "description": "Union Login URL",
+      "sourceType": "com.doudou.wx.api.WeChatConfigProperties"
+    },
+    {
+      "name": "wechat.wxa.paid-union-id-url",
+      "type": "java.lang.String",
+      "sourceType": "com.doudou.wx.api.WeChatConfigProperties"
+    }
+  ],
+  "hints": []
+}
