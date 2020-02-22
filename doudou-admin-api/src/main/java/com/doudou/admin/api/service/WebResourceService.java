@@ -30,6 +30,9 @@ public class WebResourceService {
     @Resource
     private WebIntegralService webIntegralService;
 
+    @Resource
+    private RedisUtil redisUtil;
+
     @Transactional(rollbackFor = Throwable.class)
     public void auditResource(ResourceVO resourceVO) {
         Assert.notNull(resourceVO,"resourceVO is required");
@@ -43,13 +46,16 @@ public class WebResourceService {
         Assert.isTrue(ResourceStatusEnum.PENDING.name().equalsIgnoreCase(dataResource.getStatus()),"资源状态不正确，不允许审核");
         //检查资源
         String requestId = UUID.randomUUID().toString();
-        //修改资源状态
-        DataResource updateResource = new DataResource();
-        updateResource.setStatus(ResourceStatusEnum.NORMAL.name());
-        updateResource.setResourceId(resourceId);
-        resourceService.updateResource(updateResource);
-        //给发布者积分奖励
-        webIntegralService.saveIntegral(dataResource.getClientId(),rewardIntegral, IntegralTypeEnum.PUBLISH_RESOURCE);
-        log.info("[{}] 审核结束...",requestId);
+        redisUtil.buessineslock(resourceId,requestId,100,() -> {
+            //修改资源状态
+            DataResource updateResource = new DataResource();
+            updateResource.setStatus(ResourceStatusEnum.NORMAL.name());
+            updateResource.setResourceId(resourceId);
+            resourceService.updateResource(updateResource);
+            //给发布者积分奖励
+            webIntegralService.saveIntegral(dataResource.getClientId(),rewardIntegral, IntegralTypeEnum.PUBLISH_RESOURCE);
+            log.info("[{}] 审核结束...",requestId);
+            return true;
+        });
     }
 }

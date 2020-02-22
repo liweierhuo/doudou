@@ -9,7 +9,7 @@ spring:
       username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
   ## 阿里云服务器已经安装了redis
   redis:
-    host: 172.31.183.76
+    host: 47.104.239.91
     port: 6389
     password: x9OCmhqQ2YXtaJ6ZId4DJw==
     database: 1

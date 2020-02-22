@@ -68,6 +68,7 @@ public class ResourceController extends BaseController{
         resourceVO.setClientId(clientId);
         resourceVO.setStatus(ResourceStatusEnum.PENDING.name());
         resourceVO.setResType(ResourceTypeEnum.ONLINE.name());
+        resourceVO.setRemainingNum(resourceVO.getTotalNum());
         resourceVO.setResourceId(redisUtil.genericUniqueId("R"));
         boolean result = resourceService.save(resourceVO);
         if (!result){
@@ -144,5 +145,6 @@ public class ResourceController extends BaseController{
     private void checkParam(ResourceVO resourceVO) {
         Assert.notNull(resourceVO,"request is required");
         Assert.hasText(resourceVO.getTitle(),"title is required");
+        Assert.notNull(resourceVO.getTotalNum(),"total num is required");
     }
 }
