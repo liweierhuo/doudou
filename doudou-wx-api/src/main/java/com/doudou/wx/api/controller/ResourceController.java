@@ -22,7 +22,6 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -132,6 +131,7 @@ public class ResourceController extends BaseController{
     private Wrapper<DataResource> buildResourceWrapper(ResourceVO resourceVO) {
         Assert.notNull(resourceVO,"request is required");
         QueryWrapper<DataResource> wrapper = new QueryWrapper<>();
+        wrapper.eq("status",ResourceStatusEnum.NORMAL.name());
         if (StringUtils.isNotBlank(resourceVO.getKeywords())) {
             wrapper.like("title",resourceVO.getKeywords())
                 .or()

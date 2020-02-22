@@ -2,6 +2,7 @@ package com.doudou.wx.api.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.constant.ResourceStatusEnum;
+import com.doudou.core.service.WebIntegralService;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.PageRequestVO;
 import com.doudou.core.web.annotation.SessionId;
@@ -12,7 +13,6 @@ import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IOrderService;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
-import com.doudou.wx.api.service.WebIntegralService;
 import com.doudou.wx.api.service.WebOrderService;
 import com.doudou.wx.api.vo.ExchangeResourceVO;
 import javax.annotation.Resource;

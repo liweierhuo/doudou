@@ -1,6 +1,8 @@
 package com.doudou.wx.api.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.doudou.core.constant.IntegralTypeEnum;
+import com.doudou.core.service.WebIntegralService;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.Order;
@@ -36,6 +38,9 @@ public class WebOrderService {
         integralService.expendIntegral(clientId,exchangeResourceVO.getIntegral());
         //扣件资源剩余数量
         resourceService.updateResourceRemainingNum(exchangeResourceVO.getResourceId(),dataResource.getRemainingNum() - 1);
+        //奖励者积分
+        String publishClientId = dataResource.getClientId();
+        integralService.saveIntegral(publishClientId,exchangeResourceVO.getIntegral(), IntegralTypeEnum.EARN);
         //插入订单
         orderService.save(buildOrder(clientId,exchangeResourceVO));
     }

@@ -45,7 +45,7 @@ public class RedisUtil {
 
     //解决static方法 调用注入对象的方法
     @Autowired
-    public void setUserService(RedisTemplate<String,Object> redisTemplate) {
+    public void setRedisTemplate(RedisTemplate<String,Object> redisTemplate) {
         RedisUtil.redisTemplate = redisTemplate;
     }
 

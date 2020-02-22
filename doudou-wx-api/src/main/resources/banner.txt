@@ -1,0 +1,4 @@
+                 DOUDOU-WX-API
+                 Application:   ${spring.application.name}
+                 environment:   ${spring.profiles.active}
+                 Spring Boot:   ${AnsiColor.BRIGHT_BLACK}${spring-boot.version}

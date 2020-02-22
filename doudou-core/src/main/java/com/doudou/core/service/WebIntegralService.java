@@ -1,17 +1,13 @@
-package com.doudou.wx.api.service;
+package com.doudou.core.service;
 
 import com.doudou.core.constant.IntegralOperateTypeEnum;
 import com.doudou.core.constant.IntegralTypeEnum;
-import com.doudou.core.util.RedisUtil;
 import com.doudou.dao.entity.Integral;
 import com.doudou.dao.entity.IntegralDetail;
 import com.doudou.dao.entity.Record;
-import com.doudou.dao.entity.UserSignIn;
 import com.doudou.dao.service.IIntegralDetailService;
 import com.doudou.dao.service.IIntegralService;
 import com.doudou.dao.service.IRecordService;
-import com.doudou.dao.service.IUserSignInService;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +31,8 @@ public class WebIntegralService {
     private IIntegralDetailService integralDetailService;
     @Resource
     private IRecordService recordService;
-    @Resource
-    private IUserSignInService userSignInService;
-    @Resource
-    private RedisUtil redisUtil;
+
+
 
     /**
      * 获取积分
@@ -48,8 +42,6 @@ public class WebIntegralService {
      */
     @Transactional(rollbackFor = Throwable.class)
     public void saveIntegral(String clientId,Integer userIntegral,IntegralTypeEnum integralTypeEnum){
-        businessProcess(clientId,integralTypeEnum);
-        //保存用户积分
         Integral integral = integralService.getIntegralByClientId(clientId);
         if (integral != null) {
             integral.setUserIntegral(integral.getUserIntegral() + userIntegral);
@@ -128,26 +120,6 @@ public class WebIntegralService {
 
     public Integral getIntegralByClientId(String clientId) {
         return integralService.getIntegralByClientId(clientId);
-    }
-
-    private void businessProcess(String clientId,IntegralTypeEnum integralTypeEnum) {
-        switch (integralTypeEnum) {
-            case SIGN_IN:
-                Assert.isTrue(userSignInService.save(buildUserSignIn(clientId)), "保存数据失败");
-                break;
-            case EARN:
-                break;
-            default:
-
-        }
-    }
-
-    private UserSignIn buildUserSignIn(String clientId) {
-        UserSignIn userSignIn = new UserSignIn();
-        userSignIn.setClientId(clientId);
-        userSignIn.setTxId(redisUtil.genericUniqueId("S"));
-        userSignIn.setSignInDate(LocalDateTime.now());
-        return userSignIn;
     }
 
     private void saveOperateRecord(String clientId,Integer integral, IntegralOperateTypeEnum operateTypeEnum) {

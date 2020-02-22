@@ -2,7 +2,7 @@ package com.doudou.wx.api.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.constant.ErrorMsgEnum;
-import com.doudou.core.constant.IntegralTypeEnum;
+import com.doudou.core.service.WebIntegralService;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.PageRequestVO;
 import com.doudou.core.web.annotation.SessionId;
@@ -11,8 +11,8 @@ import com.doudou.dao.entity.Integral;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IUserService;
 import com.doudou.dao.service.IUserSignInService;
-import com.doudou.wx.api.service.WebIntegralService;
 import com.doudou.wx.api.service.WebOrderService;
+import com.doudou.wx.api.service.WebUserService;
 import com.doudou.wx.api.vo.UserInfoVO;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -20,7 +20,6 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,9 +48,8 @@ public class UserController extends BaseController {
     private WebIntegralService integralService;
     @Resource
     private WebOrderService webOrderService;
-
-    @Value("${signIn.integral:10}")
-    private int signInIntegral;
+    @Resource
+    private WebUserService webUserService;
 
     @PostMapping("/signIn")
     public ApiResponse signInGetIntegral(@SessionId String clientId) {
@@ -63,7 +61,7 @@ public class UserController extends BaseController {
             return ApiResponse.error(ErrorMsgEnum.REPEAT_SIGN_IN.getCode(), ErrorMsgEnum.REPEAT_SIGN_IN.getErrorMsg());
         }
         //领取积分
-        integralService.saveIntegral(userInfo.getClientId(), signInIntegral, IntegralTypeEnum.SIGN_IN);
+        webUserService.userSignIn(clientId);
         return ApiResponse.success();
     }
 

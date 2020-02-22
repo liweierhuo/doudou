@@ -1,7 +1,7 @@
 
 spring:
   application:
-    name: duoduo
+    name: duoduo-web
   datasource:
     druid:
       url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou_prod?characterEncoding=utf-8&serverTimezone=GMT%2B8

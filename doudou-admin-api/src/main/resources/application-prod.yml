@@ -1,15 +1,15 @@
 
 spring:
   application:
-    name: duoduo-web
+    name: duoduo-admin
   datasource:
     druid:
-      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou_new?characterEncoding=utf-8&serverTimezone=GMT%2B8
+      url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou_prod?characterEncoding=utf-8&serverTimezone=GMT%2B8
       password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
       username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
   ## 阿里云服务器已经安装了redis
   redis:
-    host: 47.104.239.91
+    host: 172.31.183.76
     port: 6389
     password: x9OCmhqQ2YXtaJ6ZId4DJw==
     database: 1
@@ -17,13 +17,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
-miniprogram:
-  appId: 9F7SGCSFP33D9ft+1FpbW+YBBeDwCi7paEFWXvCyh1Y=
-  appSecret: WjjaQBtCIz5tMwigXzA9uNiwad6TvllgmTtKjQHeEYqG2ky929gkavdN1FkZRiO8
-  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
-  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
-  paidUnionIdUrl: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
 
 mybatis-plus:
   configuration:
@@ -42,9 +35,3 @@ mybatis-plus:
       logic-delete-value: 0
       #逻辑未删除值,(逻辑删除下有效)
       logic-not-delete-value: 1
-
-
-local:
-  file:
-    path: image
-    dir: /Users/liwei/studySpace/doudou/doudou-wx-api/src/main/resources/file
