@@ -89,4 +89,9 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
     public IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery) {
         return page(pageQuery,new QueryWrapper<DataResource>().eq("client_id",clientId));
     }
+
+    @Override
+    public int countResourceByUrl(String url) {
+        return count(new QueryWrapper<DataResource>().eq("url",url));
+    }
 }

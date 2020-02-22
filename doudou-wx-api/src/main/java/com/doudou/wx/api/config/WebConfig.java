@@ -48,6 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "/api/resource/list",
                 "/api/resource/detail/**",
                 "/api/resource/**/publish",
+                "/api/resource/batch/add/**",
                 "/api/user/data/**",
                 "/api/common/upload")
             .addPathPatterns("/api/**");

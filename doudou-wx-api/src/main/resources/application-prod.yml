@@ -47,7 +47,7 @@ mybatis-plus:
 local:
   file:
     path: image
-    dir: /home/data/doudou/file
+    dir: /Users/liwei/studySpace/doudou/doudou-wx-api/src/main/resources/file
 
 server:
   port: 8082

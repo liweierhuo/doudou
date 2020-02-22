@@ -14,11 +14,16 @@ import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
+import com.doudou.wx.api.util.DouFileUtils;
+import com.doudou.wx.api.util.ValidatorUtil;
 import com.doudou.wx.api.vo.ResourceVO;
+import com.github.kevinsawicki.http.HttpRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -52,6 +57,9 @@ public class ResourceController extends BaseController{
     private RedisUtil redisUtil;
     @Resource
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Resource
+    private DouFileUtils douFileUtils;
+    private static final int HTTP_RESPONSE_CODE = 200;
 
     @GetMapping("/list")
     public ApiResponse getPageResource(PageRequestVO pageRequestVO,ResourceVO resourceVO) {
@@ -65,16 +73,45 @@ public class ResourceController extends BaseController{
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"用户不存在");
         checkParam(resourceVO);
-        resourceVO.setClientId(clientId);
-        resourceVO.setStatus(ResourceStatusEnum.PENDING.name());
-        resourceVO.setResType(ResourceTypeEnum.ONLINE.name());
-        resourceVO.setRemainingNum(resourceVO.getTotalNum());
-        resourceVO.setResourceId(redisUtil.genericUniqueId("R"));
-        boolean result = resourceService.save(resourceVO);
-        if (!result){
-            return ApiResponse.error();
+        String requestId = UUID.randomUUID().toString();
+        return redisUtil.buessineslock(resourceVO.getUrl(),requestId,2,() -> {
+            resourceVO.setClientId(clientId);
+            resourceVO.setStatus(ResourceStatusEnum.PENDING.name());
+            resourceVO.setResType(ResourceTypeEnum.ONLINE.name());
+            resourceVO.setRemainingNum(resourceVO.getTotalNum());
+            resourceVO.setResourceId(redisUtil.genericUniqueId("R"));
+            boolean result = resourceService.save(resourceVO);
+            if (!result){
+                return ApiResponse.error();
+            }
+            return ApiResponse.success();
+        });
+    }
+
+    @PostMapping("/batch/add/{clientId}")
+    public ApiResponse batchAddResource(@RequestBody List<ResourceVO> resourceList, @PathVariable("clientId") String clientId) {
+        int successCount = 0;
+        int failedCount = 0;
+        for (ResourceVO resourceVO : resourceList) {
+            String localPath = douFileUtils.saveInternetImageToLocal((resourceVO.getImageUrl()));
+            resourceVO.setImageUrl(douFileUtils.toServerPath(localPath,getRequest()));
+            resourceVO.setRemark("批量发布");
+            try {
+                ApiResponse apiResponse = addResource(clientId,resourceVO);
+                if (apiResponse.getCode() == 0) {
+                    successCount++;
+                    //todo 触发一个审核
+                } else {
+                    failedCount++;
+                }
+            } catch (Exception e) {
+                log.error("[{}] 资源发布失败，",resourceVO.getUrl(),e);
+                failedCount++;
+            }
+
         }
-        return ApiResponse.success();
+        String message = String.format("添加成功%d条，失败%d条",successCount,failedCount);
+        return new ApiResponse<>(message);
     }
 
     @GetMapping("/detail/{resourceId}")
@@ -142,9 +179,17 @@ public class ResourceController extends BaseController{
         return wrapper;
     }
 
+    @SneakyThrows
     private void checkParam(ResourceVO resourceVO) {
         Assert.notNull(resourceVO,"request is required");
         Assert.hasText(resourceVO.getTitle(),"title is required");
         Assert.notNull(resourceVO.getTotalNum(),"total num is required");
+        String url = resourceVO.getUrl();
+        Assert.isTrue(ValidatorUtil.isUrl(url),"url格式不正确");
+        Assert.isTrue(resourceService.countResourceByUrl(url) <= 0,"资源链接已经存在");
+        HttpRequest response = HttpRequest.get(url);
+        Assert.isTrue(response.getConnection().getResponseCode() == HTTP_RESPONSE_CODE,"URL无法访问");
     }
+
+
 }

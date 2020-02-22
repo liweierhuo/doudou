@@ -43,5 +43,12 @@ public interface IResourceService extends IService<DataResource> {
      * @return
      */
     IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery);
+
+    /**
+     * 检验资源url是否存在
+     * @param url
+     * @return
+     */
+    int countResourceByUrl(String url);
 	
 }
