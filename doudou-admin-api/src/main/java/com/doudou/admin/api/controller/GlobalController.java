@@ -26,7 +26,7 @@ public class GlobalController extends BaseController {
 
     @GetMapping("/heart.jsp")
     public int heart() {
-        log.info("system is ...");
+        log.info("system is run ...");
         return 1;
     }
 	

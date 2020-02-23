@@ -49,5 +49,9 @@ local:
     path: image
     dir: /Users/liwei/studySpace/doudou/doudou-wx-api/src/main/resources/file
 
+admin:
+  audit:
+    url: http://127.0.0.1:8081/api/admin/resource/audit
+
 server:
   port: 8082
