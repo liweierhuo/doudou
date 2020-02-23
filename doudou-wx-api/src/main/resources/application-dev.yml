@@ -11,19 +11,20 @@ spring:
   redis:
     host: 47.104.239.91
     port: 6389
-    password: x9OCmhqQ2YXtaJ6ZId4DJw==
+    password: ENC(d2TAJ5KAGuWizyT44Q6/TfJjUkoH+a6YQaCukJt9uvQ=)
     database: 1
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
-miniprogram:
-  appId: 9F7SGCSFP33D9ft+1FpbW+YBBeDwCi7paEFWXvCyh1Y=
-  appSecret: WjjaQBtCIz5tMwigXzA9uNiwad6TvllgmTtKjQHeEYqG2ky929gkavdN1FkZRiO8
-  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
-  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
-  paidUnionIdUrl: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
+wechat:
+  wxa:
+    app-id: ENC(LfWpZa/xvKC6s7RCSw4ltPEek+EGJq2H9oV5cDogT/T0KqVQtUKnmQ==)
+    app-secret: ENC(VGtOzcpTLCmxWhY4BimLp0dCXdTTyrU2Cpzl6HPWwcQD1svAknzscklRgfDW+zYNSVv8BfMHmzI=)
+    login-url: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
+    access-token-url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+    paid-union-id-url: https://api.weixin.qq.com/wxa/getpaidunionid?access_token=%s&openid=%s
 
 mybatis-plus:
   configuration:

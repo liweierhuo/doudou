@@ -3,12 +3,12 @@ package com.doudou.wx.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
-import com.doudou.core.password.util.AESEncryptUtil;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.wx.RawDataBo;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IUserService;
+import com.doudou.wx.api.config.WeChatConfigProperties;
 import com.doudou.wx.api.exception.WxApiException;
 import com.doudou.wx.api.vo.WxLoginVO;
 import com.github.kevinsawicki.http.HttpRequest;
@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,20 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class WechatAuthController extends BaseController{
 
-    @Value("${miniprogram.loginUrl}")
-    private String wxLoginUrl;
-
-    @Value("${miniprogram.appId}")
-    private String appId;
-
-    @Value("${miniprogram.appSecret}")
-    private String appSecret;
-
-    @Value("${miniprogram.accessTokenUrl}")
-    private String accessTokenUrl;
-
-    @Value("${miniprogram.paidUnionIdUrl}")
-    private String paidUnionIdUrl;
+    @Resource
+    private WeChatConfigProperties weChatConfigProperties;
 
     @Resource
     private RedisUtil redisUtil;
@@ -59,7 +46,10 @@ public class WechatAuthController extends BaseController{
     @PostMapping("login")
     public ApiResponse index(@RequestBody WxLoginVO request) {
         log.info("request : [{}]", request);
-        String requestUrl = String.format(wxLoginUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret),request.getCode());
+        String wxLoginUrl = weChatConfigProperties.getLoginUrl();
+        String appId = weChatConfigProperties.getAppId();
+        String appSecret = weChatConfigProperties.getAppSecret();
+        String requestUrl = String.format(wxLoginUrl,appId,appSecret,request.getCode());
         JSONObject jsonObject = requestToWx(requestUrl);
         String openId = jsonObject.getString(WxApiConstant.WX_OPEN_ID);
         String unionId = jsonObject.getString(WxApiConstant.WX_UNION_ID);
@@ -132,7 +122,10 @@ public class WechatAuthController extends BaseController{
     }
 
     private String getAccessToken(String openId) {
-        String requestUrl = String.format(accessTokenUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret));
+        String accessTokenUrl = weChatConfigProperties.getAccessTokenUrl();
+        String appId = weChatConfigProperties.getAppId();
+        String appSecret = weChatConfigProperties.getAppSecret();
+        String requestUrl = String.format(accessTokenUrl,appId,appSecret);
         JSONObject jsonObject = requestToWx(requestUrl);
         String accessToken = jsonObject.getString("access_token");
         Long expiresTimes = jsonObject.getLong("expires_in");

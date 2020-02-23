@@ -11,7 +11,7 @@ spring:
   redis:
     host: 47.104.239.91
     port: 6389
-    password: x9OCmhqQ2YXtaJ6ZId4DJw==
+    password: ENC(d2TAJ5KAGuWizyT44Q6/TfJjUkoH+a6YQaCukJt9uvQ=)
     database: 1
 
   jackson:
