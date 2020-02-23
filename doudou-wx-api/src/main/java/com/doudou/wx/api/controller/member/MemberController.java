@@ -5,6 +5,7 @@ import com.doudou.core.constant.MemberConstant;
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
 import com.doudou.core.password.util.AESEncryptUtil;
+import com.doudou.core.properties.WeChatConfigProperties;
 import com.doudou.core.util.RedisUtils;
 import com.doudou.core.web.wx.RawDataBo;
 import com.doudou.dao.entity.member.DdUser;
@@ -38,22 +39,10 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/api/wechat")
 @Slf4j
-public class MemberController extends BaseController{
+public class MemberController extends BaseController {
 
-    @Value("${miniprogram.loginUrl}")
-    private String wxLoginUrl;
-
-    @Value("${miniprogram.appId}")
-    private String appId;
-
-    @Value("${miniprogram.appSecret}")
-    private String appSecret;
-
-    @Value("${miniprogram.accessTokenUrl}")
-    private String accessTokenUrl;
-
-    @Value("${miniprogram.paidUnionIdUrl}")
-    private String paidUnionIdUrl;
+    @Autowired
+    private WeChatConfigProperties weChatConfig;
 
     @Autowired
     private IDdUserService ddUserService;
@@ -65,7 +54,8 @@ public class MemberController extends BaseController{
     public AjaxResponse index(@RequestBody WxLoginVO request) {
         log.info("request : [{}]", request);
         //初始化URL
-        String requestUrl = String.format(wxLoginUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret),request.getCode());
+        String requestUrl = String.format(weChatConfig.getLoginUrl(), weChatConfig.getAppId()
+                , weChatConfig.getAppSecret(), request.getCode());
         //发起请求
         JSONObject jsonObject = WeChatUtils.requestToWx(requestUrl);
         //获取返回的数据
@@ -74,11 +64,11 @@ public class MemberController extends BaseController{
         String sessionKey = jsonObject.getString(WxApiConstant.WX_SESSION_KEY);
         RawDataBo rawDataBo = JSONObject.parseObject(request.getRawData(), RawDataBo.class);
         if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(sessionKey)) {
-           return AjaxResponse.error();
+            return AjaxResponse.error();
         }
 
-        log.info("开始登陆...数据..{},{}",openId,rawDataBo);
-        UserOutput userOutput = loginBizService.getLoginUser(openId,unionId,rawDataBo);
+        log.info("开始登陆...数据..{},{}", openId, rawDataBo);
+        UserOutput userOutput = loginBizService.getLoginUser(openId, unionId, rawDataBo);
 
         return AjaxResponse.success(userOutput);
     }
@@ -91,7 +81,7 @@ public class MemberController extends BaseController{
         //随机生成username
         StringBuilder username = new StringBuilder();
         int random2 = new Random().nextInt(10000000);
-        username.append(String.format("duoduo_%d",random2));
+        username.append(String.format("duoduo_%d", random2));
         ddUser.setUsername(username.toString());
         //初始密码为123456
         ddUser.setPassword(DigestUtils.md5Hex(MemberConstant.PASSWORD));
@@ -104,16 +94,17 @@ public class MemberController extends BaseController{
     }
 
     private String getUserToken(@NotNull String openId, @NotNull String sessionKey) {
-        return DigestUtils.md5Hex(String.join(";",openId,sessionKey));
+        return DigestUtils.md5Hex(String.join(";", openId, sessionKey));
     }
 
 
     private String getAccessToken(String openId) {
-        String requestUrl = String.format(accessTokenUrl,AESEncryptUtil.decrypt(appId),AESEncryptUtil.decrypt(appSecret));
+        String requestUrl = String.format(weChatConfig.getAccessTokenUrl(), weChatConfig.getAppId()
+                , weChatConfig.getAppSecret());
         JSONObject jsonObject = WeChatUtils.requestToWx(requestUrl);
         String accessToken = jsonObject.getString("access_token");
         Long expiresTimes = jsonObject.getLong("expires_in");
-        RedisUtils.put(RedisConstant.getAccessTokenRedisKey(openId),accessToken,expiresTimes,TimeUnit.SECONDS);
+        RedisUtils.put(RedisConstant.getAccessTokenRedisKey(openId), accessToken, expiresTimes, TimeUnit.SECONDS);
         return accessToken;
     }
 

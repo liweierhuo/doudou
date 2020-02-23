@@ -1,11 +1,12 @@
 package com.doudou.wx.api.config;
 
-import com.doudou.core.password.SecurityDateSource;
-import javax.sql.DataSource;
+import com.doudou.core.password.DruidEncryptFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author: liwei
@@ -14,13 +15,16 @@ import org.springframework.context.annotation.Primary;
  * @date: 2019-10-12
  */
 @Configuration
+@EnableTransactionManagement
 public class DataSourceConfig {
 
-    @Primary
+    private static final String FILTER_ENCRYPT_PREFIX = "spring.datasource.druid.filter.encrypt";
+
     @Bean
-    @ConfigurationProperties("spring.datasource.druid")
-    public DataSource dataSourceOne(){
-        SecurityDateSource druidDataSource = new SecurityDateSource();
-        return druidDataSource;
+    @ConfigurationProperties(FILTER_ENCRYPT_PREFIX)
+    @ConditionalOnProperty(prefix = FILTER_ENCRYPT_PREFIX, name = "enabled")
+    @ConditionalOnMissingBean
+    public DruidEncryptFilter druidEncryptFilter() {
+        return new DruidEncryptFilter();
     }
 }

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.doudou.core.constant.WxApiConstant;
 import com.doudou.wx.api.exception.WxApiException;
 import com.github.kevinsawicki.http.HttpRequest;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -14,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.AlgorithmParameters;
 import java.security.Security;
 import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * @author ljh
@@ -23,11 +23,11 @@ public class WeChatUtils {
 
     public static JSONObject getUserInfo(String encryptedData, String sessionKey, String iv) {
         // 被加密的数据
-        byte[] dataByte = Base64.decode(encryptedData);
+        byte[] dataByte = Base64.getDecoder().decode(encryptedData);
         // 加密秘钥
-        byte[] keyByte = Base64.decode(sessionKey);
+        byte[] keyByte = Base64.getDecoder().decode(sessionKey);
         // 偏移量
-        byte[] ivByte = Base64.decode(iv);
+        byte[] ivByte = Base64.getDecoder().decode(iv);
         try {
             // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
             int base = 16;
