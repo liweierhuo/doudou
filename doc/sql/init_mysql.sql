@@ -179,3 +179,9 @@ CREATE TABLE `uc_user_message`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
+
+/**
+  清库脚本
+ */
+truncate table dd_resource;
+truncate table dd_order;

@@ -53,6 +53,10 @@ public class WebResourceService {
             updateResource.setResourceId(resourceId);
             resourceService.updateResource(updateResource);
             //给发布者积分奖励
+            if (rewardIntegral.equals(0)) {
+                log.info("奖励积分为0,不用奖励");
+                return true;
+            }
             webIntegralService.saveIntegral(dataResource.getClientId(),rewardIntegral, IntegralTypeEnum.PUBLISH_RESOURCE);
             log.info("[{}] 审核结束...",requestId);
             return true;
