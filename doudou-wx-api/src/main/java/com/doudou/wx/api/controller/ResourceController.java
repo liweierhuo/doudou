@@ -112,6 +112,7 @@ public class ResourceController extends BaseController{
                 .like("subtitle",resourceVO.getKeywords())
                 .orderByDesc("id");
         }
+        wrapper.orderByDesc("sticky","sort_num","id");
         return wrapper;
     }
 

@@ -106,4 +106,16 @@ public class DataResource extends BaseDO {
     @TableField(value = "remaining_num")
     private Integer remainingNum;
 
+    /**
+     * 排序号，越大越靠前
+     */
+    @TableField(value = "sort_num")
+    private Integer sortNum;
+
+    /**
+     * 置顶字段，置顶为1，否则为0
+     */
+    @TableField(value = "sticky")
+    private Integer sticky;
+
 }
