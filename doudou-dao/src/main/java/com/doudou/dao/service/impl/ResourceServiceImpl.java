@@ -86,8 +86,11 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
     }
 
     @Override
-    public IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery) {
-        return page(pageQuery,new QueryWrapper<DataResource>().eq("client_id",clientId));
+    public IPage<DataResource> pageResource(DataResource dataResource, IPage<DataResource> pageQuery) {
+        return page(pageQuery,new QueryWrapper<DataResource>()
+            .eq("client_id",dataResource.getClientId())
+            .eq("status",dataResource.getStatus())
+        );
     }
 
     @Override

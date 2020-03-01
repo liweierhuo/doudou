@@ -2,6 +2,7 @@ package com.doudou.wx.api.interceptor;
 
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
+import com.doudou.core.exception.NoLoginException;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.annotation.SessionId;
 import java.lang.annotation.Annotation;
@@ -34,9 +35,17 @@ public class ArgumentResolver implements HandlerMethodArgumentResolver {
         // 逐一处理
         for (Annotation annotation : annotations) {
             if (annotation instanceof SessionId) {
-                return RedisUtil.get(RedisConstant.getSessionIdKey(webRequest.getHeader(WxApiConstant.CLIENT_SESSION_ID_KEY)));
+                return resolveClientId((SessionId) annotation, webRequest);
             }
         }
         return null;
+    }
+
+    private Object resolveClientId(SessionId annotation, NativeWebRequest webRequest) {
+        Object attribute = RedisUtil.get(RedisConstant.getSessionIdKey(webRequest.getHeader(WxApiConstant.CLIENT_SESSION_ID_KEY)));
+        if (attribute == null && annotation.required()) {
+            throw new NoLoginException("请登录");
+        }
+        return attribute;
     }
 }

@@ -84,7 +84,10 @@ public class ResourceController extends BaseController{
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"user info is null");
         IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        pageQuery = resourceService.pageResource(clientId, pageQuery);
+        DataResource resourceQuery = new DataResource();
+        resourceQuery.setClientId(clientId);
+        resourceQuery.setStatus(ResourceStatusEnum.NORMAL.name());
+        pageQuery = resourceService.pageResource(resourceQuery, pageQuery);
         IPage<ResourceVO> pageResult = new Page<>(pageQuery.getCurrent(),pageQuery.getSize());
         pageResult.setTotal(pageQuery.getTotal());
         pageResult.setPages(pageQuery.getPages());

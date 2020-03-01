@@ -26,5 +26,6 @@ public class UserInfoVO extends User {
 
     private String phoneNo;
     private String backImageUrl;
+    private Boolean signInStatus;
 
 }

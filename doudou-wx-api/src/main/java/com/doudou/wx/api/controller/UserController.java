@@ -2,24 +2,17 @@ package com.doudou.wx.api.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.constant.ErrorMsgEnum;
-import com.doudou.core.service.WebIntegralService;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.PageRequestVO;
 import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.DataResource;
-import com.doudou.dao.entity.Integral;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IUserService;
-import com.doudou.dao.service.IUserSignInService;
 import com.doudou.wx.api.service.WebOrderService;
 import com.doudou.wx.api.service.WebUserService;
 import com.doudou.wx.api.vo.UserInfoVO;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,11 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController extends BaseController {
 
     @Resource
-    private IUserSignInService userSignInService;
-    @Resource
     private IUserService userService;
-    @Resource
-    private WebIntegralService integralService;
     @Resource
     private WebOrderService webOrderService;
     @Resource
@@ -55,9 +44,7 @@ public class UserController extends BaseController {
     public ApiResponse signInGetIntegral(@SessionId String clientId) {
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"用户信息不存在");
-        int count = userSignInService
-            .countSignIn(userInfo.getClientId(), DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().plusDays(1).minusSeconds(1).toDate());
-        if (count > 0) {
+        if (webUserService.userSignInStatus(clientId)) {
             return ApiResponse.error(ErrorMsgEnum.REPEAT_SIGN_IN.getCode(), ErrorMsgEnum.REPEAT_SIGN_IN.getErrorMsg());
         }
         //领取积分
@@ -72,17 +59,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/data/{clientId}")
     public ApiResponse getUserInfoByClientId(@PathVariable("clientId") String clientId) {
-        User userInfo = userService.queryByClientId(clientId);
-        Assert.notNull(userInfo,"用户信息不存在");
-        UserInfoVO userInfoVO = UserInfoVO.builder().build();
-        BeanUtils.copyProperties(userInfo,userInfoVO);
-
-        Integral integral = integralService.getIntegralByClientId(clientId);
-        userInfoVO.setUserIntegral(integral == null ? 0 : integral.getUserIntegral());
-        long days = ChronoUnit.DAYS.between(userInfo.getCreated(), LocalDateTime.now());
-        userInfoVO.setRegisteredDays(days);
-        userInfoVO.setResourceNum(webOrderService.countUserResourceNum(clientId));
-        return new ApiResponse<>(userInfoVO);
+        return new ApiResponse<>(webUserService.getUserInfo(clientId));
     }
 
     @PostMapping("/update")

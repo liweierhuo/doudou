@@ -51,8 +51,19 @@ public class Ad extends BaseDO {
     private String status;
 
     /**
+     * 资源推广，操作手册
+     */
+    private String type;
+
+    /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 扩展参数
+     */
+    @TableField(value = "extra_param")
+    private String extraParam;
 
 }

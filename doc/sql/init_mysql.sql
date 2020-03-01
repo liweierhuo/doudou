@@ -24,8 +24,10 @@ create table uc_user
     `created`            timestamp               NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`           timestamp               NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`               tinyint(4)              NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
-);
+    PRIMARY KEY (`id`),
+    unique key uni_clientId (`client_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='用户表';
 
 drop table if exists dd_resource;
 create table dd_resource
@@ -52,8 +54,10 @@ create table dd_resource
     `created`     timestamp                 NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`    timestamp                 NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`        tinyint(4)                NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
-);
+    PRIMARY KEY (`id`),
+    unique key uni_resourceId (`resource_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='资源表';
 
 #用户积分表
 DROP TABLE IF EXISTS `user_integral`;
@@ -136,15 +140,18 @@ CREATE TABLE `dd_ad`
     `id`          int(11)      NOT NULL auto_increment COMMENT '主键',
     `ad_id`       varchar(128) not null default '' comment '广告唯一标示',
     `title`       varchar(128) not null default '' comment '广告标题',
-    `description` varchar(512) not null default '' comment '广告描述',
+    `description` text         null comment '广告内容',
     `url`         varchar(512) not null default '' comment '广告url',
     `image_url`   varchar(512) not null default '' comment '广告图片url',
+    `extra_param` varchar(512) not null default '' comment '扩展参数',
     `status`      varchar(64)  not null default '' comment '状态，有效，失效',
+    `type`        varchar(64)  not null default '' comment '类型，资源推广，操作手册',
     `remark`      varchar(255)          DEFAULT NULL COMMENT '备注',
     `created`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`        tinyint(4)   NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    unique key uni_txId (`ad_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='广告表';
 
@@ -160,7 +167,8 @@ CREATE TABLE `uc_user_sign_in`
     `created`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`         tinyint(4)   NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    unique key uni_txId (`tx_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
 
@@ -178,9 +186,27 @@ CREATE TABLE `uc_user_message`
     `created`   timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`      tinyint(4)   NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    unique key uni_txId (`tx_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
+
+#用户关注表
+DROP TABLE IF EXISTS `uc_follow_user`;
+CREATE TABLE `uc_follow_user`
+(
+    `id`               int(11)      NOT NULL auto_increment COMMENT '主键',
+    `tx_id`            varchar(128) not null default '' comment '流水Id',
+    `client_id`        varchar(64)  not null default '' comment '用户标示',
+    `follow_client_id` varchar(64)  not null default '' comment '关注用户',
+    `last_message`     varchar(512) not null default '' comment '最新留言',
+    `created`          timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`         timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`             tinyint(4)   NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`),
+    unique key uni_txId (`tx_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='关注表';
 
 /**
   清库脚本

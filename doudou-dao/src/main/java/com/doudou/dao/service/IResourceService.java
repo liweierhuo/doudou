@@ -38,11 +38,11 @@ public interface IResourceService extends IService<DataResource> {
 
     /**
      * 查询分页
-     * @param clientId
+     * @param dataResource
      * @param pageQuery
      * @return
      */
-    IPage<DataResource> pageResource(String clientId, IPage<DataResource> pageQuery);
+    IPage<DataResource> pageResource(DataResource dataResource, IPage<DataResource> pageQuery);
 
     /**
      * 检验资源url是否存在
