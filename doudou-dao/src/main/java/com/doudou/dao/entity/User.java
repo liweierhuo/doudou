@@ -2,7 +2,7 @@ package com.doudou.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -105,6 +105,6 @@ public class User extends BaseDO {
      * 最后登录时间
      */
     @TableField(value = "login_time")
-    private LocalDateTime loginTime;
+    private Date loginTime;
 
 }

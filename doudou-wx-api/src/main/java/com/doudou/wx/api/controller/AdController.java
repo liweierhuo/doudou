@@ -5,6 +5,7 @@ import com.doudou.core.web.ApiResponse;
 import com.doudou.dao.entity.Ad;
 import com.doudou.dao.service.IAdService;
 import com.doudou.wx.api.vo.AdVO;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.annotation.Resource;
@@ -43,8 +44,8 @@ public class AdController extends BaseController {
             .eq("ad_id", adId));
         AdVO adVO = new AdVO();
         BeanUtils.copyProperties(ad,adVO);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        adVO.setCreatFormatDate(ad.getCreated().format(dateTimeFormatter));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        adVO.setCreatFormatDate(simpleDateFormat.format(ad.getCreated()));
         return new ApiResponse<>(adVO);
     }
 

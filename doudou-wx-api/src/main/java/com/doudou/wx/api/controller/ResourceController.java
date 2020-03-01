@@ -14,6 +14,7 @@ import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.service.WebResourceService;
 import com.doudou.wx.api.vo.ResourceVO;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,8 +100,8 @@ public class ResourceController extends BaseController{
         return records.stream().map(dataResource -> {
             ResourceVO resourceVO = new ResourceVO();
             BeanUtils.copyProperties(dataResource,resourceVO);
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            resourceVO.setPublishDate(dataResource.getCreated().format(dateTimeFormatter));
+            SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            resourceVO.setPublishDate(dateTimeFormatter.format(dataResource.getCreated()));
             return resourceVO;
         }).collect(Collectors.toList());
     }

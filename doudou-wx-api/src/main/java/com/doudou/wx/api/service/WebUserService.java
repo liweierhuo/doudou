@@ -8,9 +8,11 @@ import com.doudou.dao.entity.User;
 import com.doudou.dao.entity.UserSignIn;
 import com.doudou.dao.service.IUserService;
 import com.doudou.dao.service.IUserSignInService;
+import com.doudou.wx.api.util.MyDateUtils;
 import com.doudou.wx.api.vo.UserInfoVO;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import javax.annotation.Resource;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
@@ -61,7 +63,7 @@ public class WebUserService {
 
         Integral integral = integralService.getIntegralByClientId(clientId);
         userInfoVO.setUserIntegral(integral == null ? 0 : integral.getUserIntegral());
-        long days = ChronoUnit.DAYS.between(userInfo.getCreated(), LocalDateTime.now());
+        long days = ChronoUnit.DAYS.between(MyDateUtils.date2LocalDate(userInfo.getCreated()), LocalDateTime.now());
         userInfoVO.setRegisteredDays(days);
         userInfoVO.setResourceNum(webOrderService.countUserResourceNum(clientId));
         userInfoVO.setSignInStatus(userSignInStatus(clientId));
@@ -84,7 +86,7 @@ public class WebUserService {
         UserSignIn userSignIn = new UserSignIn();
         userSignIn.setClientId(clientId);
         userSignIn.setTxId(redisUtil.genericUniqueId("S"));
-        userSignIn.setSignInDate(LocalDateTime.now());
+        userSignIn.setSignInDate(new Date());
         return userSignIn;
     }
 }

@@ -7,9 +7,34 @@ spring:
       url: jdbc:mysql://59783869de818.gz.cdb.myqcloud.com:5211/doudou_prod?characterEncoding=utf-8&serverTimezone=GMT%2B8
       password: ERqIJmLaFXp/jSG1b/8uYBY80EVuQHAhVeM5HKl9yEKJcGEbaJJv3qFGdKA6KLomSxlpgMQI3mMpaZLzLZErWA==
       username: bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==
+      #下面这些参数为固定参数,无需修改
+      filters: config,wall
+      db-type: mysql
+      driver-class-name: com.mysql.jdbc.Driver
+      # 连接池配置
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      max-wait: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+      filter:
+        stat:
+          enabled: false
+        wall:
+          enabled: true
+      web-stat-filter:
+        enabled: false
+      stat-view-servlet:
+        enabled: false
   ## 阿里云服务器已经安装了redis
   redis:
-    host: 47.104.239.91
+    host: 172.31.183.76
     port: 6389
     password: ENC(d2TAJ5KAGuWizyT44Q6/TfJjUkoH+a6YQaCukJt9uvQ=)
     database: 1
@@ -48,11 +73,7 @@ mybatis-plus:
 local:
   file:
     path: image
-    dir: /Users/liwei/studySpace/doudou/doudou-wx-api/src/main/resources/file
-
-admin:
-  audit:
-    url: http://127.0.0.1:8081/api/admin/resource/audit
+    dir: /home/data/doudou/file
 
 server:
   port: 8082

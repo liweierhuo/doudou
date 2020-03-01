@@ -12,7 +12,7 @@ import com.doudou.wx.api.config.WeChatConfigProperties;
 import com.doudou.wx.api.exception.WxApiException;
 import com.doudou.wx.api.vo.WxLoginVO;
 import com.github.kevinsawicki.http.HttpRequest;
-import java.time.LocalDateTime;
+import java.util.Date;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +79,7 @@ public class WechatAuthController extends BaseController{
             if (StringUtils.isNotBlank(rawDataBo.getCity())) {
                 userInfo.setCity(rawDataBo.getCity());
             }
-            userInfo.setLoginTime(LocalDateTime.now());
+            userInfo.setLoginTime(new Date());
             ucUserService.updateUserByOpenId(userInfo,openId);
             RedisUtil.setex(RedisConstant.getSessionIdKey(userToken),userInfo.getClientId(),7200L);
             return new ApiResponse<>(userToken);
@@ -98,7 +98,7 @@ public class WechatAuthController extends BaseController{
         ucUser.setIcon(rawDataBo.getAvatarUrl());
         ucUser.setNickName(rawDataBo.getNickName());
         ucUser.setUsername(rawDataBo.getNickName());
-        ucUser.setLoginTime(LocalDateTime.now());
+        ucUser.setLoginTime(new Date());
         ucUser.setGender(rawDataBo.getGender());
         ucUser.setCountry(rawDataBo.getCountry());
         ucUser.setProvince(rawDataBo.getProvince());

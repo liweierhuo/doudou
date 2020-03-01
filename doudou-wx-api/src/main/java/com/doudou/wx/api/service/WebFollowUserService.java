@@ -10,6 +10,7 @@ import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IFollowUserService;
 import com.doudou.wx.api.vo.FollowUserVO;
 import com.doudou.wx.api.vo.UserInfoVO;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -107,8 +108,8 @@ public class WebFollowUserService {
             followUserVO.setFollowUserNickname(userInfo.getNickName());
             followUserVO.setLabel("来了"+userInfo.getRegisteredDays()+"天，发布了"+userInfo.getResourceNum()+"个资源");
         }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-        followUserVO.setCreateDate(followUser.getCreated().format(dateTimeFormatter));
+        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        followUserVO.setCreateDate(dateTimeFormatter.format(followUser.getCreated()));
         return followUserVO;
     }
 

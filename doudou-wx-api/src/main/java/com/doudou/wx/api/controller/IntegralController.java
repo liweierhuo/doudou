@@ -9,6 +9,7 @@ import com.doudou.core.web.annotation.SessionId;
 import com.doudou.dao.entity.Record;
 import com.doudou.dao.service.IRecordService;
 import com.doudou.wx.api.vo.IntegralRecordVO;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +47,10 @@ public class IntegralController extends BaseController{
         if (CollectionUtils.isEmpty(records)) {
             return new ArrayList<>();
         }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return records.stream().map(record -> IntegralRecordVO.builder()
             .integral(IntegralOperateTypeEnum.valueOf(record.getType()).getInOrOut()+record.getIntegral())
-            .transDate(record.getCreated().format(dateTimeFormatter))
+            .transDate(simpleDateFormat.format(record.getCreated()))
             .type(record.getType())
             .typeDesc(IntegralOperateTypeEnum.valueOf(record.getType()).getDesc())
             .id(record.getId())

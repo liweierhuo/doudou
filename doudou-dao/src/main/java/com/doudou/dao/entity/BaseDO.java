@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 
 /**
@@ -20,9 +20,9 @@ class BaseDO implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private LocalDateTime created;
+    private Date created;
 
-    private LocalDateTime modified;
+    private Date modified;
 
     @TableLogic
     private Integer flag;

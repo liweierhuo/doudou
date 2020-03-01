@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.mapper.ResourceMapper;
 import com.doudou.dao.service.IResourceService;
-import java.time.LocalDateTime;
+import java.util.Date;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -80,7 +80,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
         if (!StringUtils.isEmpty(dataResource.getStatus())) {
             updateBean.setStatus(dataResource.getStatus());
         }
-        updateBean.setModified(LocalDateTime.now());
+        updateBean.setModified(new Date());
         boolean updateResult = update(updateBean, new QueryWrapper<DataResource>().eq("resource_id", dataResource.getResourceId()));
         Assert.isTrue(updateResult,"更新失败");
     }

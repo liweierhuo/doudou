@@ -2,7 +2,7 @@ package com.doudou.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,7 +35,7 @@ public class UserSignIn extends BaseDO {
      * 签到日期
      */
     @TableField(value = "sign_in_date")
-    private LocalDateTime signInDate;
+    private Date signInDate;
 
     /**
      * 备注
