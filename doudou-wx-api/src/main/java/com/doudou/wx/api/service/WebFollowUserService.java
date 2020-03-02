@@ -6,14 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.util.RedisUtil;
 import com.doudou.core.web.PageRequestVO;
 import com.doudou.dao.entity.FollowUser;
-import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IFollowUserService;
 import com.doudou.wx.api.vo.FollowUserVO;
 import com.doudou.wx.api.vo.UserInfoVO;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -83,26 +82,31 @@ public class WebFollowUserService {
         Assert.hasText(clientId,"clientId is required");
         IPage<FollowUser> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
         pageQuery = followUserService.page(pageQuery, new QueryWrapper<FollowUser>().eq("client_id", clientId));
-        return buildFollowUserList(pageQuery);
+        return buildFollowUserList(pageQuery,PageTypeEnum.MY_FOLLOW);
     }
 
     public IPage<FollowUserVO> pageFollowMe(String clientId, PageRequestVO pageRequestVO) {
         Assert.hasText(clientId,"clientId is required");
         IPage<FollowUser> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
         pageQuery = followUserService.page(pageQuery,new QueryWrapper<FollowUser>().eq("follow_client_id", clientId));
-        return buildFollowUserList(pageQuery);
+        return buildFollowUserList(pageQuery,PageTypeEnum.FOLLOW_ME);
     }
 
-    private IPage<FollowUserVO> buildFollowUserList(IPage<FollowUser> page) {
+    private IPage<FollowUserVO> buildFollowUserList(IPage<FollowUser> page,PageTypeEnum type) {
         IPage<FollowUserVO> pageResult = new Page<>(page.getCurrent(),page.getSize());
-        pageResult.setRecords(page.getRecords().stream().map(this::convert).collect(Collectors.toList()));
+        pageResult.setRecords(page.getRecords().stream().map(followUser -> convert(followUser,type)).collect(Collectors.toList()));
         return pageResult;
     }
 
-    private FollowUserVO convert(FollowUser followUser) {
+    private FollowUserVO convert(FollowUser followUser,PageTypeEnum type) {
         FollowUserVO followUserVO = new FollowUserVO();
         BeanUtils.copyProperties(followUser,followUserVO);
-        UserInfoVO userInfo = webUserService.getUserInfo(followUser.getFollowClientId());
+        UserInfoVO userInfo;
+        if (type == PageTypeEnum.MY_FOLLOW) {
+            userInfo = webUserService.getUserInfo(followUser.getFollowClientId());
+        } else {
+            userInfo = webUserService.getUserInfo(followUser.getClientId());
+        }
         if (userInfo != null) {
             followUserVO.setFollowUserIcon(userInfo.getIcon());
             followUserVO.setFollowUserNickname(userInfo.getNickName());
@@ -111,6 +115,14 @@ public class WebFollowUserService {
         SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         followUserVO.setCreateDate(dateTimeFormatter.format(followUser.getCreated()));
         return followUserVO;
+    }
+
+    @AllArgsConstructor
+    enum PageTypeEnum {
+        /**
+         * 列表渲染类型
+         */
+        MY_FOLLOW,FOLLOW_ME;
     }
 
 }
