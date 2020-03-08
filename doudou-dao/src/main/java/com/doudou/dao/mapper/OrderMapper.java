@@ -20,36 +20,37 @@ public interface OrderMapper extends BaseMapper<Order> {
 
     /**
      * 查询用户全部资源列表
-     * @param page
-     * @param clientId
-     * @return
+     * @param page ~
+     * @param clientId ~
+     * @return ~
      */
     @Select("SELECT r.*\n"
         + "FROM dd_resource r left join dd_order o on o.resource_id = r.resource_id\n"
-        + "WHERE o.flag = 1 and r.flag = 1 and o.client_id = #{clientId} or r.client_id = #{clientId} ")
+        + "WHERE o.flag = 1 and r.flag = 1 and o.client_id = #{clientId} and r.status = 'NORMAL' or r.client_id = #{clientId} ")
     List<DataResource> pageUserResource(Page page,@Param("clientId") String clientId);
 
 
     /**
      * 查询用户兑换的资源列表
-     * @param page
-     * @param clientId
-     * @return
+     * @param page ~
+     * @param clientId ~
+     * @param status ~
+     * @return ~
      */
     @Select("SELECT r.*\n"
         + "FROM dd_resource r,dd_order o where o.resource_id = r.resource_id and o.flag = 1 and r.flag = 1\n"
-        + "and o.client_id = #{clientId}")
-    List<DataResource> pageUserOrderResource(Page page,@Param("clientId") String clientId);
+        + "and o.client_id = #{clientId} and r.status = #{status}")
+    List<DataResource> pageUserOrderResource(Page page,@Param("clientId") String clientId, @Param("status") String status);
 
 
     /**
      * 查询用户资源总数
-     * @param clientId
-     * @return
+     * @param clientId ~
+     * @return ~
      */
     @Select("SELECT count(*)\n"
         + "FROM dd_resource r left join dd_order o on o.resource_id = r.resource_id\n"
-        + "WHERE o.flag = 1 and r.flag = 1 and o.client_id = #{clientId} or r.client_id = #{clientId} ")
+        + "WHERE o.flag = 1 and r.flag = 1 and o.client_id = #{clientId} and r.status = 'NORMAL' or r.client_id = #{clientId} ")
     int countUserResource(@Param("clientId") String clientId);
 
 }

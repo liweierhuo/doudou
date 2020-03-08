@@ -5,11 +5,12 @@ import com.doudou.core.constant.ErrorMsgEnum;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.PageRequestVO;
 import com.doudou.core.web.annotation.SessionId;
-import com.doudou.dao.entity.DataResource;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.service.WebOrderService;
 import com.doudou.wx.api.service.WebUserService;
+import com.doudou.wx.api.util.ResourceConvert;
+import com.doudou.wx.api.vo.ResourceVO;
 import com.doudou.wx.api.vo.UserInfoVO;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -88,8 +89,8 @@ public class UserController extends BaseController {
     public ApiResponse getAllUserResourceList(@SessionId String clientId, PageRequestVO pageRequestVO) {
         User userInfo = userService.queryByClientId(clientId);
         Assert.notNull(userInfo,"user info is null");
-        Page<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        pageQuery.setRecords(webOrderService.pageUserResource(clientId,pageQuery));
+        Page<ResourceVO> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
+        pageQuery.setRecords(ResourceConvert.convertResourceVO(webOrderService.pageUserResource(clientId,pageQuery)));
         return new ApiResponse<>(pageQuery);
     }
 

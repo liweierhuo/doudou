@@ -50,5 +50,13 @@ public interface IResourceService extends IService<DataResource> {
      * @return
      */
     int countResourceByUrl(String url);
+
+    /**
+     * 获取用户发布资源的数量
+     * @param clientId
+     * @param status
+     * @return
+     */
+    int countPublishResourceNum(String clientId,String status);
 	
 }

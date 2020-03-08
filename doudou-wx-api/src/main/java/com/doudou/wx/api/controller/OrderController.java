@@ -14,7 +14,9 @@ import com.doudou.dao.service.IOrderService;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.service.WebOrderService;
+import com.doudou.wx.api.util.ResourceConvert;
 import com.doudou.wx.api.vo.ExchangeResourceVO;
+import com.doudou.wx.api.vo.ResourceVO;
 import javax.annotation.Resource;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,8 +74,8 @@ public class OrderController extends BaseController {
     @GetMapping("/resource")
     public ApiResponse getExchangeResource(@SessionId String clientId, PageRequestVO pageRequestVO) {
         Assert.notNull(userService.queryByClientId(clientId),"用户信息为空");
-        Page<DataResource> page = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        page.setRecords(orderService.pageUserOrderResource(clientId,page));
+        Page<ResourceVO> page = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
+        page.setRecords(ResourceConvert.convertResourceVO(orderService.pageUserOrderResource(clientId,ResourceStatusEnum.NORMAL.name(),page)));
         return new ApiResponse<>(page);
     }
 

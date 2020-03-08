@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -24,6 +25,7 @@ import org.springframework.util.Assert;
  * @date: 2020-02-03
  */
 @Service("webIntegralService")
+@Slf4j
 public class WebIntegralService {
     @Resource
     private IIntegralService integralService;
@@ -78,6 +80,10 @@ public class WebIntegralService {
     @Transactional(rollbackFor = Throwable.class)
     public void expendIntegral(String clientId,Integer integral) {
         Assert.notNull(integral,"积分不能为空");
+        if (integral == 0) {
+            log.info("integral is 0 not need to expendIntegral");
+            return;
+        }
         Integral userIntegral = integralService.getIntegralByClientId(clientId);
         Assert.notNull(userIntegral,"您的积分不足");
         Assert.isTrue(userIntegral.getUserIntegral().compareTo(integral) >= 0 ,"您的积分不足");

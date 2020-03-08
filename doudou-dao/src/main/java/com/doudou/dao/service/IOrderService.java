@@ -43,8 +43,9 @@ public interface IOrderService extends IService<Order> {
      * 查询
      * @param clientId
      * @param pageQuery
+     * @param status
      * @return
      */
-    List<DataResource> pageUserOrderResource(String clientId, Page pageQuery);
+    List<DataResource> pageUserOrderResource(String clientId,String status, Page pageQuery);
 	
 }

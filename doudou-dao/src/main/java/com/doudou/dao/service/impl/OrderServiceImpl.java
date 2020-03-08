@@ -40,7 +40,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public List<DataResource> pageUserOrderResource(String clientId, Page pageQuery) {
-        return getBaseMapper().pageUserOrderResource(pageQuery,clientId);
+    public List<DataResource> pageUserOrderResource(String clientId, String status, Page pageQuery) {
+        return getBaseMapper().pageUserOrderResource(pageQuery,clientId,status);
     }
 }

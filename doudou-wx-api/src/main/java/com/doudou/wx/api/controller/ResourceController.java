@@ -13,6 +13,7 @@ import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.service.WebResourceService;
+import com.doudou.wx.api.util.ResourceConvert;
 import com.doudou.wx.api.vo.ResourceVO;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -92,18 +93,8 @@ public class ResourceController extends BaseController{
         IPage<ResourceVO> pageResult = new Page<>(pageQuery.getCurrent(),pageQuery.getSize());
         pageResult.setTotal(pageQuery.getTotal());
         pageResult.setPages(pageQuery.getPages());
-        pageResult.setRecords(buildResourceList(pageQuery.getRecords()));
+        pageResult.setRecords(ResourceConvert.convertResourceVO(pageQuery.getRecords()));
         return new ApiResponse<>(pageResult);
-    }
-
-    private List<ResourceVO> buildResourceList(List<DataResource> records) {
-        return records.stream().map(dataResource -> {
-            ResourceVO resourceVO = new ResourceVO();
-            BeanUtils.copyProperties(dataResource,resourceVO);
-            SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            resourceVO.setPublishDate(dateTimeFormatter.format(dataResource.getCreated()));
-            return resourceVO;
-        }).collect(Collectors.toList());
     }
 
     private Wrapper<DataResource> buildResourceWrapper(ResourceVO resourceVO) {

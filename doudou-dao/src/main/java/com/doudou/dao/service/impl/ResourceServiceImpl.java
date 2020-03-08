@@ -97,4 +97,11 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, DataResourc
     public int countResourceByUrl(String url) {
         return count(new QueryWrapper<DataResource>().eq("url",url));
     }
+
+    @Override
+    public int countPublishResourceNum(String clientId, String status) {
+        return count(new QueryWrapper<DataResource>()
+            .eq("client_id",clientId)
+            .eq("status",status));
+    }
 }
