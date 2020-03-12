@@ -15,25 +15,22 @@ import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.service.WebResourceService;
 import com.doudou.wx.api.util.ResourceConvert;
 import com.doudou.wx.api.vo.ResourceVO;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *   前端控制器
+ * 前端控制器
  * </p>
  *
  * @author liwei
@@ -42,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/resource")
 @Slf4j
-public class ResourceController extends BaseController{
+public class ResourceController extends BaseController {
 
     @Resource
     private IResourceService resourceService;
@@ -52,23 +49,23 @@ public class ResourceController extends BaseController{
     private WebResourceService webResourceService;
 
     @GetMapping("/list")
-    public ApiResponse getPageResource(PageRequestVO pageRequestVO,ResourceVO resourceVO) {
-        IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
-        IPage<DataResource> result = resourceService.page(pageQuery,buildResourceWrapper(resourceVO));
+    public ApiResponse getPageResource(PageRequestVO pageRequestVO, ResourceVO resourceVO) {
+        IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(), pageRequestVO.getPageSize());
+        IPage<DataResource> result = resourceService.page(pageQuery, buildResourceWrapper(resourceVO));
         return new ApiResponse<>(result);
     }
 
     @PostMapping("/add")
     public ApiResponse<String> addResource(@SessionId String clientId, @RequestBody ResourceVO resourceVO) {
         User userInfo = userService.queryByClientId(clientId);
-        Assert.notNull(userInfo,"用户不存在");
+        Assert.notNull(userInfo, "用户不存在");
         resourceVO.setClientId(clientId);
         return webResourceService.addResource(resourceVO);
     }
 
     @PostMapping("/batch/add/{clientId}")
     public ApiResponse batchAddResource(@RequestBody List<ResourceVO> resourceList, @PathVariable("clientId") String clientId) {
-        return webResourceService.batchAddResource(resourceList,clientId,getRequest());
+        return webResourceService.batchAddResource(resourceList, clientId, getRequest());
     }
 
     @GetMapping("/detail/{resourceId}")
@@ -77,20 +74,22 @@ public class ResourceController extends BaseController{
     }
 
     @GetMapping("/publish")
-    public ApiResponse getPublishUserResourceList(@SessionId String clientId, PageRequestVO pageRequestVO) {
-        return getUserPublishList(clientId,pageRequestVO);
+    public ApiResponse getPublishUserResourceList(@SessionId String clientId, @RequestParam(value = "status", required = false) String status,
+        PageRequestVO pageRequestVO) {
+        return getUserPublishList(clientId, status, pageRequestVO);
     }
 
     @GetMapping("/{clientId}/publish")
-    public ApiResponse getUserPublishList(@PathVariable("clientId") String clientId, PageRequestVO pageRequestVO) {
+    public ApiResponse getUserPublishList(@PathVariable("clientId") String clientId, @RequestParam(value = "status", required = false) String status,
+        PageRequestVO pageRequestVO) {
         User userInfo = userService.queryByClientId(clientId);
-        Assert.notNull(userInfo,"user info is null");
-        IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(),pageRequestVO.getPageSize());
+        Assert.notNull(userInfo, "user info is null");
+        IPage<DataResource> pageQuery = new Page<>(pageRequestVO.getPageNo(), pageRequestVO.getPageSize());
         DataResource resourceQuery = new DataResource();
         resourceQuery.setClientId(clientId);
-        resourceQuery.setStatus(ResourceStatusEnum.NORMAL.name());
+        resourceQuery.setStatus(StringUtils.isBlank(status) ? ResourceStatusEnum.NORMAL.name() : status);
         pageQuery = resourceService.pageResource(resourceQuery, pageQuery);
-        IPage<ResourceVO> pageResult = new Page<>(pageQuery.getCurrent(),pageQuery.getSize());
+        IPage<ResourceVO> pageResult = new Page<>(pageQuery.getCurrent(), pageQuery.getSize());
         pageResult.setTotal(pageQuery.getTotal());
         pageResult.setPages(pageQuery.getPages());
         pageResult.setRecords(ResourceConvert.convertResourceVO(pageQuery.getRecords()));
@@ -98,16 +97,16 @@ public class ResourceController extends BaseController{
     }
 
     private Wrapper<DataResource> buildResourceWrapper(ResourceVO resourceVO) {
-        Assert.notNull(resourceVO,"request is required");
+        Assert.notNull(resourceVO, "request is required");
         QueryWrapper<DataResource> wrapper = new QueryWrapper<>();
-        wrapper.eq("status",ResourceStatusEnum.NORMAL.name());
+        wrapper.eq("status", ResourceStatusEnum.NORMAL.name());
         if (StringUtils.isNotBlank(resourceVO.getKeywords())) {
-            wrapper.like("title",resourceVO.getKeywords())
+            wrapper.like("title", resourceVO.getKeywords())
                 .or()
-                .like("subtitle",resourceVO.getKeywords())
+                .like("subtitle", resourceVO.getKeywords())
                 .orderByDesc("id");
         }
-        wrapper.orderByDesc("sticky","sort_num","id");
+        wrapper.orderByDesc("sticky", "sort_num", "id");
         return wrapper;
     }
 

@@ -56,8 +56,13 @@ public class WebResourceService {
 
     private static final int HTTP_RESPONSE_CODE = 200;
 
+    private static final int DEFAULT_TOTAL_NUM = Integer.MAX_VALUE;
+
     public ApiResponse<String> addResource(ResourceVO resourceVO) {
         checkParam(resourceVO);
+        if (resourceVO.getTotalNum() == null) {
+            resourceVO.setTotalNum(DEFAULT_TOTAL_NUM);
+        }
         String requestId = UUID.randomUUID().toString();
         return redisUtil.buessineslock(resourceVO.getUrl(), requestId, 10, () -> {
             resourceVO.setStatus(ResourceStatusEnum.PENDING.name());
@@ -127,7 +132,6 @@ public class WebResourceService {
     private void checkParam(ResourceVO resourceVO) {
         Assert.notNull(resourceVO, "request is required");
         Assert.hasText(resourceVO.getTitle(), "title is required");
-        Assert.notNull(resourceVO.getTotalNum(), "total num is required");
         String url = resourceVO.getUrl();
         Assert.isTrue(ValidatorUtil.isUrl(url), "url格式不正确");
         Assert.isTrue(resourceService.countResourceByUrl(url) <= 0, "资源链接已经存在");
