@@ -1,6 +1,7 @@
 package com.doudou.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,6 +63,12 @@ public class DataResource extends BaseDO {
     private String imageUrl;
 
     /**
+     * 资源宣传图片链接地址
+     */
+    @TableField(value = "thumbnails_url")
+    private String thumbnailsUrl;
+
+    /**
      * 备注信息
      */
     private String remark;
@@ -117,5 +124,11 @@ public class DataResource extends BaseDO {
      */
     @TableField(value = "sticky")
     private Integer sticky;
+
+    /**
+     * 隐藏内容
+     */
+    @TableField(value = "hidden_content")
+    private String hiddenContent;
 
 }

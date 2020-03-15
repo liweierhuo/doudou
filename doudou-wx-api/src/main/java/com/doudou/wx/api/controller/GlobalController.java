@@ -2,8 +2,10 @@ package com.doudou.wx.api.controller;
 
 import com.doudou.core.web.ApiResponse;
 import com.doudou.wx.api.util.DouFileUtils;
+import com.doudou.wx.api.vo.ImageVO;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,11 +40,10 @@ public class GlobalController extends BaseController {
     }
 
     @PostMapping("/api/common/upload")
-    public ApiResponse upload(MultipartFile file,@RequestParam("type") String type) {
+    public ApiResponse<ImageVO> upload(MultipartFile file,@RequestParam("type") String type) {
         log.info("type:"+type);
-        String filePath = fileUtils.saveToLocalServer(file,type,getRequest());
-        log.info(filePath);
-        return new ApiResponse<>(filePath);
+        Assert.isTrue(file.getSize()/1024/1024 < 5,"文件不能超过5M");
+        return new ApiResponse<>(fileUtils.saveToLocalServer(file,type,getRequest()));
     }
 	
 }

@@ -29,35 +29,42 @@ create table uc_user
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='用户表';
 
-drop table if exists dd_resource;
-create table dd_resource
+#用户留言表
+DROP TABLE IF EXISTS `uc_user_message`;
+CREATE TABLE `uc_user_message`
 (
-    `id`          bigint(32)                NOT NULL AUTO_INCREMENT,
-    resource_id   varchar(64)  default ''   not null comment '资源唯一标示',
-    client_id     varchar(64)  default ''   not null comment '上传者唯一标示',
-    title         varchar(256) default ''   not null comment '资源标题',
-    subtitle      varchar(256) default ''   not null comment '资源副标题',
-    source        varchar(256) default ''   not null comment '资源来源',
-    price         int(16)      default 0    not null comment '资源价格',
-    url           varchar(512) default ''   not null comment '资源链接地址',
-    image_url     varchar(512) default ''   not null comment '资源宣传图片链接地址',
-    remark        varchar(512)              null comment '备注信息',
-    status        varchar(64)               null comment '状态，待审核，审核中，正常，审核不通过，下架',
-    res_summary   text                      null comment '简介',
-    res_type      varchar(64)               null comment '类型',
-    download_num  int          default 0    null comment '下载次数',
-    view_num      int          default 0    null comment '浏览次数',
-    total_num     int          default 0    null comment '资源总数',
-    remaining_num int          default 0    null comment '剩余数量',
-    sort_num      int          default 1000 null comment '排序号，越大越靠前',
-    sticky        tinyint(4)   default 0    null comment '是否置顶，1：置顶；0：不置顶',
-    `created`     timestamp                 NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified`    timestamp                 NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag`        tinyint(4)                NOT NULL DEFAULT '1',
+    `id`        int(11)      NOT NULL auto_increment COMMENT '主键',
+    `tx_id`     varchar(128) not null default '' comment '流水Id',
+    `client_id` varchar(64)  not null default '' comment '用户标示',
+    `type`      varchar(128) not null default '' comment '留言类型，想要资源，建议，留言，其他',
+    `title`     varchar(128) not null default '' comment '标题',
+    `content`   varchar(512) not null default '' comment '留言内容',
+    `remark`    varchar(255)          DEFAULT NULL COMMENT '备注',
+    `created`   timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`      tinyint(4)   NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`),
-    unique key uni_resourceId (`resource_id`)
+    unique key uni_txId (`tx_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='资源表';
+  DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
+
+#用户关注表
+DROP TABLE IF EXISTS `uc_follow_user`;
+CREATE TABLE `uc_follow_user`
+(
+    `id`               int(11)      NOT NULL auto_increment COMMENT '主键',
+    `tx_id`            varchar(128) not null default '' comment '流水Id',
+    `client_id`        varchar(64)  not null default '' comment '用户标示',
+    `follow_client_id` varchar(64)  not null default '' comment '关注用户',
+    `last_message`     varchar(512) not null default '' comment '最新留言',
+    `created`          timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`         timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`             tinyint(4)   NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`),
+    unique key uni_txId (`tx_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='关注表';
+
 
 #用户积分表
 DROP TABLE IF EXISTS `user_integral`;
@@ -94,27 +101,6 @@ CREATE TABLE `user_integral_detail`
   DEFAULT CHARSET = utf8 COMMENT ='用户积分明细表';
 
 
-#订单表
-DROP TABLE IF EXISTS `dd_order`;
-CREATE TABLE `dd_order`
-(
-    `id`          int(11)     NOT NULL auto_increment COMMENT '主键',
-    `order_id`    varchar(128)         DEFAULT NULL COMMENT '订单编号',
-    `remark`      varchar(255)         DEFAULT NULL COMMENT '备注',
-    `client_id`   varchar(32)          DEFAULT NULL COMMENT '用户ID',
-    `resource_id` varchar(32)          DEFAULT NULL COMMENT '资源ID',
-    `status`      varchar(64) not null default '' comment '状态，1：成功；2：失败',
-    `price`       int(16)     not null default 0 comment '资源价格',
-    `created`     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified`    timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag`        tinyint(4)  NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`),
-    unique key (`order_id`),
-    KEY `index_user_id` (`client_id`),
-    KEY `index_res_id` (`resource_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='订单表';
-
 #积分操作记录表
 DROP TABLE IF EXISTS `integral_record`;
 CREATE TABLE `integral_record`
@@ -132,6 +118,22 @@ CREATE TABLE `integral_record`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='积分操作记录表';
 
+#用户签到表
+DROP TABLE IF EXISTS `uc_user_sign_in`;
+CREATE TABLE `uc_user_sign_in`
+(
+    `id`           int(11)      NOT NULL auto_increment COMMENT '主键',
+    `tx_id`        varchar(128) not null default '' comment '签到表流水Id',
+    `client_id`    varchar(64)  not null default '' comment '用户标示',
+    `sign_in_date` timestamp    not null comment '签到日期',
+    `remark`       varchar(255)          DEFAULT NULL COMMENT '备注',
+    `created`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`         tinyint(4)   NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`),
+    unique key uni_txId (`tx_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
 
 #广告表
 DROP TABLE IF EXISTS `dd_ad`;
@@ -155,58 +157,59 @@ CREATE TABLE `dd_ad`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='广告表';
 
-#用户签到表
-DROP TABLE IF EXISTS `uc_user_sign_in`;
-CREATE TABLE `uc_user_sign_in`
+drop table if exists dd_resource;
+create table dd_resource
 (
-    `id`           int(11)      NOT NULL auto_increment COMMENT '主键',
-    `tx_id`        varchar(128) not null default '' comment '签到表流水Id',
-    `client_id`    varchar(64)  not null default '' comment '用户标示',
-    `sign_in_date` timestamp    not null comment '签到日期',
-    `remark`       varchar(255)          DEFAULT NULL COMMENT '备注',
-    `created`      timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag`         tinyint(4)   NOT NULL DEFAULT '1',
+    `id`           bigint(32)                NOT NULL AUTO_INCREMENT,
+    resource_id    varchar(64)  default ''   not null comment '资源唯一标示',
+    client_id      varchar(64)  default ''   not null comment '上传者唯一标示',
+    title          varchar(256) default ''   not null comment '资源标题',
+    subtitle       varchar(256) default ''   not null comment '资源副标题',
+    source         varchar(256) default ''   not null comment '资源来源',
+    price          int(16)      default 0    not null comment '资源价格',
+    url            varchar(512) default ''   not null comment '资源链接地址',
+    image_url      varchar(512) default ''   not null comment '资源宣传图片链接地址',
+    thumbnails_url varchar(512) default ''   not null comment '资源的略缩图',
+    remark         varchar(512)              null comment '备注信息',
+    status         varchar(64)               null comment '状态，待审核，审核中，正常，审核不通过，下架',
+    res_summary    text                      null comment '简介',
+    res_type       varchar(64)               null comment '类型',
+    download_num   int          default 0    null comment '下载次数',
+    view_num       int          default 0    null comment '浏览次数',
+    total_num      int          default 0    null comment '资源总数',
+    remaining_num  int          default 0    null comment '剩余数量',
+    sort_num       int          default 1000 null comment '排序号，越大越靠前',
+    sticky         tinyint(4)   default 0    null comment '是否置顶，1：置顶；0：不置顶',
+    hidden_content varchar(512)              not null default '' comment '隐藏内容',
+    `created`      timestamp                 NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`     timestamp                 NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`         tinyint(4)                NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`),
-    unique key uni_txId (`tx_id`)
+    unique key uni_resourceId (`resource_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
+  DEFAULT CHARSET = utf8 COMMENT ='资源表';
 
-#用户留言表
-DROP TABLE IF EXISTS `uc_user_message`;
-CREATE TABLE `uc_user_message`
+#订单表
+DROP TABLE IF EXISTS `dd_order`;
+CREATE TABLE `dd_order`
 (
-    `id`        int(11)      NOT NULL auto_increment COMMENT '主键',
-    `tx_id`     varchar(128) not null default '' comment '流水Id',
-    `client_id` varchar(64)  not null default '' comment '用户标示',
-    `type`      varchar(128) not null default '' comment '留言类型，想要资源，建议，留言，其他',
-    `title`     varchar(128) not null default '' comment '标题',
-    `content`   varchar(512) not null default '' comment '留言内容',
-    `remark`    varchar(255)          DEFAULT NULL COMMENT '备注',
-    `created`   timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag`      tinyint(4)   NOT NULL DEFAULT '1',
+    `id`          int(11)     NOT NULL auto_increment COMMENT '主键',
+    `order_id`    varchar(128)         DEFAULT NULL COMMENT '订单编号',
+    `remark`      varchar(255)         DEFAULT NULL COMMENT '备注',
+    `client_id`   varchar(32)          DEFAULT NULL COMMENT '用户ID',
+    `resource_id` varchar(32)          DEFAULT NULL COMMENT '资源ID',
+    `status`      varchar(64) not null default '' comment '状态，1：成功；2：失败',
+    `price`       int(16)     not null default 0 comment '资源价格',
+    `created`     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified`    timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `flag`        tinyint(4)  NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`),
-    unique key uni_txId (`tx_id`)
+    unique key (`order_id`),
+    KEY `index_user_id` (`client_id`),
+    KEY `index_res_id` (`resource_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='用户签到表';
+  DEFAULT CHARSET = utf8 COMMENT ='订单表';
 
-#用户关注表
-DROP TABLE IF EXISTS `uc_follow_user`;
-CREATE TABLE `uc_follow_user`
-(
-    `id`               int(11)      NOT NULL auto_increment COMMENT '主键',
-    `tx_id`            varchar(128) not null default '' comment '流水Id',
-    `client_id`        varchar(64)  not null default '' comment '用户标示',
-    `follow_client_id` varchar(64)  not null default '' comment '关注用户',
-    `last_message`     varchar(512) not null default '' comment '最新留言',
-    `created`          timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified`         timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag`             tinyint(4)   NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`),
-    unique key uni_txId (`tx_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='关注表';
 
 /**
   清库脚本

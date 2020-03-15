@@ -2,9 +2,9 @@ package com.doudou.wx.api.util;
 
 import com.doudou.core.util.RedisUtil;
 import com.doudou.wx.api.config.WebConfig;
+import com.doudou.wx.api.vo.ImageVO;
 import com.github.kevinsawicki.http.HttpRequest;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -12,8 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,17 +33,25 @@ public class DouFileUtils {
     @Resource
     private RedisUtil redisUtil;
 
-    public String saveToLocalServer(final MultipartFile file, final String type, HttpServletRequest request) {
+    /**
+     * 只适合上传图片
+     */
+    public ImageVO saveToLocalServer(final MultipartFile file, final String type, HttpServletRequest request) {
         String fileName = file.getOriginalFilename();
         String fileFullName = getLocalFilePath(fileName, webConfig.getLocalFileServerDir() + File.separator + type);
+        String thumbnailsFileFullName = getLocalFilePath(fileName, webConfig.getLocalFileServerDir() + File.separator + type + File.separator + "thumbnails");
         // 3. 写入流到本地文件中
         try {
-            FileUtils.writeByteArrayToFile(new File(fileFullName), file.getBytes());
+            reduceImage(file.getInputStream(), fileFullName, 1f);
+            reduceImage(fileFullName, thumbnailsFileFullName, 180, 180);
         } catch (IOException ex) {
             log.error("保存文件：{}失败，异常:{}", fileName, ex);
             throw new IllegalArgumentException("文件保存失败");
         }
-        return toServerPath(fileFullName, request);
+        ImageVO imageVO = new ImageVO();
+        imageVO.setImageUrl(toServerPath(fileFullName, request));
+        imageVO.setThumbnailsImageUrl(toServerPath(thumbnailsFileFullName, request));
+        return imageVO;
     }
 
     /**
@@ -57,7 +64,7 @@ public class DouFileUtils {
     }
 
     @SneakyThrows
-    public String saveInternetImageToLocal(String imageUrl) {
+    public ImageVO saveInternetImageToLocal(String imageUrl) {
         Assert.hasText(imageUrl, "图片URL不能为空");
         String[] tempArray = imageUrl.split("\\.");
         String imageSuffix = "." + tempArray[tempArray.length - 1];
@@ -66,8 +73,30 @@ public class DouFileUtils {
         HttpRequest response = HttpRequest.get(url);
         InputStream fileInputStream = response.getConnection().getInputStream();
         String imageFullName = getLocalFilePath(imageName + imageSuffix, webConfig.getLocalFileServerDir() + File.separator + "batchPublish");
-        IOUtils.copy(fileInputStream, new FileOutputStream(imageFullName));
-        return imageFullName;
+        String thumbnailsImageName = getLocalFilePath(imageName + imageSuffix,
+            webConfig.getLocalFileServerDir() + File.separator + "batchPublish" + File.separator + "thumbnails");
+        reduceImage(fileInputStream, imageFullName, 1f);
+        reduceImage(imageFullName, thumbnailsImageName, 180, 180);
+        ImageVO imageVO = new ImageVO();
+        imageVO.setImageUrl(imageFullName);
+        imageVO.setThumbnailsImageUrl(thumbnailsImageName);
+        return imageVO;
+    }
+
+    @SneakyThrows
+    private void reduceImage(InputStream fileInputStream, String outputFileName, float scale) {
+        //图片尺寸不变，压缩图片文件大小outputQuality实现,参数1为最高质量
+        Thumbnails.of(fileInputStream).scale(scale).outputQuality(1f).toFile(outputFileName);
+        File file = new File(outputFileName);
+        log.info("压缩后文件为 [{}]", file.length());
+    }
+
+    @SneakyThrows
+    private void reduceImage(String imagePath, String outputFileName, int with, int height) {
+        //图片尺寸不变，压缩图片文件大小outputQuality实现,参数1为最高质量
+        Thumbnails.of(imagePath).size(with, height).keepAspectRatio(true).outputQuality(0.8f).toFile(outputFileName);
+        File file = new File(outputFileName);
+        log.info("压缩后文件为 [{}]", file.length());
     }
 
     private String getLocalFilePath(String fileName, String localFileSavePath) {

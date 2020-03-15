@@ -1,7 +1,11 @@
 package com.doudou.wx.api.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author: liwei
@@ -16,5 +20,7 @@ public class UtilTest {
     public void handlePassword() {
         log.info("handlePassword...");
     }
+
+
 
 }

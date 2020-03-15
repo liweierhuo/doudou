@@ -79,6 +79,7 @@ public class UserController extends BaseController {
             updateBean.setEmail(userInfoVO.getEmail());
         }
         if (StringUtils.isNotBlank(userInfoVO.getSignature())) {
+            Assert.isTrue(userInfoVO.getSignature().length() <= 16,"签名的长度不宜过长");
             updateBean.setSignature(userInfoVO.getSignature());
         }
         userService.updateUserByClientId(updateBean,clientId);

@@ -12,8 +12,10 @@ import com.doudou.dao.service.IResourceService;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.util.DouFileUtils;
 import com.doudou.wx.api.util.ValidatorUtil;
+import com.doudou.wx.api.vo.ImageVO;
 import com.doudou.wx.api.vo.ResourceVO;
 import com.github.kevinsawicki.http.HttpRequest;
+import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
@@ -105,8 +107,9 @@ public class WebResourceService {
         int successCount = 0;
         int failedCount = 0;
         for (ResourceVO resourceVO : resourceList) {
-            String localPath = douFileUtils.saveInternetImageToLocal((resourceVO.getImageUrl()));
-            resourceVO.setImageUrl(douFileUtils.toServerPath(localPath, request));
+            ImageVO imageVO = douFileUtils.saveInternetImageToLocal((resourceVO.getImageUrl()));
+            resourceVO.setImageUrl(douFileUtils.toServerPath(imageVO.getImageUrl(), request));
+            resourceVO.setThumbnailsUrl(douFileUtils.toServerPath(imageVO.getThumbnailsImageUrl(), request));
             resourceVO.setRemark("批量发布");
             try {
                 resourceVO.setClientId(clientId);
