@@ -1,4 +1,4 @@
-package com.doudou.wx.api.config;
+package com.doudou.admin.api.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -35,8 +35,6 @@ public class WeChatConfigProperties {
      */
     private String accessTokenUrl;
 
-    private String paidUnionIdUrl;
-
     /**
      * 下发小程序和公众号统一的服务消息
      */
@@ -46,10 +44,5 @@ public class WeChatConfigProperties {
      * 小程序消息
      */
     private String miniTemplateUrl;
-
-    /**
-     * 订阅消息
-     */
-    private String subscribeSendUrl;
 
 }

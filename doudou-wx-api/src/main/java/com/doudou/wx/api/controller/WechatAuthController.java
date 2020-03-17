@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.doudou.core.constant.RedisConstant;
 import com.doudou.core.constant.WxApiConstant;
 import com.doudou.core.util.RedisUtil;
+import com.doudou.core.util.RequestUrlUtil;
 import com.doudou.core.web.ApiResponse;
 import com.doudou.core.web.wx.RawDataBo;
 import com.doudou.dao.entity.User;
 import com.doudou.dao.service.IUserService;
 import com.doudou.wx.api.config.WeChatConfigProperties;
-import com.doudou.wx.api.exception.WxApiException;
 import com.doudou.wx.api.vo.WxLoginVO;
-import com.github.kevinsawicki.http.HttpRequest;
 import java.util.Date;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
@@ -50,7 +49,7 @@ public class WechatAuthController extends BaseController{
         String appId = weChatConfigProperties.getAppId();
         String appSecret = weChatConfigProperties.getAppSecret();
         String requestUrl = String.format(wxLoginUrl,appId,appSecret,request.getCode());
-        JSONObject jsonObject = requestToWx(requestUrl);
+        JSONObject jsonObject = RequestUrlUtil.requestToWx(requestUrl);
         String openId = jsonObject.getString(WxApiConstant.WX_OPEN_ID);
         String unionId = jsonObject.getString(WxApiConstant.WX_UNION_ID);
         String sessionKey = jsonObject.getString(WxApiConstant.WX_SESSION_KEY);
@@ -110,38 +109,4 @@ public class WechatAuthController extends BaseController{
         return DigestUtils.md5Hex(String.join(";",openId,sessionKey));
     }
 
-    private JSONObject requestToWx(String requestUrl) {
-        log.info("requestUrl : [{}]",requestUrl);
-        String response = HttpRequest.get(requestUrl).body();
-        log.info("response : [{}]",response);
-        JSONObject jsonObject = JSONObject.parseObject(response);
-        if (StringUtils.isNotBlank(jsonObject.getString(WxApiConstant.WX_ERROR_CODE))) {
-            throw new WxApiException(jsonObject.getString(WxApiConstant.WX_ERROR_MSG));
-        }
-        return jsonObject;
-    }
-
-    private String getAccessToken(String openId) {
-        String accessTokenUrl = weChatConfigProperties.getAccessTokenUrl();
-        String appId = weChatConfigProperties.getAppId();
-        String appSecret = weChatConfigProperties.getAppSecret();
-        String requestUrl = String.format(accessTokenUrl,appId,appSecret);
-        JSONObject jsonObject = requestToWx(requestUrl);
-        String accessToken = jsonObject.getString("access_token");
-        Long expiresTimes = jsonObject.getLong("expires_in");
-        RedisUtil.setex(RedisConstant.getAccessTokenRedisKey(openId),accessToken,expiresTimes);
-        return accessToken;
-    }
-
-    private String getToken(String openId) {
-        String accessToken = RedisUtil.get(RedisConstant.getAccessTokenRedisKey(openId));
-        if (StringUtils.isNotBlank(accessToken)) {
-            return accessToken;
-        }
-        String newToken = getAccessToken(openId);
-        if (StringUtils.isNotBlank(newToken)) {
-            throw new RuntimeException("获取 Access Token 异常");
-        }
-        return newToken;
-    }
 }

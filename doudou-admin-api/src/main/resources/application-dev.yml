@@ -35,3 +35,10 @@ mybatis-plus:
       logic-delete-value: 0
       #逻辑未删除值,(逻辑删除下有效)
       logic-not-delete-value: 1
+
+wechat:
+  wxa:
+    app-id: ENC(LfWpZa/xvKC6s7RCSw4ltPEek+EGJq2H9oV5cDogT/T0KqVQtUKnmQ==)
+    app-secret: ENC(VGtOzcpTLCmxWhY4BimLp0dCXdTTyrU2Cpzl6HPWwcQD1svAknzscklRgfDW+zYNSVv8BfMHmzI=)
+    access-token-url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+    uniform-send-url: https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=%s

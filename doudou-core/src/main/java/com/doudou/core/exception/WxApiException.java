@@ -1,4 +1,4 @@
-package com.doudou.wx.api.exception;
+package com.doudou.core.exception;
 
 import lombok.Data;
 

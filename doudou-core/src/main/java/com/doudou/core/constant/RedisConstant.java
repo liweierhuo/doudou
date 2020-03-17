@@ -16,8 +16,8 @@ public final class RedisConstant {
 
     private static final String SESSION_ID_KEY = "session-id";
 
-    public static String getAccessTokenRedisKey(@NotNull String openId) {
-        return String.join(":",REDIS_BASE_KEY,ACCESS_TOKEN_KEY,openId);
+    public static String getMiniAccessTokenRedisKey() {
+        return String.join(":",REDIS_BASE_KEY,"mini-program",ACCESS_TOKEN_KEY);
     }
 
     public static String getSessionIdKey(String token) {
