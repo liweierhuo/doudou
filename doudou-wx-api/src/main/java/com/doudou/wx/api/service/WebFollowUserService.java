@@ -120,7 +120,7 @@ public class WebFollowUserService {
             followUserVO.setFollowUserNickname(userInfo.getNickName());
             long days = ChronoUnit.DAYS.between(MyDateUtils.date2LocalDate(userInfo.getCreated()), LocalDateTime.now());
             followUserVO
-                .setLabel("来了" + days + "天，发布了" + resourceService.countPublishResourceNum(userInfo.getClientId(), ResourceStatusEnum.NORMAL.name()) + "个资源");
+                .setLabel("来了" + (days >= 0 ? "不到一天" : days) + "天，发布了" + resourceService.countPublishResourceNum(userInfo.getClientId(), ResourceStatusEnum.NORMAL.name()) + "个资源");
         }
         SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         followUserVO.setCreateDate(dateTimeFormatter.format(followUser.getCreated()));

@@ -63,6 +63,7 @@ public class OrderController extends BaseController {
         Assert.isTrue(exchangeResourceVO.getIntegral().equals(dataResource.getPrice()),"传入的积分与所需积分不一致");
         Assert.isTrue(!dataResource.getClientId().equalsIgnoreCase(clientId),"自己发布的资源不能兑换");
         Integral integral = integralService.getIntegralByClientId(userInfo.getClientId());
+        Assert.notNull(integral,"您还没有积分呢，赶快取领取吧");
         Assert.isTrue(integral.getUserIntegral() >= dataResource.getPrice(),"您的积分不足");
         Order orderInfo = orderService.getOrder(userInfo.getClientId(), dataResource.getResourceId());
         Assert.isTrue( orderInfo == null,"您已经兑换过该资源");

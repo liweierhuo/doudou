@@ -44,6 +44,11 @@ public class WebIntegralService {
      */
     @Transactional(rollbackFor = Throwable.class)
     public void saveIntegral(String clientId,Integer userIntegral,IntegralTypeEnum integralTypeEnum){
+        Assert.notNull(userIntegral,"积分不能为空");
+        if (userIntegral == 0) {
+            log.info("integral is 0 not need to gift to author");
+            return;
+        }
         Integral integral = integralService.getIntegralByClientId(clientId);
         if (integral != null) {
             integral.setUserIntegral(integral.getUserIntegral() + userIntegral);

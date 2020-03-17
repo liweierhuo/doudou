@@ -26,6 +26,18 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
 
     @Override
     public IPage<Record> pageResource(String clientId, IPage<Record> pageQuery) {
-        return page(pageQuery,new QueryWrapper<Record>().eq("client_id",clientId));
+        return page(pageQuery,new QueryWrapper<Record>()
+            .eq("client_id",clientId)
+            .orderByDesc("id"));
+    }
+
+    @Override
+    public Integer sumIncome(String clientId) {
+        return getBaseMapper().sumIncome(clientId);
+    }
+
+    @Override
+    public Integer sumExpend(String clientId) {
+        return getBaseMapper().sumExpend(clientId);
     }
 }

@@ -29,4 +29,18 @@ public interface IRecordService extends IService<Record> {
      * @return
      */
     IPage<Record> pageResource(String clientId, IPage<Record> pageQuery);
+
+    /**
+     * 收入总和
+     * @param clientId
+     * @return
+     */
+    Integer sumIncome(String clientId);
+
+    /**
+     * 支出总和
+     * @param clientId
+     * @return
+     */
+    Integer sumExpend(String clientId);
 }

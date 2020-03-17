@@ -1,5 +1,6 @@
 package com.doudou.wx.api.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doudou.core.constant.IntegralOperateTypeEnum;
@@ -10,7 +11,6 @@ import com.doudou.dao.entity.Record;
 import com.doudou.dao.service.IRecordService;
 import com.doudou.wx.api.vo.IntegralRecordVO;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +41,16 @@ public class IntegralController extends BaseController{
         pageResult.setPages(pageQuery.getPages());
         pageResult.setRecords(buildRecordVO(pageQuery.getRecords()));
         return new ApiResponse<>(pageResult);
+    }
+
+    @GetMapping("summary")
+    public ApiResponse getSummary(@SessionId String clientId) {
+        Integer sumExpend = recordService.sumExpend(clientId);
+        Integer sumIncome = recordService.sumIncome(clientId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sumIncome",sumIncome);
+        jsonObject.put("sumExpend",sumExpend);
+        return new ApiResponse<>(jsonObject);
     }
 
     private List<IntegralRecordVO> buildRecordVO(List<Record> records) {
