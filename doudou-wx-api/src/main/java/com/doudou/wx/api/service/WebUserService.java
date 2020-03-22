@@ -10,10 +10,12 @@ import com.doudou.dao.service.IUserService;
 import com.doudou.dao.service.IUserSignInService;
 import com.doudou.wx.api.util.MyDateUtils;
 import com.doudou.wx.api.vo.UserInfoVO;
+import com.google.common.collect.Lists;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +69,9 @@ public class WebUserService {
         userInfoVO.setRegisteredDays(days);
         userInfoVO.setResourceNum(webOrderService.countUserResourceNum(clientId));
         userInfoVO.setSignInStatus(userSignInStatus(clientId));
+        if (StringUtils.isNotBlank(userInfo.getPermission())) {
+            userInfoVO.setPermissionList(Lists.newArrayList(userInfo.getPermission().split(",")));
+        }
         return userInfoVO;
     }
 

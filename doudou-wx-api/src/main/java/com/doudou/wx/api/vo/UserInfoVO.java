@@ -1,6 +1,7 @@
 package com.doudou.wx.api.vo;
 
 import com.doudou.dao.entity.User;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,10 @@ public class UserInfoVO extends User {
     private String phoneNo;
     private String backImageUrl;
     private Boolean signInStatus;
+
+    /**
+     * 权限信息
+     */
+    private List<String> permissionList;
 
 }

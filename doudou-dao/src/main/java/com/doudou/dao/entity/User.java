@@ -107,4 +107,9 @@ public class User extends BaseDO {
     @TableField(value = "login_time")
     private Date loginTime;
 
+    /**
+     * 用户权限信息
+     */
+    private String permission;
+
 }

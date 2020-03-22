@@ -21,6 +21,7 @@ create table uc_user
     signature            varchar(512) default '' null comment '用户签名',
     background_image_url varchar(512) default '' null comment '用户主页背景图',
     login_time           datetime                null comment '最后登录时间',
+    permission           varchar(512)            not null default '' comment '拥有的权限',
     `created`            timestamp               NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified`           timestamp               NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `flag`               tinyint(4)              NOT NULL DEFAULT '1',
